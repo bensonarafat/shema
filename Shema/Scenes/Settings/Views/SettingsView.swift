@@ -25,10 +25,10 @@ struct SettingsView: View {
                     } label : {
                         HStack {
                             Image(systemName: "apps.iphone")
-                            Text("Select Apps to Lock")
+                            Text("Select Apps & Category to Lock")
                             Spacer()
                             
-                            Text("\(viewModel.appBlockingService.blockedApps.count)")
+                            Text("\((viewModel.appBlockingService.blockedApps.count)+(viewModel.appBlockingService.blockedCategories.count))")
                                 .foregroundStyle(.secondary)
                             Image(systemName: "chevron.right")
                                 .foregroundColor(.secondary)
@@ -38,9 +38,11 @@ struct SettingsView: View {
                         isPresented: $showingAppPicker,
                         selection: $selection)
                     .onChange(of: selection) { oldValue, newValue in
-                    
                         viewModel.appBlockingService.saveBlockedApps(newValue)
                     }
+                }
+                .onAppear {
+                    loadSavedSelection()
                 }
                 
                 Section("Daily Reminders") {
@@ -134,6 +136,12 @@ struct SettingsView: View {
                     dismiss()
                 }
             }
+        }
+    }
+    
+    func loadSavedSelection() {
+        if let loadedSelection = viewModel.appBlockingService.loadBlockedApps() {
+            selection = loadedSelection
         }
     }
 }

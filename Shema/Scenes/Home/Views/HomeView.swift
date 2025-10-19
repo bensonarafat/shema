@@ -68,7 +68,7 @@ struct HomeView: View {
     }
     
     func readingCard(reading: BibleReading) -> some View {
-        NavigationLink (destination: BibleReaderView(reading: reading)) {
+        NavigationLink (destination: BibleReaderView()) {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
                     Image(systemName: "book.fill")

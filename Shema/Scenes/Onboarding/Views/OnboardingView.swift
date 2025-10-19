@@ -11,9 +11,11 @@ import FamilyControls
 struct OnboardingView: View {
     @EnvironmentObject var viewModel: BibleLockViewModel
     @State var selection = FamilyActivitySelection()
+    @ObservedObject var appBlockingService = AppBlockingService()
     @State private var currentStep = 0
     @State private var showingError = false
     @State private var errorMessage = ""
+    @State private var isAuthorized = false
     
     var body: some View {
         VStack (spacing: 30) {
@@ -61,7 +63,7 @@ struct OnboardingView: View {
                     handleNext()
                 }
                 .buttonStyle(.bordered)
-                .disabled(currentStep == 1 && !viewModel.appBlockingService.isAuthorized)
+                .disabled(currentStep == 1 && !isAuthorized)
             }
             .padding()
         }
@@ -72,6 +74,10 @@ struct OnboardingView: View {
             }
         } message: {
             Text(errorMessage)
+        }
+        .onAppear {
+            isAuthorized = viewModel.appBlockingService.isAuthorized
+            loadSavedSelection()
         }
     }
     
@@ -107,7 +113,7 @@ struct OnboardingView: View {
                 .foregroundColor(.secondary)
                 .padding(.horizontal)
             
-            if viewModel.appBlockingService.isAuthorized {
+            if isAuthorized {
                 HStack {
                     Image(systemName: "checkmark.circle.fill")
                         .foregroundColor(.green)
@@ -122,7 +128,7 @@ struct OnboardingView: View {
                     Task {
                         do {
                             try await viewModel.appBlockingService.requestAuthorization()
-                            
+                            isAuthorized = viewModel.appBlockingService.isAuthorized
                         } catch {
                             errorMessage = "Failed to get permission: \(error.localizedDescription)"
                             showingError = true
@@ -159,7 +165,7 @@ struct OnboardingView: View {
             
             Button {
                 
-                guard viewModel.appBlockingService.isAuthorized else {
+                guard isAuthorized else {
                     print("Permission is required to access app list")
                     return
                 }
@@ -184,12 +190,13 @@ struct OnboardingView: View {
             .onChange(of: selection) { oldValue, newValue in
                 viewModel.appBlockingService.saveBlockedApps(newValue)
             }
+           
             
-            if !viewModel.appBlockingService.blockedApps.isEmpty {
+            if !viewModel.appBlockingService.blockedApps.isEmpty || !viewModel.appBlockingService.blockedCategories.isEmpty {
                 HStack {
                     Image(systemName: "checkmark.circle.fill")
                         .foregroundColor(.green)
-                    Text("\(viewModel.appBlockingService.blockedApps.count) apps selected")
+                    Text("\(viewModel.appBlockingService.blockedApps.count) apps selected and \(viewModel.appBlockingService.blockedCategories.count) categories selected")
                         .foregroundColor(.green)
                 }
                 .padding()
@@ -207,6 +214,12 @@ struct OnboardingView: View {
         } else {
             viewModel.completeOnboarding()
             viewModel.updateAppBlockingStatus()
+        }
+    }
+    
+    func loadSavedSelection() {
+        if let loadedSelection = viewModel.appBlockingService.loadBlockedApps() {
+            selection = loadedSelection
         }
     }
 }

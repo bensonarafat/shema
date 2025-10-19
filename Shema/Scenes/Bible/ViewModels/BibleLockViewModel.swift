@@ -14,7 +14,6 @@ class BibleLockViewModel: ObservableObject {
     @Published var currentReading: BibleReading?
     @Published var showingAppPicker = false
     
-    
     var appBlockingService = AppBlockingService.shared
     let bibleService = BibleAPIService.shared
     let notificationService = NotificationService.shared
