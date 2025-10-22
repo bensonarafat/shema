@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct BibleReaderView: View {
+    
+    @Environment(\.colorScheme) var colorScheme
+    
 //    @EnvironmentObject var viewModel: BibleLockViewModel
 //    @Environment(\.dismiss) var dismiss
 //    
@@ -159,7 +162,7 @@ struct BibleReaderView: View {
                         .padding(.trailing, 5)
                         .padding(.vertical, 6)
                     Rectangle()
-                        .fill(Color.black)
+                        .fill(Color(.systemBackground))
                         .frame(width: 3, height: 40)
                     Text("NIV")
                         .font(.headline)
@@ -167,7 +170,7 @@ struct BibleReaderView: View {
                         .padding(.leading, 5)
                         .padding(.vertical, 6)
                 }
-                .background(Color(.systemGray5))
+                .background(Color.blue)
                 .cornerRadius(18)
                 
                 Spacer()
@@ -176,18 +179,22 @@ struct BibleReaderView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 20, height: 20)
+                        .foregroundColor(Color(colorScheme == .dark ? .white : .black))
                     Image(systemName: "magnifyingglass")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 20, height: 20)
+                        .foregroundColor(Color(colorScheme == .dark ? .white : .black))
                     Image(systemName: "ellipsis.circle")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 20, height: 20)
+                        .foregroundColor(Color(colorScheme == .dark ? .white : .black))
                     Image("ai")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 30, height: 30)
+                    
 
                 }
             }
@@ -200,13 +207,21 @@ struct BibleReaderView: View {
                     Text("Israel Unrepentant")
                         .italic()
                         .font(.headline)
+                        .foregroundColor(.primary)
                     
                     Group {
                         Text("1 “Come, let us return to the LORD. He has torn us to pieces but he will heal us; he has injured us but he will bind up our wounds.")
                         Text("2 After two days he will revive us; on the third day he will restore us, that we may live in his presence.")
                         Text("3 Let us acknowledge the LORD; let us press on to acknowledge him. As surely as the sun rises, he will appear;")
+                        Text("1 “Come, let us return to the LORD. He has torn us to pieces but he will heal us; he has injured us but he will bind up our wounds.")
+                        Text("2 After two days he will revive us; on the third day he will restore us, that we may live in his presence.")
+                        Text("3 Let us acknowledge the LORD; let us press on to acknowledge him. As surely as the sun rises, he will appear;")
+                        Text("1 “Come, let us return to the LORD. He has torn us to pieces but he will heal us; he has injured us but he will bind up our wounds.")
+                        Text("2 After two days he will revive us; on the third day he will restore us, that we may live in his presence.")
+                        Text("3 Let us acknowledge the LORD; let us press on to acknowledge him. As surely as the sun rises, he will appear;")
                     }
                     .font(.body)
+                    .foregroundColor(.primary)
                     .lineSpacing(8)
                 }
                 .padding()
@@ -228,7 +243,7 @@ struct BibleReaderView: View {
                     }
                 }
         )
-        .background(Color.black.edgesIgnoringSafeArea(.all))
+        .background(Color(.systemBackground))
         .foregroundColor(.white)
     }
 }
@@ -252,7 +267,7 @@ struct BibleReaderView: View {
 //    let vm = BibleLockViewModel()
 //    return BibleReaderView(reading: sampleReading)
 //        .environmentObject(vm)
-    
-    BibleReaderView()
+    let vm = BibleLockViewModel()
+    BibleReaderView().environmentObject(vm)
 }
 

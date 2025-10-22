@@ -25,11 +25,13 @@ struct SettingsView: View {
                     } label : {
                         HStack {
                             Image(systemName: "apps.iphone")
+                                .foregroundColor(.primary)
                             Text("Select Apps & Category to Lock")
+                                .foregroundColor(.primary)
                             Spacer()
                             
                             Text("\((viewModel.appBlockingService.blockedApps.count)+(viewModel.appBlockingService.blockedCategories.count))")
-                                .foregroundStyle(.secondary)
+                                .foregroundColor(.primary)
                             Image(systemName: "chevron.right")
                                 .foregroundColor(.secondary)
                         }
@@ -106,7 +108,7 @@ struct SettingsView: View {
                     Button(role: .destructive) {
                         viewModel.appBlockingService.disableBlocking()
                     } label: {
-                        Label("Unlock All Apps (Emergency)", systemImage: "exclamationmark.triangle")
+                        Label("Unlock All Apps (Emergency)", systemImage: "exclamationmark.triangle").foregroundColor(.primary)
                     }
                 }
                 
@@ -116,26 +118,24 @@ struct SettingsView: View {
                         Text("Version")
                         Spacer()
                         Text("1.0.0")
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.primary)
                     }
 
                     Link(destination: URL(string: "https://yourdomain.com/privacy")!) {
                         HStack {
                             Text("Privacy Policy")
+                                .foregroundColor(.primary)
                             Spacer()
                             Image(systemName: "arrow.up.right")
                                 .font(.caption)
+                                .foregroundColor(.primary)
                         }
                     }
                 }
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                Button("Done") {
-                    dismiss()
-                }
-            }
+            
         }
     }
     
@@ -147,5 +147,7 @@ struct SettingsView: View {
 }
 
 #Preview {
+    let vm = BibleLockViewModel()
     SettingsView()
+        .environmentObject(vm)
 }

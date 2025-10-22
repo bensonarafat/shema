@@ -16,7 +16,7 @@ struct ContentView: View {
             if !viewModel.hasCompletedOnboarding {
                 OnboardingView()
             } else {
-                HomeView()
+                TabBarView()
             }
         }
     }
@@ -24,5 +24,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    let vm = BibleLockViewModel()
+    ContentView().environmentObject(vm)
 }
