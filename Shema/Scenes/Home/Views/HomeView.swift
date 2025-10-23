@@ -9,46 +9,28 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var viewModel: BibleLockViewModel
-//    @State private var showingSettings = false
+    //    @State private var showingSettings = false
     
     var body: some View {
         ZStack (alignment: .bottom) {
             // Scrollable Content
             ScrollView {
                 VStack (alignment: .leading, spacing: 24) {
-                    // Header
-                    HStack {
-                        Text("Shema")
-                            .font(.system(size: 36, weight: .bold))
-                            .foregroundColor(.black)
-                        Spacer()
-                        
-                        HStack (spacing: 12) {
-                            HStack(spacing: 4) {
-                                Text("🔥")
-                                Text("9").foregroundColor(.black)
-                            }
-                            
-                            HStack (spacing: 4) {
-                                Image(systemName: "bolt.fill")
-                                    .foregroundColor(.green)
-                                Text("Get PRO")
-                                    .foregroundColor(.white)
-                                    .font(.system(size: 14, weight: .semibold))
-                            }
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 6)
-                            .background(Color.green.opacity(0.2))
-                            .cornerRadius(20)
-                            
-                            Image(systemName: "square.and.arrow.up")
-                                .foregroundColor(.black)
-                                .font(.system(size: 20))
-                        }
-                        
-                    }
-                    .padding(.horizontal)
-                    .padding(.top, 8)
+                    HomeTopHeader()
+                    
+                    HStack{
+                        Image(systemName: "sun.max")
+                            .font(.system(size: 14, weight: .bold))
+                        Text("GOOD MORNING, BENSON")
+                            .font(.system(size: 14, weight: .bold))
+                    }.padding(.horizontal)
+                    
+                    // Bible Verses by Theme
+                    BibleVersesByTheme()
+                    
+                    // Badge
+                    Badges()
+                    
                 }
             }
             
@@ -56,122 +38,9 @@ struct HomeView: View {
             TimerControl()
             
         }
-//        .ignoresSafeArea()
     }
-//    var body: some View {
-//        NavigationView {
-//            VStack (spacing: 30) {
-//                // Status Card
-//                statusCard
-//                
-//                // Today's Reading Card
-//                if let reading = viewModel.currentReading {
-//                    readingCard(reading: reading)
-//                }
-//                
-//                Spacer()
-//                
-//                // Stats
-//                
-//                statsSection
-//            }
-//            .padding()
-//            .navigationTitle("Shema")
-//            .toolbar {
-//                Button {
-//                    showingSettings = true
-//                } label : {
-//                    Image(systemName: "gearshape")
-//                }
-//            }
-//            .sheet(isPresented: $showingSettings) {
-//                SettingsView()
-//            }
-//            
-//        }
-//    }
+
     
-//    var statusCard: some View {
-//        VStack(spacing: 15) {
-//            Image(systemName: viewModel.readingProgress.hasCompletedTodaysReading ? "checkmark.circle.fill" : "lock.fill")
-//                .font(.system(size: 60))
-//                .foregroundColor(viewModel.readingProgress.hasCompletedTodaysReading ? .green : .orange)
-//            
-//            Text(viewModel.readingProgress.hasCompletedTodaysReading ? "Reading Complete!" : "Apps Locked")
-//                .font(.title2)
-//                .fontWeight(.bold)
-//            
-//            Text(viewModel.readingProgress.hasCompletedTodaysReading ? "Your apps are unlocked for today" : "Complete your Bible reading to unlock")
-//                .font(.subheadline)
-//                .foregroundColor(.secondary)
-//                .multilineTextAlignment(.center)
-//        }
-//        .frame(maxWidth: .infinity)
-//        .padding()
-//        .background(
-//            RoundedRectangle(cornerRadius: 15)
-//                .fill(viewModel.readingProgress.hasCompletedTodaysReading ? Color.green.opacity(0.1) : Color.orange.opacity(0.1))
-//        )
-//    }
-//    
-//    func readingCard(reading: BibleReading) -> some View {
-//        NavigationLink (destination: BibleReaderView()) {
-//            VStack(alignment: .leading, spacing: 10) {
-//                HStack {
-//                    Image(systemName: "book.fill")
-//                        .foregroundColor(.blue)
-//                    
-//                    Text("Today's Reading")
-//                        .font(.headline)
-//                    
-//                    Spacer()
-//                    Image(systemName: "chevron.right")
-//                        .foregroundColor(.secondary)
-//                }
-//                
-//                Text("\(reading.book) \(reading.chapter): \(reading.verses)")
-//                    .font(.title3)
-//                    .fontWeight(.semibold)
-//                
-//                if !viewModel.readingProgress.hasCompletedTodaysReading {
-//                    Text("Tap to start reading")
-//                        .font(.subheadline)
-//                        .foregroundColor(.secondary)
-//                }
-//            }
-//            .frame(maxWidth: .infinity, alignment: .leading)
-//            .padding()
-//            .background(
-//                RoundedRectangle(cornerRadius: 15)
-//                    .fill(Color.blue.opacity(0.1))
-//            )
-//        }
-//        .buttonStyle(PlainButtonStyle())
-//    }
-//    
-//    var statsSection: some View {
-//        VStack (spacing: 15) {
-//            Text("Your progress")
-//                .font(.headline)
-//                .frame(maxWidth: .infinity, alignment: .leading)
-//            
-//            HStack (spacing: 20) {
-//                StatBox(
-//                    icon: "flame.fill",
-//                    value: "\(viewModel.readingProgress.currentStreak)",
-//                    label: "Day Streak",
-//                    color: .orange
-//                )
-//            }
-//            
-//            StatBox(
-//                icon: "checkmark.circle.fill",
-//                value: "1",
-//                label: "Total Reads",
-//                color: .green
-//            )
-//        }
-//    }
 }
 
 #Preview {
@@ -179,16 +48,186 @@ struct HomeView: View {
     HomeView().environmentObject(vm)
 }
 
+
+struct Badges: View {
+    
+    var body:  some View {
+        VStack {
+            HStack {
+                Text("Your Badge")
+                Spacer()
+                Button (action : {} ){
+                    Image(systemName: "chevron.forward")
+                        .foregroundColor(.black)
+                }
+            }
+            .padding(.horizontal)
+        }
+    }
+}
+
+struct BibleVersesByTheme: View {
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Text("Theme Verses")
+                Spacer()
+                Button ( action : {} ) {
+                    Image(systemName: "chevron.forward")
+                        .foregroundColor(.black)
+                }
+                
+            }.padding(.horizontal)
+            ScrollView (.horizontal, showsIndicators: false) {
+                HStack (spacing: 16) {
+                    FocusTimerCard(
+                      emoji: "🎯",
+                      title: "Get it done",
+                      duration: "20m",
+                      backgroundImage: "sunset"
+                  )
+                    FocusTimerCard(
+                         emoji: "🧑‍💼",
+                         title: "Work Sprint",
+                         duration: "25m",
+                         backgroundImage: "night"
+                     )
+                }.padding(.horizontal)
+            }
+        }
+        
+    }
+}
+
+
+struct FocusTimerCard: View {
+    let emoji: String
+    let title: String
+    let duration: String
+    let backgroundImage: String
+    
+    var body: some View {
+        ZStack (alignment: .leading) {
+            RoundedRectangle(cornerRadius: 24)
+                .fill(
+                    LinearGradient(
+                        colors: backgroundImage == "sunset"
+                        ?
+                        [Color.orange.opacity(0.6), Color.orange.opacity(0.3)] :
+                                                  [Color.blue.opacity(0.6), Color.purple.opacity(0.4)],
+                        startPoint: .topLeading, endPoint: .bottomTrailing
+                    )
+                )
+            VStack (alignment: .leading, spacing: 8) {
+                HStack (spacing: 8) {
+                    Text(emoji)
+                        .font(.system(size: 24))
+                    Text(title)
+                        .font(.system(size: 22, weight: .semibold))
+                        .foregroundColor(.white)
+                }
+                Text(duration)
+                    .font(.system(size: 16))
+                
+                Spacer()
+                
+                HStack(spacing: 8) {
+                    Image(systemName: "play.fill")
+                    Text("Start")
+                        .font(.system(size: 16, weight: .medium))
+                }
+                .foregroundColor(.white)
+            }.padding(20)
+        }
+        .frame(width: 180, height: 120)
+        .cornerRadius(16)
+    }
+}
+
+struct HomeTopHeader : View {
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
+    var body: some View {
+        // Header
+        HStack {
+            Text("Shema")
+                .font(.system(size: 36, weight: .bold))
+                .foregroundColor(colorScheme == .dark ? .white : .black)
+            Spacer()
+            
+            HStack (spacing: 12) {
+                HStack(spacing: 4) {
+                    Text("🔥")
+                    Text("9")
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundColor( colorScheme == .dark ? .white : .black)
+                }
+                
+                HStack (spacing: 4) {
+                    Image(systemName: "bolt.fill")
+                        .foregroundColor(.green)
+                    Text("Get PRO")
+                        .foregroundColor(.white)
+                        .font(.system(size: 14, weight: .semibold))
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(
+                    LinearGradient(
+                        gradient: Gradient(colors: [
+                            colorScheme == .dark ?
+                            .black.opacity(0.8)
+                            : .green.opacity(0.2)
+                            ,
+                            colorScheme == .dark ?
+                                .blue.opacity(0.5)
+                            :    .blue.opacity(0.8)
+                        ] ),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .cornerRadius(20)
+                
+                Image(systemName: "square.and.arrow.up")
+                    .foregroundStyle(
+                        LinearGradient(
+                            gradient: Gradient(colors: [
+                                colorScheme == .dark ?
+                                .white.opacity(0.8)
+                                : .black.opacity(0.9)
+                                ,
+                                colorScheme == .dark ?
+                                    .blue.opacity(0.9)
+                                :    .blue.opacity(0.8)
+                            ] ),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .font(.system(size: 25))
+            }
+            
+        }
+        .padding(.horizontal)
+        .padding(.top, 8)
+    }
+}
+
 struct TimerControl: View {
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
+
     var body: some View {
         VStack (spacing: 16) {
             HStack (spacing: 8) {
                 Button(action: {} ) {
                     Image(systemName: "minus")
                         .font(.system(size: 18, weight: .medium))
-                        .foregroundColor(.white)
+                        .foregroundColor( colorScheme == .dark  ? .black : .white)
                         .frame(width: 50, height: 50)
-                        .background(Color.black)
+                        .background(
+                            colorScheme == .dark ?
+                                .white : .black)
                         .clipShape(Circle())
                         
                 }
@@ -196,35 +235,37 @@ struct TimerControl: View {
                 
                 Text("20m")
                     .font(.system(size: 24, weight: .semibold))
-                    .foregroundColor(.white)
+                    .foregroundColor( colorScheme == .dark ? .black : .white)
                     .frame(maxWidth: 100)
                     .padding(.vertical,16)
-                    .background(Color.black)
+                    .background( colorScheme == .dark ? .white : .black)
                     .cornerRadius(20)
                 
                 Button(action: {}) {
                     Image(systemName: "plus")
                         .font(.system(size: 18, weight: .medium))
-                        .foregroundColor(.white)
-                        .frame(width: 50,height: 50)
-                        .background(Color.black)
+                        .foregroundColor( colorScheme == .dark  ? .black : .white)
+                        .frame(width: 50, height: 50)
+                        .background(
+                            colorScheme == .dark ?
+                                .white : .black)
                         .clipShape(Circle())
                 }
                 
                 HStack (spacing: 2) {
                     Text("Blo...")
-                        .foregroundColor(.white)
+                        .foregroundColor(colorScheme == .dark  ? .black : .white)
                     HStack(spacing: 6) {
                         Text("📱")
                         Text("🌍")
                         Text("+10")
                             .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(.white)
+                            .foregroundColor(colorScheme == .dark ? .black : .white)
                     }
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 16)
-                .background(Color.black)
+                .background(colorScheme == .dark ? .white : .black)
                 .cornerRadius(30)
             }.padding(.horizontal)
             
@@ -234,44 +275,14 @@ struct TimerControl: View {
                     Text("Start Timer")
                         .font(.system(size: 18, weight: .semibold))
                 }
-                .foregroundColor(.white)
+                .foregroundColor(colorScheme == .dark ? .black : .white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 20)
-                .background(    Color.black)
+                .background(colorScheme == .dark ? .white : .black)
                 .cornerRadius(20)
             }
             .padding(.horizontal)
         }
         .padding(.vertical, 16)
-//        .background(
-//            LinearGradient(colors: [Color(red: 0.1, green: 0.15, blue: 0.15).opacity(0), Color(red: 0.1, green: 0.15, blue: 0.15)], startPoint: .top, endPoint: .bottom)
-//        )
     }
 }
-//
-//
-//struct StatBox: View {
-//    let icon: String
-//    let value: String
-//    let label: String
-//    let color: Color
-//    
-//    var body: some View {
-//        VStack (spacing: 10) {
-//            Image(systemName: icon)
-//                .font(.title)
-//                .foregroundColor(color)
-//            
-//            Text(value)
-//                .font(.title2)
-//                .fontWeight(.bold)
-//            
-//        }
-//        .frame(maxWidth: .infinity)
-//        .padding()
-//        .background(
-//            RoundedRectangle(cornerRadius: 10)
-//                .fill(color.opacity(0.1))
-//        )
-//    }
-//}
