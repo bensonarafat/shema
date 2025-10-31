@@ -83,13 +83,19 @@ struct BibleVersesByTheme: View {
                 HStack (spacing: 16) {
                     FocusTimerCard(
                       emoji: "🎯",
-                      title: "Get it done",
+                      title: "Love",
                       duration: "20m",
                       backgroundImage: "sunset"
                   )
                     FocusTimerCard(
                          emoji: "🧑‍💼",
-                         title: "Work Sprint",
+                         title: "Lust",
+                         duration: "25m",
+                         backgroundImage: "night"
+                     )
+                    FocusTimerCard(
+                         emoji: "😊",
+                         title: "Forgiveness",
                          duration: "25m",
                          backgroundImage: "night"
                      )

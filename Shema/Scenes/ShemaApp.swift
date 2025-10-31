@@ -14,8 +14,6 @@ struct ShemaApp: App {
     @StateObject private var viewModel = BibleLockViewModel()
     
     init () {
-        // Request notification permissions
-        NotificationService.shared.requestAuthorization()
         registerBackgroundTasks()
     }
     

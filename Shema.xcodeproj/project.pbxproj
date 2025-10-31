@@ -30,7 +30,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		52DC91822E96F76A009B05C0 /* Exceptions for "Shema" folder in "Shema" target */ = {
+		52FD99D22EABCA9200F5F6D6 /* Exceptions for "Shema" folder in "Shema" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -43,7 +43,7 @@
 		52A677CE2E95BAA700A60ABB /* Shema */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				52DC91822E96F76A009B05C0 /* Exceptions for "Shema" folder in "Shema" target */,
+				52FD99D22EABCA9200F5F6D6 /* Exceptions for "Shema" folder in "Shema" target */,
 			);
 			path = Shema;
 			sourceTree = "<group>";

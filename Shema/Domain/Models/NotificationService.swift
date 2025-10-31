@@ -11,13 +11,33 @@ import UserNotifications
 class NotificationService {
     static let shared = NotificationService()
     
-    func requestAuthorization() {
+    func requestAuthorization() async -> Bool {
+        await withCheckedContinuation { continuation in
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound, .provisional]) { granted, error in
+                if let error = error {
+                    print("Notification error: \(error.localizedDescription)")
+                }
+                if granted {
+                    print("Notification permission granted")
+                } else {
+                    print("Notification permission not granted")
+                }
+                continuation.resume(returning: granted)
+            }
+        }
+    }
+    
+    func requestAuthorization(completion: @escaping (Bool) -> Void) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound, .provisional]) { granted, error in
-            if granted {
-                print("Notification permission granted")
-            } else if let error = error {
+            if let error = error {
                 print("Notification error: \(error.localizedDescription)")
             }
+            if granted {
+                print("Notification permission granted")
+            } else {
+                print("Notification permission not granted")
+            }
+            completion(granted)
         }
     }
     

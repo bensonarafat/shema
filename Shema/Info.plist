@@ -14,5 +14,19 @@
 		<string>processing</string>
 		<string>remote-notification</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Anton-Regular.ttf</string>
+		<string>NotoSansJP-Black.ttf</string>
+		<string>NotoSansJP-Bold.ttf</string>
+		<string>NotoSansJP-ExtraBold.ttf</string>
+		<string>NotoSansJP-ExtraLight.ttf</string>
+		<string>NotoSansJP-Light.ttf</string>
+		<string>NotoSansJP-Medium.ttf</string>
+		<string>NotoSansJP-Regular.ttf</string>
+		<string>NotoSansJP-SemiBold.ttf</string>
+		<string>NotoSansJP-Thin.ttf</string>
+		<string></string>
+	</array>
 </dict>
 </plist>

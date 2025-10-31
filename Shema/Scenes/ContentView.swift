@@ -10,17 +10,40 @@ import SwiftData
 
 struct ContentView: View {
     @EnvironmentObject var viewModel: BibleLockViewModel
+    @State private var path = NavigationPath()
     
     var body: some View {
         Group {
             if !viewModel.hasCompletedOnboarding {
-                OnboardingView()
+                NavigationStack (path: $path){
+                    WelcomeView(path: $path)
+                        .navigationDestination(for: AppDestination.self) { destination in
+                            destinationView(for: destination)
+                        }
+                }
+               
             } else {
                 TabBarView()
             }
         }
     }
 
+    
+    @ViewBuilder
+    private func destinationView (for destination: AppDestination) -> some View {
+        switch destination {
+        case .notifications:
+            NotificationPermissionView(path: $path)
+        case .screenTime:
+            ScreenTimePermissionView(path: $path)
+        case .welcome:
+            WelcomeView(path: $path)
+        case .selectApps:
+            SelectAppsView(path: $path)
+        case .selectBibleVerse:
+            SelectAppsView(path: $path)
+        }
+    }
 }
 
 #Preview {

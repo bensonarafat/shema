@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+
+enum AppDestination: Hashable {
+    case welcome
+    case notifications
+    case screenTime
+    case selectApps
+    case selectBibleVerse
+}

@@ -88,13 +88,15 @@ struct OnboardingView: View {
                 .foregroundStyle(.blue)
             
             Text("Welcome to Shema")
-                .font(.largeTitle)
+                .font(.fontAntonRegular(size: 40))
                 .fontWeight(.bold)
+                
             
             Text("Read the Bible daily and stay focused by limitting app distractions")
                 .multilineTextAlignment(.center)
                 .foregroundColor(.secondary)
                 .padding(.horizontal)
+                .font(.fontNotoSansRegular(size: 15))
         }
     }
     
@@ -225,6 +227,7 @@ struct OnboardingView: View {
 }
 
 #Preview {
-    OnboardingView()
+    let vm = BibleLockViewModel()
+    OnboardingView().environmentObject(vm)
 }
 
