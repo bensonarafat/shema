@@ -9,7 +9,7 @@ import SwiftUI
 import FamilyControls
 
 struct SettingsView: View {
-    
+
     @EnvironmentObject var viewModel: BibleLockViewModel
     @State var selection = FamilyActivitySelection()
     @Environment(\.dismiss) var dismiss

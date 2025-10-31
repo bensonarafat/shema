@@ -14,4 +14,9 @@ enum AppDestination: Hashable {
     case screenTime
     case selectApps
     case selectBibleVerse
+    case home
+    case bible
+    case settings
+    case bookmarks
+    case tabs
 }

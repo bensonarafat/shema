@@ -13,17 +13,16 @@ struct ContentView: View {
     @State private var path = NavigationPath()
     
     var body: some View {
-        Group {
-            if !viewModel.hasCompletedOnboarding {
-                NavigationStack (path: $path){
+        NavigationStack (path: $path){
+            Group {
+                if !viewModel.hasCompletedOnboarding {
                     WelcomeView(path: $path)
-                        .navigationDestination(for: AppDestination.self) { destination in
-                            destinationView(for: destination)
-                        }
+                } else {
+                    TabBarView(path: $path)
                 }
-               
-            } else {
-                TabBarView()
+            }
+            .navigationDestination(for: AppDestination.self) { destination in
+                destinationView(for: destination)
             }
         }
     }
@@ -42,6 +41,16 @@ struct ContentView: View {
             SelectAppsView(path: $path)
         case .selectBibleVerse:
             SelectAppsView(path: $path)
+        case .bible:
+            BibleReaderView()
+        case .bookmarks:
+            BookmarkView()
+        case .home:
+            HomeView()
+        case .settings:
+            SettingsView()
+        case .tabs:
+            TabBarView(path: $path)
         }
     }
 }

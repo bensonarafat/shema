@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TabBarView: View {
     @State private var selected = 0
+    @Binding var path: NavigationPath
     
     var body: some View {
         TabView (selection: $selected) {
@@ -30,9 +31,10 @@ struct TabBarView: View {
                     Label("Settings", systemImage: "gearshape")
                 }.tag(3)
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
 #Preview {
-    TabBarView()
+    TabBarView(path: .constant(NavigationPath()))
 }

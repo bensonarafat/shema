@@ -9,7 +9,6 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var viewModel: BibleLockViewModel
-    //    @State private var showingSettings = false
     
     var body: some View {
         ZStack (alignment: .bottom) {
@@ -21,10 +20,12 @@ struct HomeView: View {
                     HStack{
                         Image(systemName: "sun.max")
                             .font(.system(size: 14, weight: .bold))
-                        Text("GOOD MORNING, BENSON")
+                        Text("GOOD MORNING")
                             .font(.system(size: 14, weight: .bold))
                     }.padding(.horizontal)
                     
+                    // Daily Verses
+                    DailyVerse()
                     // Bible Verses by Theme
                     BibleVersesByTheme()
                     
@@ -34,8 +35,6 @@ struct HomeView: View {
                 }
             }
             
-            // Fixed Timer Control at Bottom
-            TimerControl()
             
         }
     }
@@ -46,6 +45,63 @@ struct HomeView: View {
 #Preview {
     let vm = BibleLockViewModel()
     HomeView().environmentObject(vm)
+}
+
+struct DailyVerse: View {
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("Daily Referesh")
+            .padding(.bottom, 16)
+            
+            VStack (alignment: .leading, spacing: 16)  {
+                HStack {
+                    Image(systemName: "book")
+                    Text("Passage")
+                    
+                    Spacer()
+                    
+                    Image(systemName: "checkmark.circle.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30)
+                        .foregroundColor(.blue)
+                        
+                }
+                Text("Romans 12:3-6")
+                
+                HStack {
+                    Button  {
+                        
+                    }
+                    label: {
+                        Text("Listen")
+                            .foregroundColor(.black)
+                            .frame(maxWidth: .infinity)
+                    }
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(20)
+                    
+                    Button  {
+                        
+                    }
+                    label: {
+                        Text("Read")
+                            .foregroundColor(.black)
+                            .frame(maxWidth: .infinity)
+                    } .padding()
+                        .background(Color.white)
+                        .cornerRadius(20)
+                }
+                
+            }
+            .padding()
+            .background(Color(hex: "1c1c1e"))
+            .cornerRadius(16)
+           
+        }
+        .padding()
+    }
 }
 
 
@@ -116,15 +172,7 @@ struct FocusTimerCard: View {
     var body: some View {
         ZStack (alignment: .leading) {
             RoundedRectangle(cornerRadius: 24)
-                .fill(
-                    LinearGradient(
-                        colors: backgroundImage == "sunset"
-                        ?
-                        [Color.orange.opacity(0.6), Color.orange.opacity(0.3)] :
-                                                  [Color.blue.opacity(0.6), Color.purple.opacity(0.4)],
-                        startPoint: .topLeading, endPoint: .bottomTrailing
-                    )
-                )
+                .fill(Color(hex: "1c1c1e"))
             VStack (alignment: .leading, spacing: 8) {
                 HStack (spacing: 8) {
                     Text(emoji)
@@ -161,7 +209,7 @@ struct HomeTopHeader : View {
                 .foregroundColor(colorScheme == .dark ? .white : .black)
             Spacer()
             
-            HStack (spacing: 12) {
+            HStack (spacing: 8) {
                 HStack(spacing: 4) {
                     Text("🔥")
                     Text("9")
@@ -169,49 +217,28 @@ struct HomeTopHeader : View {
                         .foregroundColor( colorScheme == .dark ? .white : .black)
                 }
                 
-                HStack (spacing: 4) {
-                    Image(systemName: "bolt.fill")
-                        .foregroundColor(.green)
-                    Text("Get PRO")
-                        .foregroundColor(.white)
-                        .font(.system(size: 14, weight: .semibold))
+                HStack {
+                    
+                  
+                    Image(systemName: "circle.fill")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(.red)
+                    
+                    Text("STOP")
+                        .font(.fontNotoSansBold(size: 15))
+                    
+
                 }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .background(
-                    LinearGradient(
-                        gradient: Gradient(colors: [
-                            colorScheme == .dark ?
-                            .black.opacity(0.8)
-                            : .green.opacity(0.2)
-                            ,
-                            colorScheme == .dark ?
-                                .blue.opacity(0.5)
-                            :    .blue.opacity(0.8)
-                        ] ),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .cornerRadius(10)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.red.opacity(0.5), lineWidth: 1)
+
                 )
-                .cornerRadius(20)
-                
-                Image(systemName: "square.and.arrow.up")
-                    .foregroundStyle(
-                        LinearGradient(
-                            gradient: Gradient(colors: [
-                                colorScheme == .dark ?
-                                .white.opacity(0.8)
-                                : .black.opacity(0.9)
-                                ,
-                                colorScheme == .dark ?
-                                    .blue.opacity(0.9)
-                                :    .blue.opacity(0.8)
-                            ] ),
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .font(.system(size: 25))
+                                
             }
             
         }

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct BookmarkView: View {
+  
     let verses = ["Card 1", "Card 2", "Card 3", "Card 4"]
     var body: some View {
         NavigationView {

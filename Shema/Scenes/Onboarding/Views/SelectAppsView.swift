@@ -7,12 +7,16 @@
 
 import SwiftUI
 import FamilyControls
+import ManagedSettings
 
 struct SelectAppsView: View {
     @Binding var path: NavigationPath
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     @EnvironmentObject var viewModel: BibleLockViewModel
     @State var selection = FamilyActivitySelection()
+    @State private var blockedApps: Set<ApplicationToken> = []
+    @State private var blockedCategories: Set<ActivityCategoryToken> = []
+    @State private var isAppCatSelected : Bool = false
     
     var body: some View {
         VStack {
@@ -31,8 +35,28 @@ struct SelectAppsView: View {
             
             Spacer()
             
-            
-            if viewModel.appBlockingService.blockedApps.isEmpty || viewModel.appBlockingService.blockedCategories.isEmpty {
+            if isAppCatSelected {
+                HStack {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundColor(.green)
+                    if blockedApps.isEmpty && blockedCategories.isEmpty {
+                        Text("\(blockedApps.count) apps selected and \(blockedCategories.count) categories selected")
+                            .foregroundColor(.green)
+                    } else if (blockedApps.count != 0 ) {
+                        Text("\(blockedApps.count) apps selected")
+                            .foregroundColor(.green)
+                    } else if (blockedCategories.count != 0) {
+                        Text("\(blockedCategories.count) categories selected")
+                            .foregroundColor(.green)
+                    }
+                    
+                }
+                .padding()
+                .background(Color.green.opacity(0.1))
+                .cornerRadius(10)
+                
+            }
+            if !isAppCatSelected {
                 _appPickerButton()
             }else {
                 _continueButton()
@@ -45,8 +69,11 @@ struct SelectAppsView: View {
     
     func _continueButton() -> some View {
         Button {
-            if !viewModel.appBlockingService.blockedApps.isEmpty || !viewModel.appBlockingService.blockedCategories.isEmpty {
-//                path.append(AppDestination.)
+            if isAppCatSelected {
+                viewModel.completeOnboarding()
+                path.removeLast(path.count)
+                path.append(AppDestination.tabs)
+                
             }
         } label : {
             HStack(spacing: 20) {
@@ -101,6 +128,9 @@ struct SelectAppsView: View {
         }.familyActivityPicker(isPresented: $viewModel.showingAppPicker, selection: $selection
         ).onChange(of: selection) { oldValue, newValue in
             viewModel.appBlockingService.saveBlockedApps(newValue)
+            blockedApps = viewModel.appBlockingService.blockedApps
+            blockedCategories = viewModel.appBlockingService.blockedCategories
+            isAppCatSelected = !blockedApps.isEmpty || !blockedCategories.isEmpty
         }
 
     }
