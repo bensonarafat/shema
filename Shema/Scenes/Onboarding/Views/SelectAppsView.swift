@@ -31,39 +31,78 @@ struct SelectAppsView: View {
             
             Spacer()
             
-            Button {
-                
-                guard viewModel.appBlockingService.isAuthorized else {
-                    print("Permission is required to access app list")
-                    return
-                }
-                viewModel.showingAppPicker = true
-                
-            } label: {
-                HStack (spacing: 20) {
-                    Image(systemName: "plus")
-                        .foregroundColor(
-                            colorScheme == .dark ? .black :  .white)
-                        .font(.system(size: 24))
-                    
-                    Text("Select Apps to limit")
-                        .font(.fontNotoSansMedium(size: 20))
-                       
-
-                }
-                .foregroundColor(colorScheme == .dark ? .black : .white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 25)
-                .background(colorScheme == .dark ? .white : .black)
-                .cornerRadius(20)
-                .padding(.horizontal, 25)
-            }.familyActivityPicker(isPresented: $viewModel.showingAppPicker, selection: $selection
-            ).onChange(of: selection) { oldValue, newValue in
-                viewModel.appBlockingService.saveBlockedApps(newValue)
+            
+            if viewModel.appBlockingService.blockedApps.isEmpty || viewModel.appBlockingService.blockedCategories.isEmpty {
+                _appPickerButton()
+            }else {
+                _continueButton()
             }
 
         }
         .navigationBarBackButtonHidden(true)
+    }
+    
+    
+    func _continueButton() -> some View {
+        Button {
+            if !viewModel.appBlockingService.blockedApps.isEmpty || !viewModel.appBlockingService.blockedCategories.isEmpty {
+//                path.append(AppDestination.)
+            }
+        } label : {
+            HStack(spacing: 20) {
+                
+                Text("Continue")
+                    .font(.fontNotoSansMedium(size: 20))
+                   
+                Image(systemName: "arrow.right.circle.fill")
+                    .foregroundColor(
+                        colorScheme == .dark ? .black :  .white)
+                    .font(.system(size: 24))
+            }
+            .foregroundColor(colorScheme == .dark ? .black : .white)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 25)
+            .background(colorScheme == .dark ? .white : .black)
+            .cornerRadius(20)
+            .padding(.horizontal, 25)
+        }
+    }
+    
+    func _appPickerButton () -> some View {
+        Button {
+            
+            guard viewModel.appBlockingService.isAuthorized else {
+                print("Permission is required to access app list")
+                return
+            }
+            viewModel.showingAppPicker = true
+            
+        } label: {
+           
+            HStack (spacing: 20) {
+                
+                Image(systemName: "plus")
+                    .foregroundColor(
+                        colorScheme == .dark ? .black :  .white)
+                    .font(.system(size: 24))
+                
+                Text("Select Apps to limit")
+                    .font(.fontNotoSansMedium(size: 20))
+                   
+
+            }
+            .foregroundColor(colorScheme == .dark ? .black : .white)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 25)
+            .background(colorScheme == .dark ? .white : .black)
+            .cornerRadius(20)
+            .padding(.horizontal, 25)
+            
+        }.familyActivityPicker(isPresented: $viewModel.showingAppPicker, selection: $selection
+        ).onChange(of: selection) { oldValue, newValue in
+            viewModel.appBlockingService.saveBlockedApps(newValue)
+        }
+
     }
 }
 
