@@ -9,7 +9,6 @@ import SwiftUI
 
 struct TabBarView: View {
     @State private var selected = 0
-    @Binding var path: NavigationPath
     
     var body: some View {
         TabView (selection: $selected) {
@@ -36,5 +35,6 @@ struct TabBarView: View {
 }
 
 #Preview {
-    TabBarView(path: .constant(NavigationPath()))
+    var nav = NavigationManager()
+    TabBarView().environmentObject(nav);
 }

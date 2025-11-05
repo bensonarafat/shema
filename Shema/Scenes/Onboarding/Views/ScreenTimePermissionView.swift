@@ -14,7 +14,7 @@ struct ScreenTimePermissionView: View {
     @State private var showingError = false
     @State private var errorMessage = ""
     
-    @Binding var path: NavigationPath
+    @EnvironmentObject var nav: NavigationManager
     
     var body: some View {
             VStack {
@@ -43,7 +43,7 @@ struct ScreenTimePermissionView: View {
                         do {
                             try await viewModel.appBlockingService.requestAuthorization()
                             if viewModel.appBlockingService.isAuthorized {
-                                path.append(AppDestination.selectApps)
+                                nav.push(AppDestination.selectApps)
                             }else {
                                 errorMessage = "Screen Time permission denied"
                                 showingError = true
@@ -84,5 +84,7 @@ struct ScreenTimePermissionView: View {
 }
 
 #Preview {
-    ScreenTimePermissionView(path: .constant(NavigationPath()))
+    var nav = NavigationManager();
+    ScreenTimePermissionView()
+        .environmentObject(nav);
 }

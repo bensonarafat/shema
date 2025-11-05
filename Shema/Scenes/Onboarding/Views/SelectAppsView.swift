@@ -10,7 +10,7 @@ import FamilyControls
 import ManagedSettings
 
 struct SelectAppsView: View {
-    @Binding var path: NavigationPath
+    @EnvironmentObject var nav: NavigationManager
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     @EnvironmentObject var viewModel: BibleLockViewModel
     @State var selection = FamilyActivitySelection()
@@ -71,8 +71,8 @@ struct SelectAppsView: View {
         Button {
             if isAppCatSelected {
                 viewModel.completeOnboarding()
-                path.removeLast(path.count)
-                path.append(AppDestination.tabs)
+                nav.popToRoot()
+                nav.push(AppDestination.tabs)
                 
             }
         } label : {
@@ -138,6 +138,8 @@ struct SelectAppsView: View {
 
 #Preview {
     let vm = BibleLockViewModel()
-    SelectAppsView(path: .constant(NavigationPath()))
+    let nav = NavigationManager()
+    SelectAppsView()
         .environmentObject(vm)
+        .environmentObject(nav);
 }

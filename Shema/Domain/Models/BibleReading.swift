@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct BibleReading: Identifiable, Codable {
+struct BibleReading: Identifiable, Codable, Hashable  {
     let id: UUID
     let book: String
     let chapter: Int
@@ -33,4 +33,17 @@ struct DailyReadingPlan: Codable {
     var totalDays: Int
     var readings: [BibleReading]
     var startDate: Date 
+}
+
+
+struct BibleVerse: Codable, Identifiable, Hashable {
+    let id: UUID
+    let reference: String
+    let text: String
+    
+    init(id: UUID = UUID(), reference: String, text: String) {
+        self.id = id
+        self.reference = reference
+        self.text = text
+    }
 }

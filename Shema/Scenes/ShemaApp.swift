@@ -12,6 +12,7 @@ import BackgroundTasks
 @main
 struct ShemaApp: App {
     @StateObject private var viewModel = BibleLockViewModel()
+    @StateObject private var navigationManager = NavigationManager()
     
     init () {
         registerBackgroundTasks()
@@ -21,6 +22,7 @@ struct ShemaApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(viewModel)
+                .environmentObject(navigationManager)
                 .onAppear {
                     scheduleAppRefresh()
                 }

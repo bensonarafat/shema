@@ -12,7 +12,7 @@ struct NotificationPermissionView: View {
     
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     @State private var didGrantNotifications = false
-    @Binding var path: NavigationPath
+    @EnvironmentObject var nav: NavigationManager
     
     var body: some View {
         VStack {
@@ -47,7 +47,7 @@ struct NotificationPermissionView: View {
                     
                     didGrantNotifications = granted
                     if granted {
-                        path.append(AppDestination.screenTime)
+                        nav.push(AppDestination.screenTime)
                     } else {
                         // Handle denial (show alert or proceed accordingly)
                     }
@@ -70,5 +70,7 @@ struct NotificationPermissionView: View {
 }
 
 #Preview {
-    NotificationPermissionView(path: .constant(NavigationPath()))
+    var nav = NavigationManager()
+    NotificationPermissionView()
+        .environmentObject(nav);
 }

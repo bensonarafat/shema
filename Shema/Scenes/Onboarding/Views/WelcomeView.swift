@@ -9,7 +9,7 @@ import SwiftUI
 
 struct WelcomeView: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
-    @Binding var path : NavigationPath
+    @EnvironmentObject var nav : NavigationManager
     
     var body: some View {
             
@@ -19,7 +19,7 @@ struct WelcomeView: View {
         Text("Welcome to Shema")
         
             Button {
-                path.append(AppDestination.notifications)
+                nav.push(AppDestination.notifications)
             } label: {
                 HStack {
                     Text("Get Started")
@@ -49,5 +49,6 @@ struct WelcomeView: View {
 }
 
 #Preview {
-    WelcomeView(path: .constant(NavigationPath()))
+    var nav = NavigationManager()
+    WelcomeView().environmentObject(nav);
 }

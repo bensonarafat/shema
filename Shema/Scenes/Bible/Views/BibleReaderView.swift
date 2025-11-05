@@ -242,9 +242,10 @@ struct BibleReaderView: View {
                     }
                 }
         )
-        .background(Color(.systemBackground))
         .foregroundColor(.white)
+        .background(Color(.systemGroupedBackground))
     }
+        
 }
 
   

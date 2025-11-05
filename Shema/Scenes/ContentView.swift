@@ -10,15 +10,15 @@ import SwiftData
 
 struct ContentView: View {
     @EnvironmentObject var viewModel: BibleLockViewModel
-    @State private var path = NavigationPath()
+    @EnvironmentObject var nav: NavigationManager
     
     var body: some View {
-        NavigationStack (path: $path){
+        NavigationStack (path: $nav.path){
             Group {
                 if !viewModel.hasCompletedOnboarding {
-                    WelcomeView(path: $path)
+                    WelcomeView()
                 } else {
-                    TabBarView(path: $path)
+                    TabBarView()
                 }
             }
             .navigationDestination(for: AppDestination.self) { destination in
@@ -32,15 +32,13 @@ struct ContentView: View {
     private func destinationView (for destination: AppDestination) -> some View {
         switch destination {
         case .notifications:
-            NotificationPermissionView(path: $path)
+            NotificationPermissionView()
         case .screenTime:
-            ScreenTimePermissionView(path: $path)
+            ScreenTimePermissionView()
         case .welcome:
-            WelcomeView(path: $path)
+            WelcomeView()
         case .selectApps:
-            SelectAppsView(path: $path)
-        case .selectBibleVerse:
-            SelectAppsView(path: $path)
+            SelectAppsView()
         case .bible:
             BibleReaderView()
         case .bookmarks:
@@ -50,7 +48,13 @@ struct ContentView: View {
         case .settings:
             SettingsView()
         case .tabs:
-            TabBarView(path: $path)
+            TabBarView()
+        case .badges:
+            BadgesView(viewModel: BadgeViewModel())
+        case .themeVerses:
+            ThemeVersesView()
+        case .focus(let focus):
+            FocusView(focus: focus)
         }
     }
 }

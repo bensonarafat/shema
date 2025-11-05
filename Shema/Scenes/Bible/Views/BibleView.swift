@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct BibleView: View {
-    @Binding var path: NavigationPath
+    @EnvironmentObject var path: NavigationManager
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
 #Preview {
-    BibleView(path: .constant(NavigationPath()))
+    let nav = NavigationManager()
+    BibleView()
+        .environmentObject(nav)
 }
