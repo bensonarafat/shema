@@ -22,3 +22,18 @@ enum AppDestination: Hashable {
     case themeVerses
     case focus(Focus)
 }
+
+
+enum BibleAPIError: Error, LocalizedError {
+    case invalidURL, networkError(Error), decodingError(Error), noData, fileError(Error)
+    
+    var errorDescription: String? {
+        switch self {
+        case .invalidURL: return "Invalid URL"
+        case .networkError(let e): return "Network error: \(e.localizedDescription)"
+        case .decodingError(let e): return "Decoding error: \(e.localizedDescription)"
+        case .noData: return "No data received"
+        case .fileError(let e): return "File error: \(e.localizedDescription)"
+        }
+    }
+}
