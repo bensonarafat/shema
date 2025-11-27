@@ -17,9 +17,9 @@ class BibleViewModel: ObservableObject {
     @Published var selectedBook: Book?
     @Published var selectedChapter: Int = 1
     @Published var isLoading = false
-    @Published var downloading = false
     @Published var error: String?
     @Published var downloadedTranslations: Set<String> = []
+    @Published var downloadingTranslations: Set<String> = []
     
     private let apiService: BibleServiceProtocol
     private let storageService = BibleStorageService.shared
@@ -182,11 +182,11 @@ class BibleViewModel: ObservableObject {
     }
     
     func downloadTranslation(_ translation: String) {
-        downloading = true
+        downloadingTranslations.insert(translation)
         apiService.downloadTransalation(translation)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
-                self?.downloading = false
+                self?.downloadingTranslations.remove(translation)
                 if  case .failure (let err) = completion {
                     self?.error = err.localizedDescription
                 }
@@ -202,6 +202,10 @@ class BibleViewModel: ObservableObject {
         } else {
             return false;
         }
+    }
+    
+    func isDownloading(_ translation: String) -> Bool {
+        return downloadingTranslations.contains(translation)
     }
     
     func deleteTranslation(_ translation: String) {

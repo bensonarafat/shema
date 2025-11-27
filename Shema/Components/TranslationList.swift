@@ -27,31 +27,52 @@ struct TranslationList: View {
             
             VStack (alignment: .leading) {
                 Text(translation.fullName)
-                    .font(.fontNotoSansBlack(size: 14))
+                    .font(.fontNotoSansBlack(size: 12))
                 Text("Updated: 10th Aug, 2025")
-                    .font(.fontNotoSansLight(size: 12))
+                    .font(.fontNotoSansLight(size: 10))
                     
             }
+            .padding(.trailing, 16)
+            .padding(.leading, 6)
             Spacer()
             
-            Button {
-                if !bibleViewModel.isDownloaded(translation.shortName) {
-                    bibleViewModel.downloadTranslation(translation.shortName)
-                }
-            } label: {
-                if bibleViewModel.downloading {
+            HStack (spacing : 16 ) {
+                if bibleViewModel.isDownloading(translation.shortName) {
                     ProgressView().foregroundColor(.primary)
                 } else {
-                    Image(systemName:
-                            bibleViewModel.isDownloaded(translation.shortName) ?
-                          "arrow.down.circle.fill" : "arrow.down.circle.dotted"  )
+                    if !bibleViewModel.isDownloaded(translation.shortName) {
+                        Image(systemName: "cloud")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 16, height: 16)
+                    }
+                    
+                }
+                Menu {
+                    
+                    if !bibleViewModel.isDownloaded(translation.shortName) {
+                        Button {
+                            bibleViewModel.downloadTranslation(translation.shortName)
+                        } label : {
+                            Label("Download", systemImage: "arrow.down.circle")
+                        }
+                    } else {
+                        Button {
+                            bibleViewModel.deleteTranslation(translation.shortName)
+                        } label: {
+                            Label ("Remove", systemImage: "trash")
+                                .foregroundColor(.red)
+                        }
+                    }
+                } label : {
+                    Image(systemName: "ellipsis" )
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 30, height: 30)
+                        .frame(width: 16, height: 16)
                 }
-                
-                
+
             }
+            
         
                 
         }
@@ -60,5 +81,11 @@ struct TranslationList: View {
             translation.shortName == bibleViewModel.selectedTranslation ? Color.primary.opacity(0.1) : Color.clear
         ).cornerRadius(8)
     }
+}
+
+#Preview {
+    let vm = BibleViewModel()
+    TranslationList(translation: Translation(shortName: "KJV", fullName: "King James Version 1769 with Apocrypha and Strong's Numbers", updated: Date(), dir: "KJV"))
+        .environmentObject(vm)
 }
 

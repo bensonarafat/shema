@@ -10,6 +10,7 @@ import SwiftUI
 struct BibleTranslationSheet: View {
     @EnvironmentObject var bibleViewModel: BibleViewModel
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         VStack {
@@ -29,9 +30,8 @@ struct BibleTranslationSheet: View {
                                 TranslationList(translation: translation)
                                     .onTapGesture {
                                         bibleViewModel.changeTranslation(translation.shortName)
+                                        dismiss()
                                     }
-                                
-                                
                             }
                         }
                     }

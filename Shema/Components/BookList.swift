@@ -43,7 +43,7 @@ struct BookList: View {
                     ForEach(Array(1...book.chapters), id: \.self) { i in
                         
                         Button {
-//                            bibleViewModel.navigateToReference("\(book.bookid)");
+                            bibleViewModel.navigateToReference("\(book.name) chapter \(i)");
                             dismiss()
                         } label : {
                             RoundedRectangle(cornerRadius: 8)

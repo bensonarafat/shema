@@ -10,6 +10,10 @@ import SwiftUI
 struct BibleScrollAndControl: View {
     @EnvironmentObject var bibleViewModel: BibleViewModel
     @Environment(\.colorScheme) var colorScheme
+    
+    @State private var showSheet: Bool = false
+    @State private var selectedVerses: [Verse] = []
+    
     var body: some View {
         ZStack (alignment: .bottom) {
             ScrollView {
@@ -22,11 +26,42 @@ struct BibleScrollAndControl: View {
                         .padding(.bottom, 8)
                     
                     ForEach(bibleViewModel.verses) { verse in
-                        VerseTextView(verse: verse)
+                        VerseTextView(verse: verse, isSelected: Binding(
+                            get: { selectedVerses.contains(where: { $0.pk == verse.pk }) },
+                            set: { newValue in
+                                if newValue {
+                                    selectedVerses.append(verse)
+                                    showSheet = true
+                                } else {
+                                    selectedVerses.removeAll { $0.pk == verse.pk }
+                                    if selectedVerses.isEmpty {
+                                        showSheet = false
+                                    }
+                                }
+                            }
+                        ))
                     }
                 }
                 .padding()
             }
+            .sheet(isPresented: $showSheet) {
+                SelectedVerseSheet()
+                    .presentationDetents([.height(100)])
+                    .presentationDragIndicator(.visible)
+                    .presentationBackgroundInteraction(.enabled)
+                    .interactiveDismissDisabled()
+                    
+            }
+            
+//            .overlay(alignment: .bottom) {
+//                if showSheet {
+//                    SelectedVerseSheet()
+//                        .frame(height: 100)
+//                        .transition(.move(edge: .bottom))
+//                }
+//            }
+//            .animation(.easeInOut, value: showSheet)
+            
             
             HStack {
                 Button {
@@ -72,6 +107,7 @@ struct BibleScrollAndControl: View {
             }
             .padding(.horizontal)
             .padding(.bottom, 10)
+            
         }
     }
     
