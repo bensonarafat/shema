@@ -24,18 +24,18 @@ struct FocusTimerCard: View {
                     Text(focus.emoji)
                         .font(.system(size: 24))
                     Text(focus.name)
-                        .font(.fontNotoSansSemiBold(size: 14))
+                        .font(.fontNunitoRegular(size: 14))
                 }
                 HStack (spacing: 4) {
                     Image(systemName: "clock")
                     Text("\(focus.duration)")
-                        .font(.fontAntonRegular(size: 12))
+                        .font(.fontNunitoRegular(size: 12))
                 }
                 
                 HStack(spacing: 8) {
                     Image(systemName: "play.fill")
                     Text("Start")
-                        .font(.fontNotoSansSemiBold(size: 12))
+                        .font(.fontNunitoRegular(size: 12))
                 }
             
             }.padding(20)

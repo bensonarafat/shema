@@ -14,7 +14,7 @@ struct FocusView: View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: 16) {
                 Text(focus.emoji)
-                    .font(.fontAntonRegular(size: 150))
+                    .font(.fontNunitoRegular(size: 150))
                     .frame(width: 250, height: 250)
                     .shadow(color: Color(.black), radius: 50)
                     .cornerRadius(16)
@@ -23,9 +23,9 @@ struct FocusView: View {
                             .stroke(Color.gray.opacity(0.2), lineWidth: 1)
                     )
                 Text(focus.name)
-                    .font(.fontNotoSansSemiBold(size: 18))
+                    .font(.fontNunitoRegular(size: 18))
                 Text(focus.description)
-                    .font(.fontNotoSansRegular(size: 16))
+                    .font(.fontNunitoRegular(size: 16))
             }
             .padding()
             
@@ -39,7 +39,7 @@ struct FocusView: View {
                             )
                         HStack {
                             Text(verse.reference)
-                                .font(.fontNotoSansSemiBold(size: 16))
+                                .font(.fontNunitoRegular(size: 16))
                         Spacer()
                             Image(systemName: "chevron.forward")
                                 .foregroundColor(

@@ -32,4 +32,17 @@ extension Color {
             opacity: Double(a) / 255
         )
     }
+    
+    
+    static let theme = ColorTheme()
+}
+
+struct ColorTheme {
+    let primaryColor = Color("PrimaryColorFeatherGreen")
+    let secondaryColor = Color("SecondaryColorMaskGreen")
+    let backgroundColor = Color("BackgroundColorEel")
+    let surfaceColor = Color("SurfaceColorWolf")
+    let disabledTextColor = Color("DisabledTextColorSwan")
+    let primaryTextColor = Color("PrimaryTextColorSnow")
+    let secondaryTextColor = Color("SecondaryTextColorPolar")
 }

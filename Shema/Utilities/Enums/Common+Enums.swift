@@ -9,10 +9,12 @@ import Foundation
 
 
 enum AppDestination: Hashable {
+    
+    // Onboarding
     case welcome
-    case notifications
-    case screenTime
-    case selectApps
+    case onboarding
+    
+    // Home
     case home
     case bible
     case settings
@@ -21,6 +23,10 @@ enum AppDestination: Hashable {
     case badges
     case themeVerses
     case focus(Focus)
+    
+    // Auth
+    case login
+    case register
 }
 
 

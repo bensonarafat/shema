@@ -17,7 +17,7 @@ struct BadgeGridView: View {
         VStack {
             HStack {
                 Text("Your Badge")
-                    .font(.fontNotoSansSemiBold(size: 14))
+                    .font(.fontNunitoRegular(size: 14))
                 Spacer()
                 Button (action : {
                     nav.push(AppDestination.badges)

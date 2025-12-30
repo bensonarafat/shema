@@ -8,42 +8,44 @@
 import SwiftUI
 
 struct WelcomeView: View {
-    @Environment(\.colorScheme) var colorScheme: ColorScheme
     @EnvironmentObject var nav : NavigationManager
     
     var body: some View {
             
     VStack () {
+        
         Spacer()
         
-        Text("Welcome to Shema")
-        
-            Button {
-                nav.push(AppDestination.notifications)
-            } label: {
-                HStack {
-                    Text("Get Started")
-                        .font(.fontNotoSansBlack(size: 20))
-                        .foregroundColor(
-                            colorScheme == .dark ? .black :
-                            .white)
-                    Spacer()
-                    Image(systemName: "chevron.forward")
-                    
-                }
-                .padding(.vertical, 25)
-                .padding(.horizontal, 25)
-                .foregroundColor(
-                    colorScheme == .dark ? .black  :
-                        .white )
-                .background(Color(
-                    colorScheme == .dark ? .white :
-                    .black))
-                .cornerRadius(20)
-                .padding()
-            }
-        
+        VStack (spacing: 2)  {
+            Text("Shema")
+                .font(.fontNunitoExtraBold(size: 45))
+                .foregroundColor(Color.theme.primaryColor)
+                .fontWeight(.black)
+            Text("Hear God First")
+                .font(.fontNunitoBold(size: 16))
+                .foregroundColor(Color.theme.primaryTextColor)
+                .fontWeight(.heavy)
         }
+
+        
+        Spacer()
+        
+        VStack (spacing: 16) {
+           
+            PrimaryButton(title: "Get Started") {
+                nav.push(AppDestination.onboarding)
+            }
+
+            SecondaryButton(title: "I already have an account") {
+                nav.push(AppDestination.login)
+            }
+            
+        }
+        .padding(.horizontal)
+        .padding(.bottom, 50)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.theme.backgroundColor.ignoresSafeArea())
 
     }
 }

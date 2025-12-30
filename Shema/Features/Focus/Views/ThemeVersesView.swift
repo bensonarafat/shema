@@ -25,14 +25,14 @@ struct ThemeVersesView: View {
                             HStack {
                                 Text(focus.emoji)
                                 Text(focus.name)
-                                    .font(.fontNotoSansSemiBold(size: 14))
+                                    .font(.fontNunitoRegular(size: 14))
                             }
                             Spacer()
                             
                             HStack(spacing: 8) {
                                 Image(systemName: "play.fill")
                                 Text("Start")
-                                    .font(.fontNotoSansSemiBold(size: 12))
+                                    .font(.fontNunitoRegular(size: 12))
                             }
                         }.padding(20)
                     }

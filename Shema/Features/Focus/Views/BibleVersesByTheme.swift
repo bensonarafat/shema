@@ -15,7 +15,7 @@ struct BibleVersesByTheme: View {
         VStack {
             HStack {
                 Text("Theme Verses")
-                    .font(.fontNotoSansSemiBold(size: 14))
+                    .font(.fontNunitoRegular(size: 14))
                 Spacer()
                 Button ( action : {
                     nav.push(AppDestination.themeVerses)

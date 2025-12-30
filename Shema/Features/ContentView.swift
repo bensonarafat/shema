@@ -21,6 +21,7 @@ struct ContentView: View {
                     TabBarView()
                 }
             }
+            .background(Color.theme.backgroundColor).ignoresSafeArea()
             .navigationDestination(for: AppDestination.self) { destination in
                 destinationView(for: destination)
             }
@@ -31,14 +32,11 @@ struct ContentView: View {
     @ViewBuilder
     private func destinationView (for destination: AppDestination) -> some View {
         switch destination {
-        case .notifications:
-            NotificationPermissionView()
-        case .screenTime:
-            ScreenTimePermissionView()
+        // onboarding
+        case .onboarding:
+            OnboardingView()
         case .welcome:
             WelcomeView()
-        case .selectApps:
-            SelectAppsView()
         case .bible:
             BibleReaderView()
         case .bookmarks:
@@ -55,11 +53,20 @@ struct ContentView: View {
             ThemeVersesView()
         case .focus(let focus):
             FocusView(focus: focus)
+            
+        // Auth
+        case .login:
+            LoginView()
+        case .register:
+            RegisterView()
         }
     }
 }
 
 #Preview {
-    let vm = BibleViewModel()
-    ContentView().environmentObject(vm)
+    let vm = OnboardingViewModel()
+    let nav = NavigationManager()
+    ContentView()
+        .environmentObject(vm)
+        .environmentObject(nav)
 }

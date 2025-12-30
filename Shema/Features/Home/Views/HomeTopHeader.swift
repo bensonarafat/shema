@@ -34,7 +34,7 @@ struct HomeTopHeader : View {
                         .foregroundColor(.red)
                     
                     Text("STOP")
-                        .font(.fontNotoSansBold(size: 15))
+                        .font(.fontNunitoRegular(size: 15))
                     
 
                 }

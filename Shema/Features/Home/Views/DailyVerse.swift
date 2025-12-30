@@ -13,14 +13,14 @@ struct DailyVerse: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text("Daily Referesh")
-                .font(.fontNotoSansSemiBold(size: 14))
+                .font(.fontNunitoRegular(size: 14))
             .padding(.bottom, 16)
             
             VStack (alignment: .leading, spacing: 16)  {
                 HStack {
                     Image(systemName: "book")
                     Text("Passage")
-                        .font(.fontNotoSansSemiBold(size: 14))
+                        .font(.fontNunitoRegular(size: 14))
                     
                     Spacer()
                     
@@ -32,7 +32,7 @@ struct DailyVerse: View {
                         
                 }
                 Text("Romans 12:3-6")
-                    .font(.fontNotoSansBlack(size: 16))
+                    .font(.fontNunitoRegular(size: 16))
                 
                 HStack {
                     Button  {
@@ -40,7 +40,7 @@ struct DailyVerse: View {
                     }
                     label: {
                         Text("Listen")
-                            .font(.fontNotoSansSemiBold(size: 14))
+                            .font(.fontNunitoRegular(size: 14))
                             .foregroundColor(
                                 colorScheme == .dark ?
                                     .black : .white)
@@ -56,7 +56,7 @@ struct DailyVerse: View {
                     }
                     label: {
                         Text("Read")
-                            .font(.fontNotoSansSemiBold(size: 14))
+                            .font(.fontNunitoRegular(size: 14))
                             .foregroundColor(
                                 colorScheme == .dark ?
                                     .black : .white
