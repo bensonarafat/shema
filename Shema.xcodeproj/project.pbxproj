@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		520001372F0274190080CE33 /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 520001362F0274190080CE33 /* RiveRuntime */; };
+		520002532F053A7C0080CE33 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 520002522F053A7C0080CE33 /* GoogleSignIn */; };
+		520002552F053A7C0080CE33 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 520002542F053A7C0080CE33 /* GoogleSignInSwift */; };
 		5200FFBE2F01DCE50080CE33 /* FirebaseAI in Frameworks */ = {isa = PBXBuildFile; productRef = 5200FFBD2F01DCE50080CE33 /* FirebaseAI */; };
 		5200FFC02F01DCE50080CE33 /* FirebaseAILogic in Frameworks */ = {isa = PBXBuildFile; productRef = 5200FFBF2F01DCE50080CE33 /* FirebaseAILogic */; };
 		5200FFC22F01DCE50080CE33 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5200FFC12F01DCE50080CE33 /* FirebaseAnalytics */; };
@@ -93,6 +95,7 @@
 				5200FFC02F01DCE50080CE33 /* FirebaseAILogic in Frameworks */,
 				5200FFBE2F01DCE50080CE33 /* FirebaseAI in Frameworks */,
 				5200FFDE2F01DCE50080CE33 /* FirebaseMessaging in Frameworks */,
+				520002552F053A7C0080CE33 /* GoogleSignInSwift in Frameworks */,
 				520001372F0274190080CE33 /* RiveRuntime in Frameworks */,
 				5200FFCA2F01DCE50080CE33 /* FirebaseAppDistribution-Beta in Frameworks */,
 				5200FFD62F01DCE50080CE33 /* FirebaseFirestore in Frameworks */,
@@ -107,6 +110,7 @@
 				5200FFE62F01DCE50080CE33 /* FirebaseStorageCombine-Community in Frameworks */,
 				5200FFD82F01DCE50080CE33 /* FirebaseFirestoreCombine-Community in Frameworks */,
 				5200FFE22F01DCE50080CE33 /* FirebaseRemoteConfig in Frameworks */,
+				520002532F053A7C0080CE33 /* GoogleSignIn in Frameworks */,
 				5200FFC42F01DCE50080CE33 /* FirebaseAnalyticsCore in Frameworks */,
 				5200FFE42F01DCE50080CE33 /* FirebaseStorage in Frameworks */,
 				5200FFD22F01DCE50080CE33 /* FirebaseCrashlytics in Frameworks */,
@@ -194,6 +198,8 @@
 				5200FFE32F01DCE50080CE33 /* FirebaseStorage */,
 				5200FFE52F01DCE50080CE33 /* FirebaseStorageCombine-Community */,
 				520001362F0274190080CE33 /* RiveRuntime */,
+				520002522F053A7C0080CE33 /* GoogleSignIn */,
+				520002542F053A7C0080CE33 /* GoogleSignInSwift */,
 			);
 			productName = Shema;
 			productReference = 52A677CC2E95BAA700A60ABB /* Shema.app */;
@@ -280,6 +286,7 @@
 			packageReferences = (
 				5200FFBC2F01DCE50080CE33 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				520001352F0274190080CE33 /* XCRemoteSwiftPackageReference "rive-ios" */,
+				520002512F053A7C0080CE33 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 52A677CD2E95BAA700A60ABB /* Products */;
@@ -680,6 +687,14 @@
 				minimumVersion = 6.12.3;
 			};
 		};
+		520002512F053A7C0080CE33 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
 		5200FFBC2F01DCE50080CE33 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -695,6 +710,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 520001352F0274190080CE33 /* XCRemoteSwiftPackageReference "rive-ios" */;
 			productName = RiveRuntime;
+		};
+		520002522F053A7C0080CE33 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 520002512F053A7C0080CE33 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		520002542F053A7C0080CE33 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 520002512F053A7C0080CE33 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
 		};
 		5200FFBD2F01DCE50080CE33 /* FirebaseAI */ = {
 			isa = XCSwiftPackageProductDependency;

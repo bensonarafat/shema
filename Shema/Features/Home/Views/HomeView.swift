@@ -12,26 +12,33 @@ struct HomeView: View {
     @StateObject var homeViewModel = HomeViewModel()
     
     var body: some View {
-        VStack (spacing: 16) {
-            HomeTopHeader()
-                .padding(.leading, 8)
-                .padding(.trailing, 8)
-            Divider()
-            ScrollView {
-                VStack(alignment: .leading) {
-                    // Greating
-                    Greating(viewModel: homeViewModel)
-                    // Daily Verses
-                    DailyVerse()
-                    // Bible Verses by Theme
-                    BibleVersesByTheme()
-                    // Badge
-                    BadgeGridView()
+        
+        ZStack {
+            Color.theme.backgroundColor
+                .ignoresSafeArea()
+            
+            VStack (spacing: 16) {
+                HomeTopHeader()
+                    .padding(.leading, 8)
+                    .padding(.trailing, 8)
+                Divider()
+                ScrollView {
+                    VStack(alignment: .leading) {
+                        // Greating
+                        Greating(viewModel: homeViewModel)
+                        // Daily Verses
+                        DailyVerse()
+                        // Bible Verses by Theme
+                        BibleVersesByTheme()
+                        // Badge
+                        BadgeGridView()
+                    }
                 }
+                
             }
-
+            
         }
-        .background(Color(.systemGroupedBackground))
+       
     }
 }
 

@@ -94,11 +94,7 @@ struct OnboardingView: View {
                         }
                     }
                 } else  if (currentPage == 4) {
-                    SelectReadTimePage {
-                        withAnimation {
-                            currentPage += 1
-                        }
-                    }
+                    SelectReadTimePage()
                 }
                 
                 Spacer()

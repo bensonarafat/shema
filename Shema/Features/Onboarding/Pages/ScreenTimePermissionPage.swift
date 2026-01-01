@@ -20,18 +20,7 @@ struct ScreenTimePermissionPage: View {
                 .ignoresSafeArea()
             
             VStack {
-                VStack(spacing: 8) {
-                    Text("Connect Shema to Screen Time, Securely.")
-                        .font(.fontNunitoRegular(size: 25))
-                        .lineSpacing(1.5)
-                    
-                    Text("To analyse your Screen Time on this iPhone Sheme will need your permission.")
-                        .font(.fontNunitoRegular(size: 14))
-                }
-                .foregroundColor(.theme.primaryTextColor)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 16)
-                .padding(.bottom, 40)
+                Spacer()
                 
                 VStack {
                     Image("screen_time")
@@ -47,14 +36,12 @@ struct ScreenTimePermissionPage: View {
                 
                 Spacer()
                 
-                VStack (spacing: 8) {
-                    Text("Yout senstive data is protected by Apple and never leaves your device.")
-                        .font(.fontNunitoRegular(size: 15))
-                    Text("Learn More")
-                        .font(.fontNunitoRegular(size: 16))
-                }
-                .multilineTextAlignment(.center)
-                .padding(.horizontal)
+                Text("Yout senstive data is protected by Apple and never leaves your device. [Learn More](https://www.apple.com/privacy)")
+                    .font(.fontNunitoRegular(size: 14))
+                    .foregroundColor(.theme.secondaryTextColor)
+                    .tint(.theme.secondaryTextColor)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
                 
                 PrimaryButton(title: "give access to app screen time") {
                     grantAccessScreenTime()

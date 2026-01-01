@@ -11,6 +11,8 @@ struct NotificationPermissionPage: View {
     
     var onPressed: () -> Void
     @State private var didGrantNotifications = false
+    @State private var showError: Bool = false
+    @State private var errorMessage: String = ""
     
     var body: some View {
         ZStack {
@@ -19,22 +21,7 @@ struct NotificationPermissionPage: View {
             
             VStack {
                 
-                VStack(spacing: 6) {
-                    Text("Now, let's set our hearts on the Word.")
-                        .font(.fontNunitoRegular(size: 16))
-                    
-                    Text("Get notified to continue your Bible journey.")
-                        .font(.fontNunitoRegular(size: 28))
-                        .lineSpacing(0.5)
-                    
-                    
-                    Text("We'll nudge you when it's time to reconnect with Scripture and draw closer to Him.")
-                        .font(.fontNunitoRegular(size: 14))
-                }
-                .foregroundColor(.theme.primaryTextColor)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 16)
-                .padding(.bottom, 40)
+                Spacer()
                 
                 Image("notification")
                     .resizable()
@@ -51,7 +38,11 @@ struct NotificationPermissionPage: View {
                     grantNotification()
                 }
             }
-            
+        }
+        .alert("Error", isPresented: $showError) {
+            Button("Ok", role: .cancel){}
+        } message : {
+            Text(errorMessage)
         }
     }
     
@@ -63,7 +54,8 @@ struct NotificationPermissionPage: View {
             if granted {
                 onPressed()
             } else{
-                
+                errorMessage = "Notification permission declined"
+                showError = true
             }
         }
     }

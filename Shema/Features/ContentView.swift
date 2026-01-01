@@ -11,23 +11,51 @@ import SwiftData
 struct ContentView: View {
     @EnvironmentObject var onboardingViewModel: OnboardingViewModel
     @EnvironmentObject var nav: NavigationManager
+    @EnvironmentObject var authViewModel: AuthViewModel
     
     var body: some View {
         NavigationStack (path: $nav.path){
             Group {
-                if !onboardingViewModel.hasCompletedOnboarding {
-                    WelcomeView()
-                } else {
-                    TabBarView()
-                }
+                
+              if authViewModel.isCheckingAuth {
+                   loadingView
+               }  else if authViewModel.isAuthenticated {
+                   TabBarView()
+               } else {
+                   WelcomeView()
+               }
             }
             .background(Color.theme.backgroundColor).ignoresSafeArea()
             .navigationDestination(for: AppDestination.self) { destination in
                 destinationView(for: destination)
             }
         }
+        .task {
+            await authViewModel.refreshAuthToken()
+        }
+        .onChange(of: authViewModel.isAuthenticated) { oldValue, newValue in
+               if newValue && !oldValue {
+                   nav.popToRoot()
+               }
+        }
     }
 
+    private var loadingView: some View {
+           ZStack {
+               Color.theme.backgroundColor
+                   .ignoresSafeArea()
+               
+               VStack(spacing: 20) {
+                   ProgressView()
+                       .progressViewStyle(CircularProgressViewStyle(tint: .theme.primaryColor))
+                       .scaleEffect(1.5)
+                   
+                   Text("Loading...")
+                       .font(.fontNunitoRegular(size: 16))
+                       .foregroundColor(.theme.secondaryTextColor)
+               }
+           }
+       }
     
     @ViewBuilder
     private func destinationView (for destination: AppDestination) -> some View {
@@ -59,6 +87,10 @@ struct ContentView: View {
             LoginView()
         case .register:
             RegisterView()
+        case .registerNowLater:
+            RegisterNowLaterView()
+        case .forgotPassword:
+            ForgotPasswordView()
         }
     }
 }
@@ -66,7 +98,10 @@ struct ContentView: View {
 #Preview {
     let vm = OnboardingViewModel()
     let nav = NavigationManager()
+    let authVM = AuthViewModel()
     ContentView()
         .environmentObject(vm)
         .environmentObject(nav)
+        .environmentObject(authVM)
 }
+

@@ -72,9 +72,7 @@ struct DailyVerse: View {
             }
             .padding()
             .background(
-                colorScheme == .dark ?
-                        Color(hex: "1c1c1e") : Color.white
-            
+                Color.theme.surfaceColor
             )
             .cornerRadius(16)
            

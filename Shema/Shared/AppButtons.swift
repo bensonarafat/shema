@@ -60,7 +60,7 @@ struct SecondaryButton: View {
                         .frame(width: 20, height: 20)
                         .foregroundColor(Color.theme.primaryTextColor)
                 }
-                Text("I already have an account")
+                Text(title)
                     .textCase(.uppercase)
                     .font(.fontNunitoExtraBold(size: 14))
                     .fontWeight(.heavy)

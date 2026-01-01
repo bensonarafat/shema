@@ -16,8 +16,7 @@ struct FocusTimerCard: View {
         ZStack (alignment: .leading) {
             RoundedRectangle(cornerRadius: 24)
                 .fill(
-                    colorScheme == .dark ?
-                    Color(hex: "1c1c1e") : Color(hex: "ffffff")
+                    Color.theme.surfaceColor
                 )
             VStack (alignment: .leading, spacing: 8) {
                 HStack (spacing: 8) {

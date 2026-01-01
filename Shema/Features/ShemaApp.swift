@@ -8,6 +8,9 @@
 import SwiftUI
 import SwiftData
 import BackgroundTasks
+import FirebaseCore
+import FirebaseAppCheck
+
 
 @main
 struct ShemaApp: App {
@@ -15,8 +18,23 @@ struct ShemaApp: App {
     @StateObject private var familyControlViewModel = FamilyControlViewModel()
     @StateObject private var bibleViewModel = BibleViewModel()
     @StateObject private var navigationManager = NavigationManager()
+    @StateObject private var authViewModel = AuthViewModel()
     
     init () {
+        
+        #if DEBUG
+        
+        // Debug provider for simulator/testing
+        let providerFactory = AppCheckDebugProviderFactory()
+        AppCheck.setAppCheckProviderFactory(providerFactory)
+        #else
+        // DeviceCheck provider for production (physical device only)
+        let providerFactory = AppCheckDebugProviderFactory()
+        AppCheck.setAppCheckProviderFactory(providerFactory)
+        
+        #endif
+        
+        FirebaseApp.configure()
         
 //        for familyName in UIFont.familyNames {
 //            print(familyName)
@@ -36,6 +54,7 @@ struct ShemaApp: App {
                 .environmentObject(familyControlViewModel)
                 .environmentObject(bibleViewModel)
                 .environmentObject(navigationManager)
+                .environmentObject(authViewModel)
                 .onAppear {
                     scheduleAppRefresh()
                 }
