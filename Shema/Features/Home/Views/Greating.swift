@@ -16,8 +16,11 @@ struct Greating: View {
             Image(systemName: viewModel.greetings.icon)
                 .font(.system(size: 14, weight: .bold))
             Text(viewModel.greetings.text)
-                .font(.fontNunitoRegular(size: 15))
-        }.padding(.horizontal)
+                .font(.fontNunitoBlack(size: 16))
+                .fontWeight(.heavy)
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 8)
 
     }
 }

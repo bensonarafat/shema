@@ -9,20 +9,21 @@ import SwiftUI
 
 struct BibleScrollAndControl: View {
     @EnvironmentObject var bibleViewModel: BibleViewModel
-    @Environment(\.colorScheme) var colorScheme
     
     @State private var showSheet: Bool = false
     @State private var selectedVerses: [Verse] = []
     
     var body: some View {
         ZStack (alignment: .bottom) {
+            Color.theme.backgroundColor
+                .ignoresSafeArea()
             ScrollView {
                 VStack (alignment: .center, spacing: 10) {
                    
                     Text("\(bibleViewModel.selectedBook?.name ?? "Genesis") \(bibleViewModel.selectedChapter)")
                         .italic()
-                        .font(.headline)
-                        .foregroundColor(.primary)
+                        .font(.fontNunitoBlack(size: 25))
+                        .foregroundColor(Color.theme.primaryTextColor)
                         .padding(.bottom, 8)
                     
                     ForEach(bibleViewModel.verses) { verse in
@@ -68,7 +69,7 @@ struct BibleScrollAndControl: View {
                     navigateChapter(-1)
                 } label : {
                     Image(systemName: "chevron.left")
-                    .foregroundColor(.accentColor)
+                        .foregroundColor(Color.theme.primaryColor)
                     .padding(15)
                     .background(
                         Circle()
@@ -83,7 +84,7 @@ struct BibleScrollAndControl: View {
                     
                 } label: {
                     Image(systemName: "play.fill")
-                        .foregroundColor(.accentColor)
+                        .foregroundColor(Color.theme.primaryColor)
                         .padding(20)
                         .background(
                             Circle()
@@ -95,7 +96,7 @@ struct BibleScrollAndControl: View {
                     navigateChapter(1)
                 } label : {
                     Image(systemName: "chevron.right")
-                    .foregroundColor(.accentColor)
+                        .foregroundColor(Color.theme.primaryColor)
                     .padding(15)
                     .background(
                         Circle()

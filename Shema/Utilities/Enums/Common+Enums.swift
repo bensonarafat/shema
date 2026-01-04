@@ -7,6 +7,14 @@
 
 import Foundation
 
+enum Tabs: Int {
+    case home = 0
+    case bible = 1
+    case achievements = 2
+    case bookmark = 3
+    case settings = 4
+    case profile = 5
+}
 
 enum AppDestination: Hashable {
     

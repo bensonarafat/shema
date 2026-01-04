@@ -15,15 +15,14 @@ struct VerseTextView: View {
         
         VStack(alignment: .leading, spacing: 4,) {
             HStack(alignment: .top, spacing: 4) {
-                Text("\(verse.verse)")
-                    .font(.caption)
-                    .fontWeight(.bold)
-                    .foregroundColor(.primary)
+                Text("\(verse.verse).")
+                    .font(.fontNunitoBold(size: 18))
+                    .foregroundColor(.theme.primaryTextColor)
                     .baselineOffset(4)
                     .underline(isSelected, pattern: .dashDotDot, color: .primary)
                 
                 Text(verse.cleanText)
-                    .font(.body)
+                    .font(.fontNunitoBold(size: 18))
                     .foregroundColor(.primary)
                     .lineSpacing(8)
                     .underline(isSelected, pattern: .dashDotDot, color: .primary)
@@ -33,8 +32,8 @@ struct VerseTextView: View {
             
             if let comment =  verse.comment, !comment.isEmpty {
                 Text(comment)
-                    .font(.fontNunitoRegular(size: 12))
-                    .foregroundColor(.primary)
+                    .font(.fontNunitoBold(size: 18))
+                    .foregroundColor(.theme.primaryTextColor)
                     .padding(.leading, 12)
                     .underline(isSelected, pattern: .dashDotDot, color: .primary)
                     .frame(minWidth: .infinity, alignment: .leading)

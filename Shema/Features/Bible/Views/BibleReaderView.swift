@@ -27,7 +27,7 @@ struct BibleReaderView: View {
         }
 
         .foregroundColor(.white)
-        .background(Color(.systemGroupedBackground))
+        .background(Color.theme.backgroundColor)
         .onAppear {
             if bibleViewModel.books.isEmpty {
                 bibleViewModel.loadInitialData()

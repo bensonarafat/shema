@@ -20,12 +20,13 @@ struct ContentView: View {
               if authViewModel.isCheckingAuth {
                    loadingView
                }  else if authViewModel.isAuthenticated {
-                   TabBarView()
+                   BottomNavigationView()
                } else {
                    WelcomeView()
                }
             }
-            .background(Color.theme.backgroundColor).ignoresSafeArea()
+            .background(Color.theme.backgroundColor)
+            .ignoresSafeArea(edges: .bottom)
             .navigationDestination(for: AppDestination.self) { destination in
                 destinationView(for: destination)
             }
@@ -74,7 +75,7 @@ struct ContentView: View {
         case .settings:
             SettingsView()
         case .tabs:
-            TabBarView()
+            BottomNavigationView()
         case .badges:
             BadgesView(viewModel: BadgeViewModel())
         case .themeVerses:

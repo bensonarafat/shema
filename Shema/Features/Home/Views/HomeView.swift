@@ -19,18 +19,17 @@ struct HomeView: View {
             
             VStack (spacing: 16) {
                 HomeTopHeader()
-                    .padding(.leading, 8)
-                    .padding(.trailing, 8)
-                Divider()
                 ScrollView {
                     VStack(alignment: .leading) {
+                        StreakCalendar()
+                            .padding(.horizontal)
                         // Greating
                         Greating(viewModel: homeViewModel)
                         // Daily Verses
                         DailyVerse()
-                        // Bible Verses by Theme
-                        BibleVersesByTheme()
-                        // Badge
+//                        // Bible Verses by Theme
+//                        BibleVersesByTheme()
+                         //Badge
                         BadgeGridView()
                     }
                 }
@@ -38,7 +37,7 @@ struct HomeView: View {
             }
             
         }
-       
+    
     }
 }
 
@@ -46,4 +45,5 @@ struct HomeView: View {
     let vm = BibleViewModel()
     HomeView().environmentObject(vm)
 }
+
 

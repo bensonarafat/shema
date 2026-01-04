@@ -9,7 +9,6 @@ import SwiftUI
 
 struct BibleViewTopbar: View {
     @EnvironmentObject var bibleViewModel: BibleViewModel
-    @Environment(\.colorScheme) var colorScheme
     @State private var showingBook = false
     @State private var showingTranslation = false
     var body: some View {
@@ -47,8 +46,7 @@ struct BibleViewTopbar: View {
                 }
 
             }
-            .background(colorScheme == .dark ?
-                        Color(hex: "1c1c1e") : Color.white)
+            .background(Color(hex: "1c2923"))
             .foregroundColor(.primary)
             .cornerRadius(18)
             
@@ -58,17 +56,17 @@ struct BibleViewTopbar: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20, height: 20)
-                    .foregroundColor(Color(colorScheme == .dark ? .white : .black))
+                    .foregroundColor(.white)
                 Image(systemName: "magnifyingglass")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20, height: 20)
-                    .foregroundColor(Color(colorScheme == .dark ? .white : .black))
+                    .foregroundColor(.white)
                 Image(systemName: "ellipsis.circle")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20, height: 20)
-                    .foregroundColor(Color(colorScheme == .dark ? .white : .black))
+                    .foregroundColor(.white)
                 Image("ai")
                     .resizable()
                     .aspectRatio(contentMode: .fit)

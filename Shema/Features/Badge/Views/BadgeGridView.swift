@@ -16,26 +16,28 @@ struct BadgeGridView: View {
     var body:  some View {
         VStack {
             HStack {
-                Text("Your Badge")
-                    .font(.fontNunitoRegular(size: 14))
+                Text("Badges")
+                    .textCase(.uppercase)
+                    .font(.fontNunitoBlack(size: 16))
+                    .foregroundColor(.gray)
+
                 Spacer()
                 Button (action : {
                     nav.push(AppDestination.badges)
                 } ){
                     Image(systemName: "chevron.forward")
-                        .foregroundColor(
-                            .secondary)
+                        .foregroundColor(.gray)
                 }
             }
             .padding(.horizontal)
             
-            LazyVGrid(columns: columns, spacing: 20) {
+            LazyVGrid(columns: columns, spacing: 16) {
                 ForEach (viewModel.topSixBadges()) { badge in
                     VStack {
                         Image(badge.image)
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 80, height: 80)
+                            .frame(width: 75, height: 75)
                             .opacity(viewModel.isUnlocked(badge) ? 1 : 0.5)
                             .grayscale(viewModel.isUnlocked(badge) ? 0: 1)
                     }

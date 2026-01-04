@@ -28,77 +28,77 @@ extension Badge {
     static let all: [Badge] = [
         Badge(
             name: "First Light",
-            image: "first_light",
+            image: "1",
             description: "You completed your first Bible reading session."
         ),
         Badge(
             name: "Faithful Starter",
-            image: "faithful_starter",
+            image: "2",
             description: "You read the Bible for 3 consecutive days."
         ),
         Badge(
             name: "Steady Spirit",
-            image: "steady_spirit",
+            image: "3",
             description: "You maintained a 7-day Bible reading streak."
         ),
         Badge(
             name: "Devoted Disciple",
-            image: "devoted_disciple",
+            image: "4",
             description: "You logged prayers for 7 days in a row."
         ),
         Badge(
             name: "Unbroken Chain",
-            image: "unbroken_chain",
+            image: "5",
             description: "devoted_disciple"
         ),
         Badge(
             name: "Bible Marathoner",
-            image: "bible_marthoner",
+            image: "6",
             description: "100-day reading streak."
         ),
         Badge(
             name: "Verse Collector",
-            image: "verse_collector",
+            image: "7",
             description: "Saved 10 favorite verses."
         ),
         Badge(
             name: "Heart Keeper",
-            image: "heart_keeper",
+            image: "8",
             description: "Memorized 5 verses."
         ),
         Badge(
             name: "Word Dweller",
-            image: "word_dweller",
+            image: "9",
             description: "Memorized 20 verses."
         ),
         Badge(
             name: "Lamp to My Feet",
-            image: "lamp_to_my_feet",
+            image: "10",
             description: "Highlighted 50 verses"
         ),
         Badge(
             name: "Quiet Time",
-            image: "quite_time",
+            image: "11",
             description: "Logged first prayer."
         ),
         Badge(
             name: "prayer_warrior",
-            image: "prayer_warrior",
+            image: "12",
             description: "Logged prayers for 7 consecutive days."
         ),
         Badge(
             name: "Faith in Action",
-            image: "faith_in_action",
+            image: "13",
             description: "Shared a prayer or testimony."
         ),
         Badge(
             name: "Mountain Mover",
-            image: "mountain_mover",
+            image: "14",
             description: "Completed 100 prayer entries."
         ),
         Badge(
             name: "Bible Student",
-            image: "bible_student",
+            image: "15",
             description: "Completed first devotional."
         ),
     ]

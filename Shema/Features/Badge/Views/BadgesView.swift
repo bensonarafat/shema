@@ -28,14 +28,14 @@ struct BadgesView: View {
                 }
             }
         }
-        .background(Color(.systemGroupedBackground))
+        .background(Color.theme.backgroundColor)
         .navigationTitle("Badges")
     }
 }
 
 #Preview {
     let nav = NavigationManager()
-    @StateObject var vm = BadgeViewModel()
+    let vm = BadgeViewModel()
     return BadgesView(viewModel: vm)
         .environmentObject(nav)
 }
