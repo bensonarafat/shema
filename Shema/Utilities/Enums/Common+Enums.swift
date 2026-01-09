@@ -16,30 +16,6 @@ enum Tabs: Int {
     case profile = 5
 }
 
-enum AppDestination: Hashable {
-    
-    // Onboarding
-    case welcome
-    case onboarding
-    
-    // Home
-    case home
-    case bible
-    case settings
-    case bookmarks
-    case tabs
-    case badges
-    case themeVerses
-    case focus(Focus)
-    
-    // Auth
-    case login
-    case register
-    case registerNowLater
-    case forgotPassword
-}
-
-
 enum BibleAPIError: Error, LocalizedError {
     case invalidURL, networkError(Error), decodingError(Error), noData, fileError(Error)
     
@@ -64,6 +40,7 @@ enum AuthError: LocalizedError {
     case networkError
     case googleSignInFailed
     case appleSignInFailed
+    case requiresRecentLogin
     case unknownError(String)
     
     var errorDescription: String? {
@@ -84,6 +61,8 @@ enum AuthError: LocalizedError {
             return "Google sign-in failed. Please try again."
         case .appleSignInFailed:
             return "Apple sign-in failed. Please try again."
+        case .requiresRecentLogin:
+            return "Required to log in again. Please try signing in again."
         case .unknownError(let message):
             return message 
         }
@@ -112,3 +91,54 @@ enum UserServiceError: LocalizedError {
         }
     }
 }
+
+
+enum StreakError: LocalizedError {
+    case notAuthenticated
+    case syncFailed
+    
+    var errorDescription: String? {
+        switch self {
+        case .notAuthenticated:
+            return "User is not authenticated"
+        case .syncFailed:
+            return "Failed to sync with server"
+        }
+    }
+}
+
+enum CurrencyError: LocalizedError {
+    case userNotAuthenticated
+    case insufficientBalance
+    case updateFailed
+    
+    var errorDescription: String? {
+        switch self {
+        case .userNotAuthenticated:
+            return "User is not authenticated"
+        case .insufficientBalance:
+            return "Insufficient balance"
+        case .updateFailed:
+            return "Failed to update currency"
+        }
+    }
+}
+
+
+enum BadgeError: LocalizedError {
+    case userNotAuthenticated
+    case badgeNotFound
+    case updateFailed
+    
+    var errorDescription: String? {
+        switch self {
+        case .userNotAuthenticated:
+            return "User is not authenticated"
+        case .badgeNotFound:
+            return "Badge not found"
+        case .updateFailed:
+            return "Failed to update badge"
+        }
+    }
+}
+

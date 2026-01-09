@@ -11,7 +11,6 @@ struct IntroPage: View {
     var onPressed: () -> Void
     
     var body: some View {
-        
         VStack {
             Spacer()
             Text("Intro Page")
@@ -22,9 +21,6 @@ struct IntroPage: View {
             }
           
         }
-    
-        
-        
     }
 }
 

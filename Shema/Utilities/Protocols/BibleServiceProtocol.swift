@@ -10,7 +10,6 @@ import Combine
 
 protocol BibleServiceProtocol {
     func fetchLanguages() -> AnyPublisher<[Language], BibleAPIError>
-    func fetchBooks(for translation: String) -> AnyPublisher<[Book], BibleAPIError>
     func fetchChapter(translation: String, book: Int, chapter: Int) -> AnyPublisher<[Verse], BibleAPIError>
     func fetchVerse(translation: String, book: Int, chapter: Int, verse: Int) -> AnyPublisher<Verse, BibleAPIError>
     func search(transation: String, query: String, matchCase: Bool, matchWhole: Bool, book: String?) -> AnyPublisher<SearchResult, BibleAPIError>

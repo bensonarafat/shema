@@ -13,8 +13,11 @@ struct Badge: Identifiable, Codable {
     let image: String
     let description: String
     var completed: Bool = false
+    var completedAt: Date?
     
-    init(id: UUID = UUID(), name: String, image: String, description: String, completed: Bool = false) {
+    init(id: UUID = UUID(),
+         name: String, image: String,
+         description: String, completed: Bool = false) {
         self.id = id
         self.name = name
         self.image = image
@@ -103,3 +106,11 @@ extension Badge {
         ),
     ]
 }
+
+
+struct UserBadge: Codable {
+    let name: String
+    let completedAt: Date
+}
+
+

@@ -12,42 +12,50 @@ struct WelcomeView: View {
     
     var body: some View {
             
-    VStack () {
-        
-        Spacer()
-        
-        VStack (spacing: 2)  {
-            Text("Shema")
-                .font(.fontNunitoExtraBold(size: 45))
-                .foregroundColor(Color.theme.primaryColor)
-                .fontWeight(.black)
-            Text("Hear God First")
-                .font(.fontNunitoBold(size: 16))
-                .foregroundColor(Color.theme.primaryTextColor)
-                .fontWeight(.heavy)
-        }
-
-        
-        Spacer()
-        
-        VStack (spacing: 16) {
-           
-            PrimaryButton(title: "Get Started") {
-                nav.push(AppDestination.onboarding)
-            }
-
-            SecondaryButton(title: "I already have an account") {
-                nav.push(AppDestination.login)
-            }
+        ZStack {
+            Color.theme.backgroundColor
+                .ignoresSafeArea()
             
-        }
-        .padding(.horizontal)
-        .padding(.bottom, 50)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.theme.backgroundColor.ignoresSafeArea())
+            
+            VStack () {
+                
+                Spacer()
+                
+                VStack (spacing: 2)  {
+                    Text("Shema")
+                        .font(.fontNunitoExtraBold(size: 45))
+                        .foregroundColor(Color.theme.primaryColor)
+                        .fontWeight(.black)
+                    Text("Hear God First")
+                        .font(.fontNunitoBold(size: 16))
+                        .foregroundColor(Color.theme.primaryTextColor)
+                        .fontWeight(.heavy)
+                }
 
-    }
+                
+                Spacer()
+                
+                VStack (spacing: 16) {
+                   
+                    PrimaryButton(title: "Get Started") {
+                        nav.push(AppDestination.onboarding)
+                    }
+
+                    SecondaryButton(title: "I already have an account") {
+                        nav.push(AppDestination.login)
+                    }
+                    
+                }
+                .padding(.horizontal)
+                .padding(.bottom, 50)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+            }
+        .navigationBarBackButtonHidden(true)
+        }
+        
+
 }
 
 #Preview {

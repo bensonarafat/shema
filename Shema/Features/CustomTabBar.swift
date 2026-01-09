@@ -12,12 +12,12 @@ struct CustomTabBar: View {
     
     var body: some View {
         HStack {
-               TabBarItem(tab: .home, image: "home", selectedTab: $selectedTab)
-               TabBarItem(tab: .bible, image: "book", selectedTab: $selectedTab)
-               TabBarItem(tab: .achievements, image: "cup", selectedTab: $selectedTab)
-               TabBarItem(tab: .bookmark, image: "bookmark", selectedTab: $selectedTab)
-               TabBarItem(tab: .settings, image: "settings", selectedTab: $selectedTab)
-               TabBarItem(tab: .profile, image: "profile", selectedTab: $selectedTab)
+            TabBarItem(tab: .home, image: "home",name: "Home", selectedTab: $selectedTab)
+            TabBarItem(tab: .bible, image: "book",name: "Bible", selectedTab: $selectedTab)
+//               TabBarItem(tab: .achievements, image: "cup", selectedTab: $selectedTab)
+            TabBarItem(tab: .bookmark, image: "bookmark", name: "Bookmark", selectedTab: $selectedTab)
+            TabBarItem(tab: .settings, image: "settings", name: "Settings", selectedTab: $selectedTab)
+            TabBarItem(tab: .profile, image: "profile", name: "Profile", selectedTab: $selectedTab)
            }
         .frame(height: 65)
         .background(Color.theme.backgroundColor)

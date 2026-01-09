@@ -10,7 +10,7 @@ import FirebaseFirestore
 
 
 class UserService: FirebaseService {
- 
+    
     
     func createUser(shemaUser: ShemaUser) async throws -> ShemaUser {
         let emailExists = try await checkIfEmailExist(email: shemaUser.email)
@@ -76,6 +76,17 @@ class UserService: FirebaseService {
         }
     }
     
+    func checkIfUsernameExists(username: String) async throws -> Bool {
+        do {
+            let snapshot = try await db.collection("users")
+                .whereField("username", isEqualTo: username)
+                .getDocuments()
+            return !snapshot.documents.isEmpty
+        }catch {
+            throw UserServiceError.unknownError(error.localizedDescription)
+        }
+    }
+    
     func updateUser(shemaUser: ShemaUser) async throws -> ShemaUser {
         do {
             try db.collection("users")
@@ -118,4 +129,5 @@ class UserService: FirebaseService {
             throw error
         }
     }
+    
 }

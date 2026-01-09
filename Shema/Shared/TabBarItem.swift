@@ -10,6 +10,7 @@ import SwiftUI
 struct TabBarItem: View {
     let tab: Tabs
     let image: String
+    let name: String
     
     @Binding var selectedTab: Tabs
     
@@ -22,25 +23,35 @@ struct TabBarItem: View {
         Button {
             selectedTab = tab
         } label: {
-            ZStack {
-                if isSelected {
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(Color.blue.opacity(0.2))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.blue, lineWidth: 2)
-                        )
-                        .frame(width: 45, height: 45)
+            GeometryReader { geo in
+                ZStack {
+                    if isSelected {
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.blue.opacity(0.2))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.blue, lineWidth: 2)
+                            )
+                            .frame(width: geo.size.width, height: 50)
+                    }
+                    VStack (spacing: 1) {
+                        Image(image)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 32, height: 32)
+                        
+                        Text(name)
+                            .font(.fontNunitoRegular(size: 12))
+                            .foregroundColor(Color.theme.primaryTextColor)
+                    }
+                    .padding(4)
+                    
                 }
-                
-                Image(image)
-                   .resizable()
-                   .scaledToFit()
-                   .frame(width: 35, height: 35)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .buttonStyle(.plain)
+            
     }
 }
 
@@ -51,6 +62,7 @@ struct TabBarItem: View {
             TabBarItem(
                 tab: .home,
                 image: "home",
+                name: "Home",
                 selectedTab: $selected
             )
             .frame(width: 60, height: 60)

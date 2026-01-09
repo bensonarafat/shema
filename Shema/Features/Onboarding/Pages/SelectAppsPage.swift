@@ -58,21 +58,17 @@ struct SelectAppsPage: View {
                     .padding()
                     .background(Color.green.opacity(0.1))
                     .cornerRadius(10)
+                    .onTapGesture {
+                        showPicker()
+                    }
                     
                 }
 
-                PrimaryButton(title:
-                                !isAppCatSelected ? "Select apps to limit" : "Continue"
-                ) {
+                PrimaryButton(title: !isAppCatSelected ? "Select apps to limit" : "Continue") {
                     if isAppCatSelected {
                         onPressed()
                     } else {
-                        guard familyControlViewModel.appBlockingService.isAuthorized else {
-                            errorMessage = "Permission is required to access app list"
-                            showError = true
-                            return
-                        }
-                        familyControlViewModel.showingAppPicker = true
+                        showPicker()
                     }
                 }.familyActivityPicker(isPresented: $familyControlViewModel.showingAppPicker, selection: $selection
                 ).onChange(of: selection) { oldValue, newValue in
@@ -90,6 +86,15 @@ struct SelectAppsPage: View {
         }
     }
     
+    
+    func showPicker () {
+        guard familyControlViewModel.appBlockingService.isAuthorized else {
+            errorMessage = "Permission is required to access app list"
+            showError = true
+            return
+        }
+        familyControlViewModel.showingAppPicker = true
+    }
 }
 
 #Preview {

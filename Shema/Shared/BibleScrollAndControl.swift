@@ -32,7 +32,7 @@ struct BibleScrollAndControl: View {
                             set: { newValue in
                                 if newValue {
                                     selectedVerses.append(verse)
-                                    showSheet = true
+//                                    showSheet = true
                                 } else {
                                     selectedVerses.removeAll { $0.pk == verse.pk }
                                     if selectedVerses.isEmpty {
@@ -44,6 +44,7 @@ struct BibleScrollAndControl: View {
                     }
                 }
                 .padding()
+                .padding(.bottom, 100)
             }
             .sheet(isPresented: $showSheet) {
                 SelectedVerseSheet()
@@ -64,50 +65,50 @@ struct BibleScrollAndControl: View {
 //            .animation(.easeInOut, value: showSheet)
             
             
-            HStack {
-                Button {
-                    navigateChapter(-1)
-                } label : {
-                    Image(systemName: "chevron.left")
-                        .foregroundColor(Color.theme.primaryColor)
-                    .padding(15)
-                    .background(
-                        Circle()
-                            .fill(Color(.systemGray5))
-                    )
-                }
-                .disabled(bibleViewModel.selectedChapter <= 1)
-                .opacity(bibleViewModel.selectedChapter <= 1 ? 0.4 : 1)
-                
-                Spacer()
-                Button {
-                    
-                } label: {
-                    Image(systemName: "play.fill")
-                        .foregroundColor(Color.theme.primaryColor)
-                        .padding(20)
-                        .background(
-                            Circle()
-                                .fill(Color(.systemGray5))
-                        )
-                }
-                Spacer()
-                Button {
-                    navigateChapter(1)
-                } label : {
-                    Image(systemName: "chevron.right")
-                        .foregroundColor(Color.theme.primaryColor)
-                    .padding(15)
-                    .background(
-                        Circle()
-                            .fill(Color(.systemGray5))
-                    )
-                }
-                .disabled(bibleViewModel.selectedChapter >= (bibleViewModel.selectedBook?.chapters ?? 1))
-                .opacity(bibleViewModel.selectedChapter >= (bibleViewModel.selectedBook?.chapters ?? 1) ? 0.4 : 1 )
-            }
-            .padding(.horizontal)
-            .padding(.bottom, 10)
+//            HStack {
+//                Button {
+//                    navigateChapter(-1)
+//                } label : {
+//                    Image(systemName: "chevron.left")
+//                        .foregroundColor(Color.theme.primaryColor)
+//                    .padding(15)
+//                    .background(
+//                        Circle()
+//                            .fill(Color(.systemGray5))
+//                    )
+//                }
+//                .disabled(bibleViewModel.selectedChapter <= 1)
+//                .opacity(bibleViewModel.selectedChapter <= 1 ? 0.4 : 1)
+//                
+//                Spacer()
+//                Button {
+//                    
+//                } label: {
+//                    Image(systemName: "play.fill")
+//                        .foregroundColor(Color.theme.primaryColor)
+//                        .padding(20)
+//                        .background(
+//                            Circle()
+//                                .fill(Color(.systemGray5))
+//                        )
+//                }
+//                Spacer()
+//                Button {
+//                    navigateChapter(1)
+//                } label : {
+//                    Image(systemName: "chevron.right")
+//                        .foregroundColor(Color.theme.primaryColor)
+//                    .padding(15)
+//                    .background(
+//                        Circle()
+//                            .fill(Color(.systemGray5))
+//                    )
+//                }
+//                .disabled(bibleViewModel.selectedChapter >= (bibleViewModel.selectedBook?.chapters ?? 1))
+//                .opacity(bibleViewModel.selectedChapter >= (bibleViewModel.selectedBook?.chapters ?? 1) ? 0.4 : 1 )
+//            }
+//            .padding(.horizontal)
+//            .padding(.bottom, 10)
             
         }
     }

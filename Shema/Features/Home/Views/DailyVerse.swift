@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct DailyVerse: View {
+    @EnvironmentObject var nav: NavigationManager
+    @EnvironmentObject var scriptureService: ScriptureService
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -34,26 +36,30 @@ struct DailyVerse: View {
                         .foregroundColor(Color.theme.primaryColor)
                         
                 }
-                Text("Romans 12:3-6")
+                Text("\(scriptureService.scripture?.reference ?? "")")
+                    .textCase(.uppercase)
                     .foregroundColor(Color.theme.primaryTextColor)
                     .font(.fontNunitoBlack(size: 16))
                 
                 HStack {
+//                    Button  {
+//                        
+//                    }
+//                    label: {
+//                        Text("Listen")
+//                            .font(.fontNunitoBold(size: 14))
+//                            .foregroundColor(Color.theme.primaryTextColor)
+//                            .frame(maxWidth: .infinity)
+//                    }
+//                    .padding()
+//                    .background(Color(hex: "18221c"))
+//                    .cornerRadius(16)
+//                    
                     Button  {
-                        
-                    }
-                    label: {
-                        Text("Listen")
-                            .font(.fontNunitoBold(size: 14))
-                            .foregroundColor(Color.theme.primaryTextColor)
-                            .frame(maxWidth: .infinity)
-                    }
-                    .padding()
-                    .background(Color(hex: "18221c"))
-                    .cornerRadius(16)
-                    
-                    Button  {
-                        
+                        if scriptureService.scripture != nil {
+                            nav.push( AppDestination.scripture(scriptureService.scripture!))
+                        }
+                      
                     }
                     label: {
                         Text("Read")
@@ -77,10 +83,15 @@ struct DailyVerse: View {
         }
         .padding()
         .background(Color.theme.backgroundColor)
+        
     }
 }
 
 
 #Preview {
+    let nav = NavigationManager()
+    let scriptureService = ScriptureService()
     DailyVerse()
+        .environmentObject(nav)
+        .environmentObject(scriptureService)
 }

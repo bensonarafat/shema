@@ -19,7 +19,7 @@ struct ContentView: View {
                 
               if authViewModel.isCheckingAuth {
                    loadingView
-               }  else if authViewModel.isAuthenticated {
+              }  else if authViewModel.isAuthenticated || authViewModel.hasCompleteAuthStep {
                    BottomNavigationView()
                } else {
                    WelcomeView()
@@ -77,11 +77,22 @@ struct ContentView: View {
         case .tabs:
             BottomNavigationView()
         case .badges:
-            BadgesView(viewModel: BadgeViewModel())
+            BadgesView()
         case .themeVerses:
             ThemeVersesView()
         case .focus(let focus):
             FocusView(focus: focus)
+        case .scripture(let scripture):
+            ScriptureView(scripture: scripture)
+        case .shemaai(let bibleArg):
+            ShemaAIView(bibleArg: bibleArg)
+            
+        case .editProfile:
+            EditProfileView()
+            
+        // Setttings
+        case .lockSchedule:
+            LockScheduleView()
             
         // Auth
         case .login:

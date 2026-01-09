@@ -136,6 +136,23 @@ class AuthService: FirebaseService {
         }
     }
     
+    func deleteAccount() async throws {
+        guard let user = Auth.auth().currentUser else {
+            throw AuthError.userNotFound
+        }
+        
+        do {
+            try await user.delete()
+            GIDSignIn.sharedInstance.signOut()
+        } catch let error as NSError {
+            if let errorCode = AuthErrorCode(rawValue: error.code),
+               errorCode == .requiresRecentLogin {
+                throw AuthError.requiresRecentLogin
+            }
+            throw mapFirebaseError(error)
+        }
+    }
+    
     var currentUser: User? {
         return Auth.auth().currentUser
     }

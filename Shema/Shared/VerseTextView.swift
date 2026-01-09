@@ -30,20 +30,20 @@ struct VerseTextView: View {
             }
             
             
-            if let comment =  verse.comment, !comment.isEmpty {
-                Text(comment)
-                    .font(.fontNunitoBold(size: 18))
-                    .foregroundColor(.theme.primaryTextColor)
-                    .padding(.leading, 12)
-                    .underline(isSelected, pattern: .dashDotDot, color: .primary)
-                    .frame(minWidth: .infinity, alignment: .leading)
-                 
-            }
+//            if let comment =  verse.comment, !comment.isEmpty {
+//                Text(comment)
+//                    .font(.fontNunitoBold(size: 18))
+//                    .foregroundColor(.theme.primaryTextColor)
+//                    .padding(.leading, 12)
+//                    .underline(isSelected, pattern: .dashDotDot, color: .primary)
+//                    .frame(minWidth: .infinity, alignment: .leading)
+//                 
+//            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(Rectangle())
         .onTapGesture {
-            isSelected.toggle()
+//            isSelected.toggle()
         }
 
     }

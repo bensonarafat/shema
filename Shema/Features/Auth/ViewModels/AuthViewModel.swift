@@ -20,15 +20,18 @@ class AuthViewModel: ObservableObject {
     
     private let authService: AuthService
     private let userService: UserService
+    private let streakService: StreakService
     private var authStateHandle: AuthStateDidChangeListenerHandle?
     private let completeAuthStepKey = "hasCompleteAuthStep"
     
     private let userDefaults = UserDefaults.standard
+    private let networkMonitor = NetworkMonitor.shared
     
-    init(authService: AuthService = AuthService(), userService: UserService = UserService()) {
+    init(authService: AuthService = AuthService(), userService: UserService = UserService(), streakService: StreakService = StreakService()) {
         self.hasCompleteAuthStep = userDefaults.bool(forKey: completeAuthStepKey)
         self.authService = authService
         self.userService = userService
+        self.streakService = streakService
         setupAuthStateListener()
     }
     
@@ -39,11 +42,14 @@ class AuthViewModel: ObservableObject {
     }
     
     func completeAuthStep() {
-        hasCompleteAuthStep = true
+         
         userDefaults.set(true, forKey: completeAuthStepKey)
     }
     
     private func setupAuthStateListener() {
+        
+        checkNetwork()
+        
         authStateHandle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
             Task { @MainActor in
                 self?.currentUser = user
@@ -54,6 +60,8 @@ class AuthViewModel: ObservableObject {
     }
     
     func signUp(email: String, password: String, fullName: String, confirmPassword: String) async {
+        checkNetwork()
+        
         isLoading = true
         errorMessage = nil
         do {
@@ -68,7 +76,9 @@ class AuthViewModel: ObservableObject {
                 return
             }
             let user = try await authService.signUpUser(email: email, password: password)
-            _ = try await userService.createUser(shemaUser: ShemaUser(id: user.uid, fullName: fullName, email: email))
+            // extract username from email address
+            let username = email.usernameFromEmail
+            _ = try await userService.createUser(shemaUser: ShemaUser(id: user.uid, fullName: fullName, username: username, email: email))
             Task { @MainActor in
                 self.authSuccess = true
             }
@@ -83,6 +93,8 @@ class AuthViewModel: ObservableObject {
     }
     
     func refreshAuthToken() async {
+        checkNetwork()
+        
         guard let user = authService.currentUser else {
             await MainActor.run {
                 self.isAuthenticated = false
@@ -93,7 +105,7 @@ class AuthViewModel: ObservableObject {
         }
         
         do {
-            let result = try await user.getIDTokenResult(forcingRefresh: true)
+            let _ = try await user.getIDTokenResult(forcingRefresh: true)
             await MainActor.run {
                 self.isAuthenticated = true
                 self.currentUser = user
@@ -106,6 +118,8 @@ class AuthViewModel: ObservableObject {
     }
     
     func signIn(email: String, password: String) async {
+        checkNetwork()
+        
         isLoading = true
         errorMessage = nil
         
@@ -124,12 +138,15 @@ class AuthViewModel: ObservableObject {
     }
     
     func signInWithGoogle() async {
+        checkNetwork()
+        
         isLoading = true
         errorMessage = nil
         
         do {
             let user = try await authService.signInWithGoogle()
-            _ = try await userService.createUser(shemaUser: ShemaUser(id: user.uid, fullName: user.displayName ?? "Unknown user", email: user.email!))
+            let username = user.email!.usernameFromEmail
+            _ = try await userService.createUser(shemaUser: ShemaUser(id: user.uid, fullName: user.displayName ?? "Unknown user", username: username, email: user.email!))
             Task { @MainActor in
                 self.authSuccess = true
             }
@@ -143,12 +160,15 @@ class AuthViewModel: ObservableObject {
     }
     
     func signInWithApple() async {
+        checkNetwork()
+        
         isLoading = true
         errorMessage = nil
         
         do {
             let user = try await authService.signInwithApple()
-            _ = try await userService.createUser(shemaUser: ShemaUser(id: user.uid,  fullName: user.displayName ?? "Unknown user", email: user.email!))
+            let username = user.email!.usernameFromEmail
+            _ = try await userService.createUser(shemaUser: ShemaUser(id: user.uid,  fullName: user.displayName ?? "Unknown user", username: username, email: user.email!))
             Task { @MainActor in
                 self.authSuccess = true
             }
@@ -166,12 +186,35 @@ class AuthViewModel: ObservableObject {
             currentUser = nil
             isAuthenticated = false
             errorMessage = nil
+            clearUserDefaults()
         } catch {
             errorMessage = AuthErrorMessage(message: "Failed to sign out")
         }
     }
     
+    func deleteAccount () async -> Bool {
+        checkNetwork()
+        
+        isLoading = true
+        errorMessage = nil
+        do {
+            guard let userId = authService.currentUser?.uid else { return false }
+            _ =  try await userService.deleteUser(userId: userId)
+            try await streakService.deleteStreaks(userId: userId)
+            try await authService.deleteAccount()
+            clearUserDefaults()
+            isLoading = false
+            return true
+        } catch {
+            errorMessage = AuthErrorMessage(message: "Failed to delete account")
+            isLoading = false
+            return false
+        }
+    }
+    
     func resetPassword (email: String) async -> Bool {
+        checkNetwork()
+        
         isLoading = true
         errorMessage = nil
         do {
@@ -191,5 +234,17 @@ class AuthViewModel: ObservableObject {
     
     func clearError () {
         errorMessage = nil
+    }
+    
+    func checkNetwork() {
+        guard networkMonitor.isConnected else {
+            errorMessage = AuthErrorMessage(message: "Please check your internet connection")
+            return
+        }
+    }
+    
+    func clearUserDefaults() {
+        guard let bundleID = Bundle.main.bundleIdentifier else { return }
+        userDefaults.removePersistentDomain(forName: bundleID)
     }
 }

@@ -14,16 +14,20 @@ import Combine
 class AppBlockingService: ObservableObject{
     static let shared = AppBlockingService()
     
-    @Published var  isAuthorized: Bool = false
+    @Published var isAuthorized: Bool = false
     @Published var blockedApps: Set<ApplicationToken> = []
     @Published var blockedCategories: Set<ActivityCategoryToken> = []
+    @Published var isBlockingActive: Bool = false
     
     private let store = ManagedSettingsStore()
     private let center = AuthorizationCenter.shared
     private let selectionKey = "savedFamilyActivitySelection"
+    private let blockingStatusKey = "isBlockingActive"
+    private var userDefaults = UserDefaults.standard;
     
     init () {
         isAuthorized = center.authorizationStatus == .approved
+        isBlockingActive = userDefaults.bool(forKey: blockingStatusKey)
         // Load saved selection on init
         if let savedSelection = loadBlockedApps() {
             blockedApps = savedSelection.applicationTokens
@@ -31,10 +35,14 @@ class AppBlockingService: ObservableObject{
         }
     }
     
-    func requestAuthorization() async throws {
-        try await center.requestAuthorization(for: .individual)
-        await MainActor.run {
-            isAuthorized = center.authorizationStatus == .approved
+    @MainActor
+    func requestAuthorization() async {
+        do {
+            try await center.requestAuthorization(for: .individual)
+            let approved = center.authorizationStatus == .approved
+            isAuthorized = approved
+        } catch {
+            isAuthorized = false
         }
     }
     
@@ -47,7 +55,7 @@ class AppBlockingService: ObservableObject{
         do {
             let encoder = JSONEncoder()
             let data = try encoder.encode(selection)
-            UserDefaults.standard.set(data, forKey: selectionKey)
+            userDefaults.set(data, forKey: selectionKey)
             print("Selection saved successfully")
         }catch {
             print("Failed to save selection: \(error)")
@@ -92,6 +100,8 @@ class AppBlockingService: ObservableObject{
             store.shield.applicationCategories = .specific(blockedCategories)
         }
         
+        isBlockingActive = true
+        userDefaults.set(true, forKey: blockingStatusKey)
         print("Blocking enabled for \(blockedApps.count) apps and \(blockedCategories.count) categories")
     }
     
@@ -99,6 +109,8 @@ class AppBlockingService: ObservableObject{
     func disableBlocking() {
         store.shield.applications = nil
         store.shield.applicationCategories = nil
+        isBlockingActive = false
+        userDefaults.set(false, forKey: blockingStatusKey)
         print("App unblocked")
     }
     
@@ -107,8 +119,16 @@ class AppBlockingService: ObservableObject{
         store.clearAllSettings()
         blockedApps.removeAll()
         blockedCategories.removeAll()
-        UserDefaults.standard.removeObject(forKey: selectionKey)
+        
+        isBlockingActive = false
+        userDefaults.removeObject(forKey: selectionKey)
+        userDefaults.removeObject(forKey: blockingStatusKey)
         print("All blocking settings cleared")
     }
+    
+    // Check if blocking is currently active
+     func isBlocking() -> Bool {
+         return isBlockingActive
+     }
 }
 

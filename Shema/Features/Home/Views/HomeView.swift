@@ -10,7 +10,7 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject var viewModel: BibleViewModel
     @StateObject var homeViewModel = HomeViewModel()
-    
+    @EnvironmentObject var scriptureService: ScriptureService
     var body: some View {
         
         ZStack {
@@ -19,7 +19,7 @@ struct HomeView: View {
             
             VStack (spacing: 16) {
                 HomeTopHeader()
-                ScrollView {
+                ScrollView (showsIndicators: false) {
                     VStack(alignment: .leading) {
                         StreakCalendar()
                             .padding(.horizontal)
@@ -33,6 +33,11 @@ struct HomeView: View {
                         BadgeGridView()
                     }
                 }
+                .onAppear {
+                    Task {
+                        await scriptureService.getScripture()
+                    }
+                }
                 
             }
             
@@ -43,7 +48,10 @@ struct HomeView: View {
 
 #Preview {
     let vm = BibleViewModel()
-    HomeView().environmentObject(vm)
+    let scriptureService = ScriptureService()
+    HomeView()
+        .environmentObject(vm)
+        .environmentObject(scriptureService)
 }
 
 

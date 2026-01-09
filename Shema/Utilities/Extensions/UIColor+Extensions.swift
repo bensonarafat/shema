@@ -45,4 +45,6 @@ struct ColorTheme {
     let disabledTextColor = Color("DisabledTextColorSwan")
     let primaryTextColor = Color("PrimaryTextColorSnow")
     let secondaryTextColor = Color("SecondaryTextColorPolar")
+    let macaw = Color("Macaw")
+    let humpback = Color("Humpback")
 }

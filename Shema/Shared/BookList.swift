@@ -27,12 +27,13 @@ struct BookList: View {
             } label: {
                 HStack {
                     Text(book.name)
-                        .foregroundColor(.primary)
+                        .foregroundColor(Color.theme.primaryTextColor)
+                        .fontWeight(.bold)
                     Spacer()
                     
                     Image(systemName:
                             isShowing  ? "chevron.up" : "chevron.down")
-                        .foregroundColor(.secondary)
+                            .foregroundColor(Color.theme.primaryTextColor)
                 }
             }
 
@@ -47,9 +48,13 @@ struct BookList: View {
                             dismiss()
                         } label : {
                             RoundedRectangle(cornerRadius: 8)
-                                .fill(Color(.secondarySystemBackground))
+                                .fill(Color.white)
                                 .frame(width: 50, height: 50)
-                                .overlay( Text("\(i)") )
+                                .overlay(
+                                    Text("\(i)")
+                                        .font(.fontNunitoBold(size: 16))
+                                        .foregroundColor(Color.black)
+                                )
                         }
                        
                             

@@ -13,6 +13,7 @@ struct TranslationList: View {
     var body: some View {
         HStack {
             Text(translation.shortName)
+                .font(.fontNunitoBlack(size: 20))
                 .multilineTextAlignment(.center)
                 .frame(width: 60, height: 60)
                 .padding(2)
@@ -25,10 +26,10 @@ struct TranslationList: View {
                         .stroke(Color.primary, lineWidth: 0.5)
                 )
             
-            VStack (alignment: .leading) {
+            VStack (alignment: .leading, spacing: 4) {
                 Text(translation.fullName)
-                    .font(.fontNunitoRegular(size: 12))
-                Text("Updated: 10th Aug, 2025")
+                    .font(.fontNunitoBold(size: 12))
+                Text("Updated: \(translation.updated.readableDate)")
                     .font(.fontNunitoRegular(size: 10))
                     
             }
@@ -81,11 +82,5 @@ struct TranslationList: View {
             translation.shortName == bibleViewModel.selectedTranslation ? Color.primary.opacity(0.1) : Color.clear
         ).cornerRadius(8)
     }
-}
-
-#Preview {
-    let vm = BibleViewModel()
-    TranslationList(translation: Translation(shortName: "KJV", fullName: "King James Version 1769 with Apocrypha and Strong's Numbers", updated: Date(), dir: "KJV"))
-        .environmentObject(vm)
 }
 

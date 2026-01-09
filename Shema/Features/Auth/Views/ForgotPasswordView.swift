@@ -57,7 +57,12 @@ struct ForgotPasswordView: View {
                     .focused($isEmailFocused)
                     
                     
-                    PrimaryButton(title: "Reset Password") {
+                    PrimaryButton(title: "Reset Password",
+                                  backgroundColor: isValid() ? Color.theme.macaw : Color(hex: "37474e"),
+                                  foregroundColor: isValid() ? Color.black : Color(hex: "51636b"),
+
+                    
+                    ) {
                         Task {
                           let response =  await authViewModel.resetPassword(email: email)
                             if response {
@@ -94,6 +99,10 @@ struct ForgotPasswordView: View {
                 )
             )
         }
+    }
+    
+    func isValid() -> Bool {
+        return !email.isEmpty
     }
 }
 

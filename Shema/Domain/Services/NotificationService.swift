@@ -11,36 +11,25 @@ import UserNotifications
 class NotificationService {
     static let shared = NotificationService()
     
-    func requestAuthorization() async -> Bool {
-        await withCheckedContinuation { continuation in
-            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound, .provisional]) { granted, error in
-                if let error = error {
-                    print("Notification error: \(error.localizedDescription)")
-                }
-                if granted {
-                    print("Notification permission granted")
-                } else {
-                    print("Notification permission not granted")
-                }
-                continuation.resume(returning: granted)
+    private let center = UNUserNotificationCenter.current()
+    
+    private init() {}
+    
+    func requestPermission(completion: @escaping (Bool) -> Void ) {
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            DispatchQueue.main.async {
+                completion(granted)
             }
         }
     }
     
-    func requestAuthorization(completion: @escaping (Bool) -> Void) {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound, .provisional]) { granted, error in
-            if let error = error {
-                print("Notification error: \(error.localizedDescription)")
+    func getAuthorizationStatus(completion: @escaping (UNAuthorizationStatus) -> Void ) {
+        center.getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                completion(settings.authorizationStatus)
             }
-            if granted {
-                print("Notification permission granted")
-            } else {
-                print("Notification permission not granted")
-            }
-            completion(granted)
         }
     }
-    
     
     func scheduleReadingReminder(at hour: Int, minute: Int = 0) {
         let content = UNMutableNotificationContent()
@@ -72,6 +61,6 @@ class NotificationService {
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         
-        UNUserNotificationCenter.current().add(request)
+        center.add(request)
     }
 }

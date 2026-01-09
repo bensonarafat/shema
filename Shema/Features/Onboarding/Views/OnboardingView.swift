@@ -71,29 +71,21 @@ struct OnboardingView: View {
                 
                 if currentPage == 0 {
                     IntroPage {
-                        withAnimation {
-                            currentPage += 1
-                        }
+                        currentPage += 1
                     }
-                } else if (currentPage == 1) {
+                } else if currentPage == 1 {
                     NotificationPermissionPage {
-                        withAnimation {
-                            currentPage += 1
-                        }
+                        currentPage += 1
                     }
-                } else if (currentPage == 2) {
+                } else if currentPage == 2 {
                     ScreenTimePermissionPage {
-                        withAnimation {
-                            currentPage += 1
-                        }
+                        currentPage += 1
                     }
-                } else if ( currentPage == 3) {
+                } else if  currentPage == 3 {
                     SelectAppsPage {
-                        withAnimation {
-                            currentPage += 1
-                        }
+                        currentPage += 1
                     }
-                } else  if (currentPage == 4) {
+                } else  if currentPage == 4 {
                     SelectReadTimePage()
                 }
                 
@@ -103,7 +95,6 @@ struct OnboardingView: View {
             }
             .padding()
         }
-      
         .navigationBarHidden(true)
     }
 }

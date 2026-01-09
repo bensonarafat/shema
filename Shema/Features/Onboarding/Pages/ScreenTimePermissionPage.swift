@@ -13,6 +13,7 @@ struct ScreenTimePermissionPage: View {
     @EnvironmentObject var viewModel : FamilyControlViewModel;
     @State private var showingError = false
     @State private var errorMessage = ""
+    @State private var isLoading: Bool = false
     
     var body: some View {
         ZStack {
@@ -43,7 +44,14 @@ struct ScreenTimePermissionPage: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
                 
-                PrimaryButton(title: "give access to app screen time") {
+                PrimaryButton(title:
+                                isLoading
+                                    ? "requesting permission..."
+                                    : "give access to app screen time") {
+                    
+                    if isLoading {
+                        return
+                    }
                     grantAccessScreenTime()
                 }
               
@@ -60,17 +68,15 @@ struct ScreenTimePermissionPage: View {
     }
     
     func grantAccessScreenTime () {
+        isLoading = true
         Task {
-            do {
-                try await viewModel.appBlockingService.requestAuthorization()
-                if viewModel.appBlockingService.isAuthorized {
-                    onPressed()
-                }else {
-                    errorMessage = "Screen Time permission denied"
-                    showingError = true
-                }
-            } catch {
-                errorMessage = "Failed to get permission: \(error.localizedDescription)"
+            await viewModel.appBlockingService.requestAuthorization()
+            isLoading = false
+            if viewModel.appBlockingService.isAuthorized {
+                onPressed()
+            }else {
+                isLoading = false
+                errorMessage = "Permission is not granted"
                 showingError = true
             }
         }

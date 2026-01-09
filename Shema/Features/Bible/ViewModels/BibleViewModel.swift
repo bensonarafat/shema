@@ -13,7 +13,7 @@ class BibleViewModel: ObservableObject {
     @Published var translations: [Translation] = []
     @Published var books: [Book] = []
     @Published var verses: [Verse] = []
-    @Published var selectedTranslation: String = "NIV"
+    @Published var selectedTranslation: String = "KJV"
     @Published var selectedBook: Book?
     @Published var selectedChapter: Int = 1
     @Published var isLoading = false
@@ -31,47 +31,73 @@ class BibleViewModel: ObservableObject {
     init (apiService: BibleServiceProtocol = BibleService.shared) {
         self.apiService = apiService
         downloadedTranslations = Set(storageService.getDownloadedTransations())
-        self.selectedTranslation = UserDefaults.standard.string(forKey: translationKey) ?? "NIV"
+        self.selectedTranslation = UserDefaults.standard.string(forKey: translationKey) ?? "KJV"
     }
     
     func loadInitialData() {
         isLoading = true
         error = nil
-        
-        apiService.fetchBooks(for: selectedTranslation)
-            .receive(on: DispatchQueue.main)
-            .flatMap { [weak self] books -> AnyPublisher<[Verse], BibleAPIError> in
+        let translationDownloaded = isDownloaded(selectedTranslation)
+        if translationDownloaded {
+            storageService.loadOfflineBook()
+                .receive(on: DispatchQueue.main)
+                .flatMap { [weak self] books -> AnyPublisher<[Verse], BibleAPIError> in
+                    guard let self = self else {
+                        return Fail(error: BibleAPIError.noData).eraseToAnyPublisher()
+                    }
+                    self.books = books
                 
-             
-                guard let self = self else {
-                    return Fail(error: BibleAPIError.noData).eraseToAnyPublisher()
+                    self.selectedBook = books.first { $0.bookid == 1} ?? books.first
+                    self.selectedChapter = 1
+                    
+                    guard let book = self.selectedBook else {
+                        return Fail(error: BibleAPIError.noData).eraseToAnyPublisher()
+                    }
+                    
+                    return self.storageService.loadOfflineVerses(translation: selectedTranslation, book: book.bookid, chapter: 1)
                 }
-                self.books = books
-                
-                self.selectedBook = books.first { $0.bookid == 1} ?? books.first
-                self.selectedChapter = 1
-               
-                guard let book = self.selectedBook else {
-                    return Fail(error: BibleAPIError.noData).eraseToAnyPublisher()
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] completion in
+                    self?.isLoading = false
+                    if case .failure(let err) = completion {
+                        self?.error = err.localizedDescription
+                    }
+                } receiveValue: { [weak self] verses in
+                    self?.verses = verses
+                    self?.error = nil
                 }
-                
-                if self.storageService.isDownloaded(self.selectedTranslation) {
-                    return self.storageService.loadOfflineVerses(translation: self.selectedTranslation, book: book.bookid, chapter: 1)
-                } else {
+                .store(in: &cancellables)
+    
+        }else {
+            storageService.loadOfflineBook()
+                .receive(on: DispatchQueue.main)
+                .flatMap { [weak self] books -> AnyPublisher<[Verse], BibleAPIError> in
+            
+                    guard let self = self else {
+                        return Fail(error: BibleAPIError.noData).eraseToAnyPublisher()
+                    }
+                    self.books = books
+                    self.selectedBook = books.first { $0.bookid == 1} ?? books.first
+                    self.selectedChapter = 1
+                   
+                    guard let book = self.selectedBook else {
+                        return Fail(error: BibleAPIError.noData).eraseToAnyPublisher()
+                    }
+                    
                     return self.apiService.fetchChapter(translation: self.selectedTranslation, book: book.bookid, chapter: 1)
                 }
-            }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] completion in
-                self?.isLoading = false
-                if case .failure(let err) = completion {
-                    self?.error = err.localizedDescription
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] completion in
+                    self?.isLoading = false
+                    if case .failure(let err) = completion {
+                        self?.error = err.localizedDescription
+                    }
+                } receiveValue: { [weak self] verses in
+                    self?.verses = verses
+                    self?.error = nil
                 }
-            } receiveValue: { [weak self] verses in
-                self?.verses = verses
-                self?.error = nil
-            }
-            .store(in: &cancellables)
+                .store(in: &cancellables)
+        }
     }
     
     func loadLanguages() {
@@ -87,7 +113,12 @@ class BibleViewModel: ObservableObject {
                 guard let self = self else { return }
                 self.languages = languages
                 if let english = languages.first(where: { $0.language == "English" }) {
-                    self.translations = english.translations
+                    // using this constants "bibleTransalations" allow only this translations for now
+                    let englishTranslations = english.translations
+                    let filteredTranslations = englishTranslations.filter { tran in
+                        bibleTransalations.contains(tran.shortName)
+                    }
+                    self.translations = filteredTranslations
                 } else {
                     self.translations = []
                 }
@@ -97,7 +128,8 @@ class BibleViewModel: ObservableObject {
     
     func loadBooks() {
         isLoading = true
-        apiService.fetchBooks(for: selectedTranslation)
+        
+        storageService.loadOfflineBook()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 self?.isLoading = false
@@ -109,13 +141,16 @@ class BibleViewModel: ObservableObject {
                 self?.selectedBook = books.first
             }
             .store(in: &cancellables)
+
     }
     
     func loadChapter() {
+
         guard let book = selectedBook else { return }
         isLoading = true
         
         let publisher: AnyPublisher<[Verse], BibleAPIError>
+        
         if storageService.isDownloaded(selectedTranslation) {
             publisher = storageService.loadOfflineVerses(translation: selectedTranslation, book: book.bookid, chapter: selectedChapter)
         }else {
@@ -143,36 +178,64 @@ class BibleViewModel: ObservableObject {
         selectedTranslation = ref.translation
         isLoading = true
         
-        apiService.fetchBooks(for: selectedTranslation)
-            .receive(on: DispatchQueue.main)
-            .flatMap{ [weak self] books -> AnyPublisher<[Verse], BibleAPIError> in
-                guard let self = self else {
-                    return Fail(error: BibleAPIError.noData).eraseToAnyPublisher()
+        if storageService.isDownloaded(self.selectedTranslation) {
+            storageService.loadOfflineBook()
+                .receive(on: DispatchQueue.main)
+                .flatMap { [weak self] books -> AnyPublisher<[Verse], BibleAPIError> in
+                    guard let self = self else {
+                        return Fail(error: BibleAPIError.noData).eraseToAnyPublisher()
+                    }
+                    self.books = books
+                    self.selectedBook = books.first { $0.bookid == ref.book }
+                    self.selectedChapter = ref.chapter
+                    
+                    guard let book = self.selectedBook else {
+                        return Fail(error: BibleAPIError.noData).eraseToAnyPublisher()
+                    }
+                    
+                    return storageService.loadOfflineVerses(translation: self.selectedTranslation, book: book.bookid, chapter: ref.chapter)
                 }
-                self.books = books
-                self.selectedBook = books.first { $0.bookid == ref.book }
-                self.selectedChapter = ref.chapter
-                
-                guard let book = self.selectedBook else {
-                    return Fail(error: BibleAPIError.noData).eraseToAnyPublisher()
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] completion in
+                    self?.isLoading = false
+                    if case .failure(let err) = completion {
+                        self?.error = err.localizedDescription
+                    }
+                } receiveValue: { [weak self] verses in
+                    self?.verses = verses
                 }
-                
-                if self.storageService.isDownloaded(self.selectedTranslation) {
-                    return self.storageService.loadOfflineVerses(translation: self.selectedTranslation, book: book.bookid, chapter: ref.chapter)
-                } else {
+                .store(in: &cancellables)
+
+        } else {
+            storageService.loadOfflineBook()
+                .receive(on: DispatchQueue.main)
+                .flatMap{ [weak self] books -> AnyPublisher<[Verse], BibleAPIError> in
+                    guard let self = self else {
+                        return Fail(error: BibleAPIError.noData).eraseToAnyPublisher()
+                    }
+                    self.books = books
+                    self.selectedBook = books.first { $0.bookid == ref.book }
+                    self.selectedChapter = ref.chapter
+                    
+                    guard let book = self.selectedBook else {
+                        return Fail(error: BibleAPIError.noData).eraseToAnyPublisher()
+                    }
+                    
                     return self.apiService.fetchChapter(translation: self.selectedTranslation, book: book.bookid, chapter: ref.chapter)
                 }
-            }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] completion in
-                self?.isLoading = false
-                if case .failure(let err) = completion {
-                    self?.error = err.localizedDescription
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] completion in
+                    self?.isLoading = false
+                    if case .failure(let err) = completion {
+                        self?.error = err.localizedDescription
+                    }
+                } receiveValue: { [weak self] verses in
+                    self?.verses = verses
                 }
-            } receiveValue: { [weak self] verses in
-                self?.verses = verses
-            }
-            .store(in: &cancellables)
+                .store(in: &cancellables)
+        }
+        
+
     }
     
     func changeTranslation(_ translation: String) -> Void {
@@ -232,3 +295,4 @@ class BibleViewModel: ObservableObject {
     
     
 }
+

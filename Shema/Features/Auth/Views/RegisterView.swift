@@ -130,7 +130,10 @@ struct RegisterView: View {
                         )
                         .focused($isConfirmPasswordFocused)
                         
-                        PrimaryButton(title: "Register") {
+                        PrimaryButton(title: "Register",
+                                      backgroundColor: isValid() ? Color.theme.macaw : Color(hex: "37474e"),
+                                      foregroundColor: isValid() ? Color.black : Color(hex: "51636b"),
+                        ) {
                             Task {
                                 await authViewModel.signUp(email: email,
                                                            password: password,
@@ -140,16 +143,6 @@ struct RegisterView: View {
                         }
                         .disabled(authViewModel.isLoading)
                         
-                        
-                        Text("Already have an account? Login")
-                            .font(.fontNunitoBold(size: 14))
-                            .foregroundColor(Color.theme.primaryTextColor)
-                            .multilineTextAlignment(.trailing)
-                            .padding(.trailing, 8)
-                            .onTapGesture {
-                                nav.push(AppDestination.login)
-                            }
-                        
                     }
                     
                 }
@@ -157,14 +150,14 @@ struct RegisterView: View {
                 Spacer()
                 VStack (spacing: 16) {
                     
-                    SecondaryButton(title: "sign up with google", customImage: "google" ) {
+                    SecondaryButton(title: "sign up with google", customImage: "google", foregroundColor: Color.white ) {
                         Task {
                             await authViewModel.signInWithGoogle()
                         }
                     }
                     .disabled(authViewModel.isLoading)
                     
-                    SecondaryButton(title: "sign up with apple", icon: "apple.logo" ) {
+                    SecondaryButton(title: "sign up with apple", icon: "apple.logo", foregroundColor: Color.white ) {
                         Task {
                             await authViewModel.signInWithApple()
                         }
@@ -203,14 +196,16 @@ struct RegisterView: View {
             )
         }
         .onChange(of: authViewModel.authSuccess) { oldValue, newValue in
-            print("Auth changed - old: \(oldValue), new: \(newValue)")
             if newValue {
                 nav.popToRoot()
                 nav.push(AppDestination.tabs)
             }
         }
     }
-        
+    
+    func isValid() -> Bool {
+        return !email.isEmpty && !password.isEmpty && !confirmPassword.isEmpty && !fullName.isEmpty
+    }
 }
 
 #Preview {

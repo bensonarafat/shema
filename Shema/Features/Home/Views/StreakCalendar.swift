@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct StreakCalendar: View {
+    @EnvironmentObject var streakViewModel: StreakViewModel
     @State private var selectedDate = Date()
     @State private var currentWeekIndex = 3
     
@@ -27,7 +28,6 @@ struct StreakCalendar: View {
     }
     
     var body: some View {
-
             TabView (selection: $currentWeekIndex) {
                 ForEach (weeks.indices, id: \.self) { weekIndex in
                     HStack (spacing: 16) {
@@ -47,14 +47,20 @@ struct StreakCalendar: View {
                                             Circle()
                                                 .fill(isSelected ? Color.theme.primaryColor : .clear )
                                         )
-                                    Circle()
-                                        .fill(Color.theme.primaryColor)
-                                        .frame(width: 8, height: 8)
+                                   
+                                    if streakViewModel.streaks.contains(where: { streak in
+                                        streak.date.isInSameDay(as: date)
+                                    }) {
+                                        Circle()
+                                            .fill(Color.theme.primaryColor)
+                                            .frame(width: 8, height: 8)
+                                    }
+                                   
                                 }
                                 .frame(width: geo.size.width, height: geo.size.height)
                                 .contentShape(Rectangle())
                                 .onTapGesture {
-                                    selectedDate = date
+//                                    selectedDate = date
                                 }
                             }
                             
@@ -81,5 +87,7 @@ struct StreakCalendar: View {
 }
 
 #Preview {
+    let streakViewModel = StreakViewModel()
     StreakCalendar()
+        .environmentObject(streakViewModel)
 }

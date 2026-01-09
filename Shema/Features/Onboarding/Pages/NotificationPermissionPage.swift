@@ -48,8 +48,7 @@ struct NotificationPermissionPage: View {
     
     
     func grantNotification ()  {
-        Task {
-            let granted = await NotificationService.shared.requestAuthorization()
+        NotificationService.shared.requestPermission { granted in
             didGrantNotifications = granted
             if granted {
                 onPressed()

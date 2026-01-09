@@ -18,8 +18,6 @@ struct SelectReadTimePage: View {
     @State private var errorMessage = ""
     @State private var showAlert: Bool = false
     
-    let times = ["8:00 AM", "9:00 AM", "10:00 AM", "7:00 PM", "8:00 PM"]
-    
     var body: some View {
         ZStack {
             Color.theme.backgroundColor
@@ -29,7 +27,7 @@ struct SelectReadTimePage: View {
                 Spacer()
                 
                 VStack(alignment: .leading, spacing: 16) {
-                    ForEach (times, id: \.self) { time in
+                    ForEach (lockTimes, id: \.self) { time in
                         Button {
                             selectedTime = time
                             showCustomTimePicker = false

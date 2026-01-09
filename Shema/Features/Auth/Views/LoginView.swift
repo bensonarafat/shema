@@ -51,6 +51,7 @@ struct LoginView: View {
                                 .autocorrectionDisabled(true)
                                 .textContentType(.emailAddress)
                                 
+                                
                         }
                         .padding()
                         .cornerRadius(16)
@@ -84,21 +85,11 @@ struct LoginView: View {
                             )
                             .focused($passwordIsFocused)
                         
-                        HStack {
-                            Spacer()
-                            
-                            Text("Forgot Password?")
-                                .font(.fontNunitoBold(size: 14))
-                                .foregroundColor(Color.theme.primaryTextColor)
-                                .multilineTextAlignment(.trailing)
-                                .padding(.trailing, 8)
-                                .onTapGesture {
-                                    nav.push(AppDestination.forgotPassword)
-                                }
-                        }
-                       
                         
-                        PrimaryButton(title: "Login") {
+                        PrimaryButton(title: "Login",
+                                      backgroundColor: isValid() ? Color.theme.macaw : Color(hex: "37474e"),
+                                      foregroundColor: isValid() ? Color.black : Color(hex: "51636b"),
+                        ) {
                             Task {
                                 await authViewModel.signIn(email: email, password: password)
                             }
@@ -106,13 +97,14 @@ struct LoginView: View {
                         .disabled(authViewModel.isLoading)
                         
                         
-                        Text("Don't have an account? Register")
-                            .font(.fontNunitoBold(size: 14))
-                            .foregroundColor(Color.theme.primaryTextColor)
+                        Text("Forgot Password?")
+                            .textCase(.uppercase)
+                            .font(.fontNunitoBlack(size: 16))
+                            .foregroundColor(Color.theme.macaw)
                             .multilineTextAlignment(.trailing)
                             .padding(.trailing, 8)
                             .onTapGesture {
-                                nav.push(AppDestination.register)
+                                nav.push(AppDestination.forgotPassword)
                             }
 
                     }
@@ -122,12 +114,12 @@ struct LoginView: View {
                 Spacer()
                 VStack (spacing: 16) {
                     
-                    SecondaryButton(title: "sign up with google", customImage: "google" ) {
+                    SecondaryButton(title: "sign up with google", customImage: "google", foregroundColor: Color.white) {
                         Task {
                             await authViewModel.signInWithGoogle()
                         }
                     }.disabled(authViewModel.isLoading)
-                    SecondaryButton(title: "sign up with apple", icon: "apple.logo" ) {
+                    SecondaryButton(title: "sign up with apple", icon: "apple.logo",  foregroundColor: Color.white ) {
                         Task {
                             await authViewModel.signInWithApple()
                         }
@@ -168,6 +160,10 @@ struct LoginView: View {
                 nav.push(AppDestination.tabs)
             }
         }
+    }
+    
+    func isValid() -> Bool {
+        return !email.isEmpty && !password.isEmpty
     }
 }
 

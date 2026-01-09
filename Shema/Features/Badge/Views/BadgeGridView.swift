@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BadgeGridView: View {
     @EnvironmentObject var nav : NavigationManager
-    @StateObject private var viewModel =  BadgeViewModel()
+    @EnvironmentObject var badgeViewModel: BadgeViewModel
     
     let columns = [GridItem(.adaptive(minimum: 120), spacing: 16)]
     
@@ -32,14 +32,14 @@ struct BadgeGridView: View {
             .padding(.horizontal)
             
             LazyVGrid(columns: columns, spacing: 16) {
-                ForEach (viewModel.topSixBadges()) { badge in
+                ForEach (badgeViewModel.topNineBadges()) { badge in
                     VStack {
                         Image(badge.image)
                             .resizable()
                             .scaledToFit()
                             .frame(width: 75, height: 75)
-                            .opacity(viewModel.isUnlocked(badge) ? 1 : 0.5)
-                            .grayscale(viewModel.isUnlocked(badge) ? 0: 1)
+                            .opacity(badgeViewModel.isBadgeCompleted(badgeId: badge.id) ? 1 : 0.5)
+                            .grayscale(badgeViewModel.isBadgeCompleted(badgeId: badge.id) ? 0: 1)
                     }
                     
                 }
@@ -51,6 +51,8 @@ struct BadgeGridView: View {
 
 #Preview {
     let nav = NavigationManager()
+    let badgeViewModel = BadgeViewModel()
     BadgeGridView()
-        .environmentObject(nav);
+        .environmentObject(nav)
+        .environmentObject(badgeViewModel);
 }

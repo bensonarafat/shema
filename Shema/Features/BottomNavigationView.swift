@@ -33,6 +33,7 @@ struct BottomNavigationView: View {
                 CustomTabBar(selectedTab: $selected)
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

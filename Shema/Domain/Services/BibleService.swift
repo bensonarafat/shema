@@ -24,7 +24,7 @@ class BibleService: BibleServiceProtocol {
         session.dataTaskPublisher(for: url)
             .mapError { BibleAPIError.networkError($0) }
             .handleEvents(receiveOutput: { data, _ in
-                print("RAW JSON", String(data: data, encoding: .utf8) ?? "nil")
+//                print("RAW JSON", String(data: data, encoding: .utf8) ?? "nil")
             })
             .map(\.data)
             .decode(type: T.self, decoder: decoder)
@@ -43,12 +43,6 @@ class BibleService: BibleServiceProtocol {
         return fetch(url)
     }
     
-    func fetchBooks(for translation: String) -> AnyPublisher<[Book],  BibleAPIError> {
-        guard let url = URL(string: "\(baseURL)/get-books/\(translation)") else {
-            return Fail(error: BibleAPIError.invalidURL).eraseToAnyPublisher()
-        }
-        return fetch(url)
-    }
     
     func fetchChapter(translation: String, book: Int, chapter: Int) -> AnyPublisher<[Verse], BibleAPIError> {
         guard let url = URL(string: "\(baseURL)/get-text/\(translation)/\(book)/\(chapter)") else {
@@ -113,4 +107,5 @@ class BibleService: BibleServiceProtocol {
             }
             .eraseToAnyPublisher()
     }
+    
 }

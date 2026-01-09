@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct BibleReaderView: View {
-    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var bibleViewModel: BibleViewModel
     
     var body: some View {

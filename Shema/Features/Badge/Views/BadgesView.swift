@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BadgesView: View {
     @EnvironmentObject var nav: NavigationManager
-    @ObservedObject var viewModel: BadgeViewModel;
+    @EnvironmentObject var viewModel: BadgeViewModel;
     let items = [GridItem(.adaptive(minimum: 120), spacing: 16)]
     
     
@@ -22,8 +22,8 @@ struct BadgesView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(width: 80, height: 80)
-                            .opacity(viewModel.isUnlocked(badge) ? 1 : 0.5)
-                            .grayscale(viewModel.isUnlocked(badge) ? 0: 1)
+                            .opacity(viewModel.isBadgeCompleted(badgeId: badge.id ) ? 1 : 0.5)
+                            .grayscale(viewModel.isBadgeCompleted(badgeId: badge.id ) ? 0: 1)
                     }
                 }
             }
@@ -36,6 +36,7 @@ struct BadgesView: View {
 #Preview {
     let nav = NavigationManager()
     let vm = BadgeViewModel()
-    return BadgesView(viewModel: vm)
+    return BadgesView()
+        .environmentObject(vm)
         .environmentObject(nav)
 }

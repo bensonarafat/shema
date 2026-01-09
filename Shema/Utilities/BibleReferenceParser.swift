@@ -31,7 +31,7 @@ class BibleReferenceParser {
         "jude": 65, "revelation": 66, "rev": 66
     ]
     
-    func parse (_ input: String, defaultTranslation: String = "NIV") -> BibleReference? {
+    func parse (_ input: String, defaultTranslation: String = "KJV") -> BibleReference? {
         let cleaned = input.lowercased()
             .replacingOccurrences(of: "vs", with: ":")
             .replacingOccurrences(of: "verse", with: ":")

@@ -19,20 +19,15 @@ struct ShemaApp: App {
     @StateObject private var bibleViewModel = BibleViewModel()
     @StateObject private var navigationManager = NavigationManager()
     @StateObject private var authViewModel = AuthViewModel()
+    @StateObject private var networkMonitor = NetworkMonitor.shared
+    @StateObject private var streakViewModel = StreakViewModel()
+    @StateObject private var currencyViewModel = CurrencyViewModel()
+    @StateObject private var badgeViewModel = BadgeViewModel()
+    @StateObject private var scriptureService = ScriptureService()
     
     init () {
         
-        #if DEBUG
-        
-        // Debug provider for simulator/testing
-        let providerFactory = AppCheckDebugProviderFactory()
-        AppCheck.setAppCheckProviderFactory(providerFactory)
-        #else
-        // DeviceCheck provider for production (physical device only)
-        let providerFactory = AppCheckDebugProviderFactory()
-        AppCheck.setAppCheckProviderFactory(providerFactory)
-        
-        #endif
+        AppCheck.setAppCheckProviderFactory(AppCheckDebugProviderFactory())
         
         FirebaseApp.configure()
         
@@ -55,6 +50,11 @@ struct ShemaApp: App {
                 .environmentObject(bibleViewModel)
                 .environmentObject(navigationManager)
                 .environmentObject(authViewModel)
+                .environmentObject(networkMonitor)
+                .environmentObject(streakViewModel)
+                .environmentObject(currencyViewModel)
+                .environmentObject(badgeViewModel)
+                .environmentObject(scriptureService)
                 .onAppear {
                     scheduleAppRefresh()
                 }
