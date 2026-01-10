@@ -12,6 +12,7 @@ import FirebaseAuth
 
 class StreakViewModel: ObservableObject {
     @Published var streaks: [Streak] = []
+    @Published var totalStreak: Int = 0
     @Published var isSyncing = false
     
     private let streakService: StreakService
@@ -32,7 +33,16 @@ class StreakViewModel: ObservableObject {
               let streaks = try? JSONDecoder().decode([Streak].self, from: data) else {
             return []
         }
+        totalStreak = streaks.count
         return streaks
+    }
+    
+    func isStreakToday () -> Bool {
+        let today = Calendar.current.startOfDay(for: Date())
+        if streaks.contains(where: { Calendar.current.isDate($0.date, inSameDayAs: today)} ) {
+            return true
+        }
+        return false
     }
     
     
@@ -54,6 +64,11 @@ class StreakViewModel: ObservableObject {
         
         // Save locally
         saveLocalStreaks(streaks)
+        
+        DispatchQueue.main.async {
+            self.streaks = streaks
+            self.totalStreak = streaks.count
+        }
         
         // Sync to Firebase
         try await streakService.syncToFirebase(newStreak)

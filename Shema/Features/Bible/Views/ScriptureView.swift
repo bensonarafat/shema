@@ -10,6 +10,7 @@ import Combine
 
 struct ScriptureView: View {
     @EnvironmentObject var bookmarkViewModel: BookmarkViewModel
+    @EnvironmentObject var streakViewModel: StreakViewModel
     let scripture: DailyScripture
     let totalPages: Int
     @State private var totalKeys: Int = 1
@@ -163,7 +164,10 @@ struct ScriptureView: View {
     private func handleContinue() {
            if isLastPage {
                nav.popToRoot()
-               nav.push(AppDestination.streakReward)
+               if !streakViewModel.isStreakToday() {
+                   nav.push(AppDestination.streakReward)
+               }
+
            } else {
                withAnimation {
                    totalKeys += 1

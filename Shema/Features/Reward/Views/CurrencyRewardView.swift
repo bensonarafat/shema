@@ -18,6 +18,8 @@ struct CurrencyRewardView: View {
             VStack {
                 DotLottieAnimation(fileName: "lottie_reward", config: AnimationConfig(autoplay: true, loop: false)).view()
                 Spacer()
+                
+                
                 PrimaryButton(title: "I'm committed",
                               backgroundColor: Color.theme.macaw,
                 ) {

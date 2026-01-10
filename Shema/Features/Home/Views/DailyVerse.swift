@@ -10,6 +10,7 @@ import SwiftUI
 struct DailyVerse: View {
     @EnvironmentObject var nav: NavigationManager
     @EnvironmentObject var scriptureService: ScriptureService
+    @EnvironmentObject var streakViewModel: StreakViewModel
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -29,11 +30,13 @@ struct DailyVerse: View {
                     
                     Spacer()
                     
-                    Image(systemName: "checkmark.circle.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 30)
-                        .foregroundColor(Color.theme.primaryColor)
+                    if streakViewModel.isStreakToday() {
+                        Image(systemName: "checkmark.circle.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30)
+                            .foregroundColor(Color(hex: "f49000"))
+                    }
                         
                 }
                 Text("\(scriptureService.scripture?.reference ?? "")")
@@ -91,7 +94,9 @@ struct DailyVerse: View {
 #Preview {
     let nav = NavigationManager()
     let scriptureService = ScriptureService()
+    let streakViewModel = StreakViewModel()
     DailyVerse()
         .environmentObject(nav)
+        .environmentObject(streakViewModel)
         .environmentObject(scriptureService)
 }

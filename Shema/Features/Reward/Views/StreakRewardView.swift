@@ -10,6 +10,11 @@ import DotLottie
 
 struct StreakRewardView: View {
     @EnvironmentObject var nav: NavigationManager
+    @EnvironmentObject var streakViewModel: StreakViewModel
+    @EnvironmentObject var currencyViewModel: CurrencyViewModel
+    
+    @State private var animateIn = false
+    
     var body: some View {
         ZStack {
             Color.theme.backgroundColor
@@ -19,7 +24,7 @@ struct StreakRewardView: View {
                 DotLottieAnimation(fileName: "lottie_streak", config: AnimationConfig(autoplay: true, loop: true)).view()
                     .frame(width: 250, height: 250)
                 
-                Text("1")
+                Text("\(streakViewModel.totalStreak)")
                     .font(.fontNunitoBlack(size: 100))
                     .foregroundStyle(
                         LinearGradient(
@@ -49,6 +54,17 @@ struct StreakRewardView: View {
                 }
             }
             .padding()
+            .offset(y: animateIn ? 0 : 300)
+            .opacity(animateIn ? 1 : 0)
+            .animation(.spring(response: 0.6, dampingFraction: 0.85), value: animateIn)
+            .onAppear {
+                animateIn = true
+                Task {
+                    await currencyViewModel.addCurrency(value: 20, currencyType: CurrencyType.xp)
+                 try? await streakViewModel.markTodayCompleted()
+                }
+               
+            }
 
             
         }
@@ -59,6 +75,10 @@ struct StreakRewardView: View {
 
 #Preview {
     let nav = NavigationManager()
+    let streakViewModel = StreakViewModel()
+    let currencyViewModel = CurrencyViewModel()
     StreakRewardView()
         .environmentObject(nav)
+        .environmentObject(currencyViewModel)
+        .environmentObject(streakViewModel)
 }
