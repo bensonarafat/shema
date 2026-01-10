@@ -45,14 +45,14 @@ struct StreakCalendar: View {
                                         .frame(width: 35, height: 35)
                                         .background(
                                             Circle()
-                                                .fill(isSelected ? Color.theme.primaryColor : .clear )
+                                                .fill(isSelected ? Color(hex: "f49000") : .clear )
                                         )
                                    
                                     if streakViewModel.streaks.contains(where: { streak in
                                         streak.date.isInSameDay(as: date)
                                     }) {
                                         Circle()
-                                            .fill(Color.theme.primaryColor)
+                                            .fill(Color(hex: "f49000"))
                                             .frame(width: 8, height: 8)
                                     }
                                    

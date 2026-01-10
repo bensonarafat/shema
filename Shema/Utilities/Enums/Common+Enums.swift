@@ -92,6 +92,17 @@ enum UserServiceError: LocalizedError {
     }
 }
 
+enum BookmarkError: LocalizedError {
+    case unkownError(String)
+    
+    var errorDescription: String? {
+        switch self {
+        case .unkownError(let message):
+            return message
+        }
+    }
+}
+
 
 enum StreakError: LocalizedError {
     case notAuthenticated

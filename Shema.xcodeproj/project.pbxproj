@@ -31,6 +31,7 @@
 		5200FFE22F01DCE50080CE33 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 5200FFE12F01DCE50080CE33 /* FirebaseRemoteConfig */; };
 		5200FFE42F01DCE50080CE33 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 5200FFE32F01DCE50080CE33 /* FirebaseStorage */; };
 		5200FFE62F01DCE50080CE33 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 5200FFE52F01DCE50080CE33 /* FirebaseStorageCombine-Community */; };
+		5226D94B2F114F6D006CD72C /* DotLottie in Frameworks */ = {isa = PBXBuildFile; productRef = 5226D94A2F114F6D006CD72C /* DotLottie */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +97,7 @@
 				5200FFBE2F01DCE50080CE33 /* FirebaseAI in Frameworks */,
 				5200FFDE2F01DCE50080CE33 /* FirebaseMessaging in Frameworks */,
 				520002552F053A7C0080CE33 /* GoogleSignInSwift in Frameworks */,
+				5226D94B2F114F6D006CD72C /* DotLottie in Frameworks */,
 				520001372F0274190080CE33 /* RiveRuntime in Frameworks */,
 				5200FFCA2F01DCE50080CE33 /* FirebaseAppDistribution-Beta in Frameworks */,
 				5200FFD62F01DCE50080CE33 /* FirebaseFirestore in Frameworks */,
@@ -200,6 +202,7 @@
 				520001362F0274190080CE33 /* RiveRuntime */,
 				520002522F053A7C0080CE33 /* GoogleSignIn */,
 				520002542F053A7C0080CE33 /* GoogleSignInSwift */,
+				5226D94A2F114F6D006CD72C /* DotLottie */,
 			);
 			productName = Shema;
 			productReference = 52A677CC2E95BAA700A60ABB /* Shema.app */;
@@ -287,6 +290,7 @@
 				5200FFBC2F01DCE50080CE33 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				520001352F0274190080CE33 /* XCRemoteSwiftPackageReference "rive-ios" */,
 				520002512F053A7C0080CE33 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				5226D9492F114F6D006CD72C /* XCRemoteSwiftPackageReference "dotlottie-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 52A677CD2E95BAA700A60ABB /* Products */;
@@ -703,6 +707,14 @@
 				minimumVersion = 12.7.0;
 			};
 		};
+		5226D9492F114F6D006CD72C /* XCRemoteSwiftPackageReference "dotlottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/LottieFiles/dotlottie-ios";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -825,6 +837,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5200FFBC2F01DCE50080CE33 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = "FirebaseStorageCombine-Community";
+		};
+		5226D94A2F114F6D006CD72C /* DotLottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5226D9492F114F6D006CD72C /* XCRemoteSwiftPackageReference "dotlottie-ios" */;
+			productName = DotLottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

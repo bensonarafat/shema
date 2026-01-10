@@ -6,17 +6,21 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ScriptureView: View {
+    @EnvironmentObject var bookmarkViewModel: BookmarkViewModel
     let scripture: DailyScripture
     let totalPages: Int
     @State private var totalKeys: Int = 1
+    @State private var timerRemaining: Int = 3
+    
+    let timer = Timer.publish(every: 1, on: .main, in: .common)
+                      .autoconnect()
+    
     init(scripture: DailyScripture) {
-        
         self.scripture = scripture
         self.totalPages = scripture.verses.count + 3
-        
-        print("Total Pages = \(totalPages)")
     }
     
     @EnvironmentObject private var nav: NavigationManager
@@ -107,10 +111,48 @@ struct ScriptureView: View {
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .animation(.easeInOut, value: currentPage)
                 
+                HStack {
                 
-                PrimaryButton(title: isLastPage ? "Complete" : "Continue") {
-                    handleContinue()
+                    PrimaryButton(
+                        title: timerRemaining == 0 ? isLastPage ? "Complete" : "Continue" : "\(timerRemaining)s",
+                        backgroundColor: timerRemaining == 0 ? Color.theme.secondaryColor : Color(hex: "37474e"),
+                        foregroundColor: timerRemaining == 0 ? Color.black :  Color(hex: "51636b"),
+                    ) {
+                        if timerRemaining == 0 {
+                            handleContinue()
+                        }
+                    }
+                    .disabled(
+                        timerRemaining == 0 ? false : true )
+                    .onReceive(timer) { _ in
+                        if timerRemaining > 0 {
+                            timerRemaining -= 1
+                        }
+                        
+                    }
+                    
+                    if isLastPage {
+                        Button {
+                            Task {
+                            
+                                if bookmarkViewModel.isSaved(scripture.id)  {
+                                    await bookmarkViewModel.deleteBookmark(scripture.id)
+                                } else{
+                                   await bookmarkViewModel.addBookmark(scripture)
+                                }
+                            }
+                        } label: {
+                            Image(systemName:
+                                    bookmarkViewModel.isSaved(scripture.id) ? "bookmark.fill" : "bookmark")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .foregroundColor(Color(hex: "f49000"))
+                                .frame(width: 35, height: 35)
+                        }
+                    }
                 }
+                
+               
             }
             .padding()
             
@@ -120,11 +162,13 @@ struct ScriptureView: View {
     
     private func handleContinue() {
            if isLastPage {
-               nav.pop()
+               nav.popToRoot()
+               nav.push(AppDestination.streakReward)
            } else {
                withAnimation {
                    totalKeys += 1
                    currentPage += 1
+                   timerRemaining = 5
                }
            }
        }

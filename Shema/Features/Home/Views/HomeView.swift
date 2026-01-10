@@ -24,7 +24,7 @@ struct HomeView: View {
                         StreakCalendar()
                             .padding(.horizontal)
                         // Greating
-                        Greating(viewModel: homeViewModel)
+                        GreatingTheme(viewModel: homeViewModel)
                         // Daily Verses
                         DailyVerse()
 //                        // Bible Verses by Theme

@@ -87,8 +87,16 @@ struct ContentView: View {
         case .shemaai(let bibleArg):
             ShemaAIView(bibleArg: bibleArg)
             
+        case .bookmarkDetail(let bookmark):
+            BookmarkDetailsView(bookmark: bookmark)
+            
         case .editProfile:
             EditProfileView()
+            
+        case .streakReward:
+            StreakRewardView()
+        case .currencyReward:
+            CurrencyRewardView()
             
         // Setttings
         case .lockSchedule:

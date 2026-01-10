@@ -25,13 +25,14 @@ class BibleViewModel: ObservableObject {
     private let storageService = BibleStorageService.shared
     private let parser = BibleReferenceParser.shared
     private var cancellables = Set<AnyCancellable>()
+    private let userDefault = UserDefaults.standard
     
     private var translationKey = "translationKey"
     
     init (apiService: BibleServiceProtocol = BibleService.shared) {
         self.apiService = apiService
         downloadedTranslations = Set(storageService.getDownloadedTransations())
-        self.selectedTranslation = UserDefaults.standard.string(forKey: translationKey) ?? "KJV"
+        self.selectedTranslation = userDefault.string(forKey: translationKey) ?? selectedTranslation
     }
     
     func loadInitialData() {
@@ -240,7 +241,7 @@ class BibleViewModel: ObservableObject {
     
     func changeTranslation(_ translation: String) -> Void {
         selectedTranslation = translation;
-        UserDefaults.standard.set(translation, forKey: translationKey)
+        userDefault.set(translation, forKey: translationKey)
         loadChapter()
     }
     

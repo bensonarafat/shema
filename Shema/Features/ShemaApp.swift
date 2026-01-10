@@ -24,6 +24,7 @@ struct ShemaApp: App {
     @StateObject private var currencyViewModel = CurrencyViewModel()
     @StateObject private var badgeViewModel = BadgeViewModel()
     @StateObject private var scriptureService = ScriptureService()
+    @StateObject private var bookmarkViewModel = BookmarkViewModel()
     
     init () {
         
@@ -55,6 +56,7 @@ struct ShemaApp: App {
                 .environmentObject(currencyViewModel)
                 .environmentObject(badgeViewModel)
                 .environmentObject(scriptureService)
+                .environmentObject(bookmarkViewModel)
                 .onAppear {
                     scheduleAppRefresh()
                 }

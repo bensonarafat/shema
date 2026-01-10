@@ -8,16 +8,51 @@
 import SwiftUI
 
 struct BookmarkView: View {
-  
-    let verses = ["Card 1", "Card 2", "Card 3", "Card 4"]
+    @EnvironmentObject var bookmarkViewModel: BookmarkViewModel
+    @EnvironmentObject var nav: NavigationManager
     var body: some View {
-        ScrollView {
-            VStack (spacing: 16) {
-                ForEach (verses, id: \.self) { verse in
-                    CardView(verse: verse)
-                        .padding(.horizontal, 20)
+        ZStack {
+            Color.theme.backgroundColor
+                .ignoresSafeArea()
+            
+            if bookmarkViewModel.bookmarks.isEmpty {
+                
+                VStack (alignment: .center) {
+                
+                    Image("empty-box")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 100, height: 100)
+                    
+                    Text("Add Bookmarks")
+                        .font(.fontNunitoBlack(size: 30))
+                        .foregroundColor(Color.theme.primaryTextColor)
+                    
+                    Text("Don't forget to bookmark the daily verse you like the most so that you can find those later on! ")
+                        .font(.fontNunitoRegular(size: 20))
+                        .foregroundColor(Color.theme.secondaryTextColor)
+                        .multilineTextAlignment(.center)
+                    
+                } .padding()
+
+            } else {
+                ScrollView {
+                    
+                    VStack (spacing: 16) {
+                        ForEach (bookmarkViewModel.bookmarks, id: \.self) { bookmark in
+                            Button {
+                                nav.push(AppDestination.bookmarkDetail(bookmark))
+                            } label: {
+                                CardView(bookmark: bookmark)
+                                    .padding(.horizontal, 20)
+                            }
+                            
+                        }
+                    }
+
                 }
             }
+
         }
         .navigationTitle("Saved")
         .navigationBarTitleDisplayMode(.inline)
@@ -25,33 +60,31 @@ struct BookmarkView: View {
 }
 
 struct CardView: View {
-    let verse: String
+    let bookmark: Bookmark
 
     var body: some View {
-        VStack (spacing: 16) {
+        VStack (spacing: 8) {
             HStack  (alignment: .top) {
-                HStack {
+                HStack () {
                     Image(systemName: "book.pages")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .foregroundColor(.white)
                         .frame(width: 40, height: 40)
-                    VStack (alignment: .leading){
-                        Text("You saved 1 Corinthians 12: 12 NIV")
-                            .foregroundColor(Color.theme.primaryTextColor)
-                            .font(.fontNunitoBold(size: 16))
-                    }
+                    Text("You saved \(bookmark.reference) \(bookmark.verses.first?.book ?? "KJV")")
+                        .foregroundColor(Color.theme.primaryTextColor)
+                        .font(.fontNunitoBold(size: 16))
+                        .multilineTextAlignment(.leading)
           
                 }
                 Spacer()
-                Text("5w")
+                Text("\(bookmark.date.toReadableDate(outputFormat: "EEE, MMM d") ?? "few seconds ago")")
                     .font(.fontNunitoRegular(size: 12))
                     .foregroundColor(Color.theme.primaryTextColor)
-                    
             }
 
-            Text("12 Just as a body, though one, has many parts, but all its many parts form one body, so it is with Christ.")
-                .font(.fontNunitoRegular(size: 14))
+            Text("\(bookmark.verses.first?.text ?? "")")
+                .font(.fontNunitoRegular(size: 16))
                 .foregroundColor(Color.theme.primaryTextColor)
                 .padding(.bottom, 8)
                 .padding(.top, 8)
@@ -65,5 +98,9 @@ struct CardView: View {
 }
 
 #Preview {
+    let vm = BookmarkViewModel()
+    let nav = NavigationManager()
     BookmarkView()
+        .environmentObject(vm)
+        .environmentObject(nav)
 }

@@ -18,6 +18,7 @@ enum AppDestination {
     case bible
     case settings
     case bookmarks
+    case bookmarkDetail(Bookmark)
     case tabs
     case badges
     case themeVerses
@@ -25,6 +26,8 @@ enum AppDestination {
     case scripture(DailyScripture)
     case editProfile
     case shemaai(BibleArg)
+    case streakReward
+    case currencyReward
     
     // Settings
     case lockSchedule
@@ -62,6 +65,8 @@ extension AppDestination: Equatable {
         case (.shemaai, .shemaai):
             // Consider all shemaai destinations equal regardless of associated value
             return true
+        case (.bookmarkDetail, .bookmarkDetail):
+            return true
         default:
             return false
         }
@@ -89,6 +94,9 @@ extension AppDestination: Hashable {
         case .register: hasher.combine(15)
         case .registerNowLater: hasher.combine(16)
         case .forgotPassword: hasher.combine(17)
+        case .currencyReward: hasher.combine(18)
+        case .streakReward: hasher.combine(19)
+        case .bookmarkDetail: hasher.combine(20)
         }
     }
 }
