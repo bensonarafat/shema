@@ -16,11 +16,17 @@ struct DailyScripture : Codable, Identifiable, Hashable  {
     let reference: String
     let theme: String
     let verses: [ScriptureVerse]
+    let xp: Int
+    let gems: Int
+    var keys: Int = 0
     
     init(actionStep: String,
          date: String, prayer: String,
          reflection: String, reference: String,
          theme: String,
+         xp: Int,
+         gems: Int,
+         keys: Int,
          verses: [ScriptureVerse]
     ) {
         self.actionStep = actionStep
@@ -30,6 +36,9 @@ struct DailyScripture : Codable, Identifiable, Hashable  {
         self.reference = reference
         self.theme = theme
         self.verses = verses
+        self.xp = xp
+        self.gems = gems
+        self.keys = keys
     }
     
     static func == (lhs: DailyScripture, rhs: DailyScripture) -> Bool {

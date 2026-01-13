@@ -26,8 +26,8 @@ enum AppDestination {
     case scripture(DailyScripture)
     case editProfile(ProfileViewModel)
     case shemaai(BibleArg)
-    case streakReward
-    case currencyReward
+    case streakReward(DailyScripture)
+    case currencyReward(DailyScripture)
     
     // Settings
     case lockSchedule

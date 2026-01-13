@@ -11,7 +11,7 @@ import Combine
 struct ScriptureView: View {
     @EnvironmentObject var bookmarkViewModel: BookmarkViewModel
     @EnvironmentObject var streakViewModel: StreakViewModel
-    let scripture: DailyScripture
+    var scripture: DailyScripture
     let totalPages: Int
     @State private var totalKeys: Int = 1
     @State private var timerRemaining: Int = 3
@@ -80,7 +80,10 @@ struct ScriptureView: View {
                     }
                     
                     HStack (spacing: 8) {
-                        Text("🔑")
+                        Image("key")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 25, height: 25)
                         Text("\(totalKeys)")
                             .foregroundColor(Color.theme.primaryTextColor)
                     } .font(.fontNunitoBlack(size: 20))
@@ -162,20 +165,21 @@ struct ScriptureView: View {
     }
     
     private func handleContinue() {
-           if isLastPage {
-               nav.popToRoot()
-               if !streakViewModel.isStreakToday() {
-                   nav.push(AppDestination.streakReward)
-               }
-
-           } else {
-               withAnimation {
-                   totalKeys += 1
-                   currentPage += 1
-                   timerRemaining = 5
-               }
-           }
-       }
+        if isLastPage {
+            nav.popToRoot()
+            if !streakViewModel.isStreakToday() {
+                var updatedScripture = scripture
+                updatedScripture.keys = totalKeys
+                nav.push(AppDestination.streakReward(updatedScripture))
+            }
+        } else {
+            withAnimation {
+                totalKeys += 1
+                currentPage += 1
+                timerRemaining = 5
+            }
+        }
+    }
     
     private var isLastPage: Bool {
            currentPage == totalPages - 1

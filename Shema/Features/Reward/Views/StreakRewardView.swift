@@ -13,6 +13,12 @@ struct StreakRewardView: View {
     @EnvironmentObject var streakViewModel: StreakViewModel
     @EnvironmentObject var currencyViewModel: CurrencyViewModel
     
+    let scripture: DailyScripture
+    
+    init (scripture: DailyScripture) {
+        self.scripture = scripture
+    }
+    
     @State private var animateIn = false
     
     var body: some View {
@@ -46,11 +52,11 @@ struct StreakRewardView: View {
                     .padding(.vertical, 16)
                 
                 Spacer()
-                PrimaryButton(title: "Claim 20 XP",
+                PrimaryButton(title: "Claim \(scripture.xp) XP",
                               backgroundColor: Color.theme.macaw,
                 ) {
                     nav.popToRoot()
-                    nav.push(AppDestination.currencyReward)
+                    nav.push(AppDestination.currencyReward(scripture))
                 }
             }
             .padding()
@@ -60,7 +66,7 @@ struct StreakRewardView: View {
             .onAppear {
                 animateIn = true
                 Task {
-                    await currencyViewModel.addCurrency(value: 20, currencyType: CurrencyType.xp)
+                    await currencyViewModel.addCurrency(value: scripture.xp, currencyType: CurrencyType.xp)
                  try? await streakViewModel.markTodayCompleted()
                 }
                
@@ -73,12 +79,12 @@ struct StreakRewardView: View {
     }
 }
 
-#Preview {
-    let nav = NavigationManager()
-    let streakViewModel = StreakViewModel()
-    let currencyViewModel = CurrencyViewModel()
-    StreakRewardView()
-        .environmentObject(nav)
-        .environmentObject(currencyViewModel)
-        .environmentObject(streakViewModel)
-}
+//#Preview {
+//    let nav = NavigationManager()
+//    let streakViewModel = StreakViewModel()
+//    let currencyViewModel = CurrencyViewModel()
+//    StreakRewardView(scripture: DailyScripture())
+//        .environmentObject(nav)
+//        .environmentObject(currencyViewModel)
+//        .environmentObject(streakViewModel)
+//}

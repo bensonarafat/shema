@@ -46,10 +46,10 @@ struct AppDestinationFactory {
             EditProfileView(viewModel: viewModel)
             
         // Rewards
-        case .streakReward:
-            StreakRewardView()
-        case .currencyReward:
-            CurrencyRewardView()
+        case .streakReward(let scripture):
+            StreakRewardView(scripture: scripture)
+        case .currencyReward(let scripture):
+            CurrencyRewardView(scripture: scripture)
             
         // Settings
         case .lockSchedule:
