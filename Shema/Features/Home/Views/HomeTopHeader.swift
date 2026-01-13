@@ -20,6 +20,7 @@ struct HomeTopHeader : View {
                 // Network
                 HStack (spacing: 6) {
                     Image(systemName: "icloud.slash")
+                        .foregroundColor(Color.white)
                     Text("you are offline")
                         .textCase(.uppercase)
                         .foregroundColor(Color.theme.primaryTextColor)
@@ -60,7 +61,6 @@ struct HomeTopHeader : View {
                     .frame(width: geo.size.width, height: geo.size.height)
                 }
                 
-             
                 GeometryReader { geo in
                     HStack(spacing: 8) {
                         Image("streak")

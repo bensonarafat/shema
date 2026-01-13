@@ -24,4 +24,20 @@ class NavigationManager : ObservableObject {
     func popToRoot () {
         path.removeLast(path.count)
     }
+    
+    func replace(with destination: AppDestination) {
+        if !path.isEmpty {
+            path.removeLast()
+        }
+        path.append(destination)
+    }
+    
+    var canGoBack: Bool {
+        !path.isEmpty
+    }
+    
+    // Get current path count
+    var pathCount: Int {
+        path.count
+    }
 }

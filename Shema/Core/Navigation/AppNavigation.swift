@@ -24,7 +24,7 @@ enum AppDestination {
     case themeVerses
     case focus(Focus)
     case scripture(DailyScripture)
-    case editProfile
+    case editProfile(ProfileViewModel)
     case shemaai(BibleArg)
     case streakReward
     case currencyReward

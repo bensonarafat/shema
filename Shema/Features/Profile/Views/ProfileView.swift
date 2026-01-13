@@ -10,7 +10,7 @@ import SwiftUI
 struct ProfileView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var networkMonitor: NetworkMonitor
-    
+    @StateObject private var viewModel = ProfileViewModel()
     var body: some View {
         ZStack {
             Color.theme.backgroundColor
@@ -18,7 +18,7 @@ struct ProfileView: View {
             
             if networkMonitor.isConnected {
                 if authViewModel.isAuthenticated {
-                    ProfilePage()
+                    ProfilePage(profileViewModel: viewModel)
                 } else {
                     AuthCardView(title: "You need a profile to access account")
                 }

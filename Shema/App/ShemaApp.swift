@@ -27,7 +27,7 @@ struct ShemaApp: App {
     @StateObject private var bookmarkViewModel = BookmarkViewModel()
     
     init () {
-        
+        NavigationBarStyle.apply()
         AppCheck.setAppCheckProviderFactory(AppCheckDebugProviderFactory())
         
         FirebaseApp.configure()

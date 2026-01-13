@@ -18,6 +18,7 @@ class BookmarkViewModel: ObservableObject {
     private var userDefault = UserDefaults.standard
     private let bookmarkKey = "local_bookmark"
     private var translationKey = "translationKey"
+    private var authStateHandle: AuthStateDidChangeListenerHandle?
     
     init(bookmarkService: BookmarkService = BookmarkService(),
          authService: AuthService = AuthService()) {
@@ -25,8 +26,39 @@ class BookmarkViewModel: ObservableObject {
         self.authService = authService
         self.selectedTranslation = userDefault.string(forKey: translationKey) ?? selectedTranslation
         fetchBookmarks()
+        
+        // Listen for auth state changes
+        setupAuthStateListener()
     }
     
+    deinit {
+        if let handle = authStateHandle {
+            Auth.auth().removeStateDidChangeListener(handle)
+        }
+    }
+    
+    private func setupAuthStateListener() {
+        authStateHandle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
+            guard let self = self, let user = user else { return }
+            Task {
+                await self.syncRemoteDataLocally(userId: user.uid)
+            }
+        }
+    }
+    
+    private func syncRemoteDataLocally(userId: String) async {
+        do {
+            let remoteBookmarks = try await bookmarkService.fetchUserBookmarks(userId: userId)
+            if let bookmarks = try? JSONEncoder().encode(remoteBookmarks) {
+                userDefault.set(bookmarks, forKey: bookmarkKey)
+                await MainActor.run {
+                    self.bookmarks = remoteBookmarks
+                }
+            }
+        } catch {
+            print("Failed to sync bookmarks: \(error)")
+        }
+    }
     
     func fetchBookmarks() {
         guard let data = userDefault.data(forKey: bookmarkKey) else { return }

@@ -17,6 +17,7 @@ struct BadgeGridView: View {
         VStack {
             HStack {
                 Text("Badges")
+                    .foregroundColor(Color.theme.primaryTextColor)
                     .textCase(.uppercase)
                     .font(.fontNunitoBlack(size: 16))
                     .foregroundColor(.gray)

@@ -195,7 +195,7 @@ struct RegisterView: View {
                 }
             )
         }
-        .onChange(of: authViewModel.authSuccess) { oldValue, newValue in
+        .onChange(of: authViewModel.isAuthenticated) { oldValue, newValue in
             if newValue {
                 nav.popToRoot()
                 nav.push(AppDestination.tabs)

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EditProfileView: View {
-    @StateObject private var viewModel = ProfileViewModel()
+    @ObservedObject var viewModel: ProfileViewModel
     @State private var fullName: String = ""
     @State private var username: String = ""
     @FocusState private var isFullNameFocused: Bool
@@ -152,11 +152,9 @@ struct EditProfileView: View {
         }
         .navigationTitle("Edit Profile")
         .navigationBarTitleDisplayMode(.inline)
-        .onChange(of: viewModel.currentUser) { oldValue, newValue in
-            if let user = newValue {
-                fullName = user.fullName
-                username = user.username
-            }
+        .onAppear {
+            fullName = viewModel.currentUser?.fullName ?? ""
+            username = viewModel.currentUser?.username ?? ""
         }
         .onDisappear {
             usernameCheckTask?.cancel()
@@ -188,5 +186,5 @@ struct EditProfileView: View {
 }
 
 #Preview {
-    EditProfileView()
+    EditProfileView(viewModel: ProfileViewModel())
 }

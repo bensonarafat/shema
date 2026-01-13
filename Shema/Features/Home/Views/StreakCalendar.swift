@@ -34,7 +34,8 @@ struct StreakCalendar: View {
                         ForEach (weeks[weekIndex], id: \.self) { date in
                             let isSelected = calendar.isDate(date, inSameDayAs: selectedDate)
                             GeometryReader { geo in
-                                VStack {
+                                VStack (alignment: .center)  {
+                                    
                                     Text(dayAbbreviation(for: date))
                                         .font(.fontNunitoBold(size: 14))
                                         .foregroundColor(Color.theme.primaryTextColor)
@@ -45,7 +46,16 @@ struct StreakCalendar: View {
                                         .frame(width: 35, height: 35)
                                         .background(
                                             Circle()
-                                                .fill(isSelected ? Color(hex: "f49000") : .clear )
+                                                .stroke(
+                                                    streakViewModel.streaks.contains(where: { streak in
+                                                        streak.date.isInSameDay(as: date)
+                                                    }) ? Color(hex: "f49000") : Color.clear,
+                                                    lineWidth: 1
+                                                )
+                                                .background(
+                                                    Circle()
+                                                        .fill(isSelected ? Color(hex: "f49000") : .clear)
+                                                )
                                         )
                                    
                                     if streakViewModel.streaks.contains(where: { streak in
@@ -54,8 +64,12 @@ struct StreakCalendar: View {
                                         Circle()
                                             .fill(Color(hex: "f49000"))
                                             .frame(width: 8, height: 8)
+                                    } else {
+                                        Rectangle()
+                                            .fill(Color.clear)
+                                            .frame(width: 8, height: 8)
                                     }
-                                   
+
                                 }
                                 .frame(width: geo.size.width, height: geo.size.height)
                                 .contentShape(Rectangle())
@@ -91,3 +105,4 @@ struct StreakCalendar: View {
     StreakCalendar()
         .environmentObject(streakViewModel)
 }
+

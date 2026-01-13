@@ -14,7 +14,6 @@ struct BibleReaderView: View {
         VStack (spacing: 16) {
             // Top bar
             BibleViewTopbar()
-            Divider()
             
             if bibleViewModel.isLoading {
                 LoadingContent()

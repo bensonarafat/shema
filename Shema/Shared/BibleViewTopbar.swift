@@ -73,10 +73,8 @@ struct BibleViewTopbar: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 35, height: 35)
-                    
                 }
                 
-
             }
         }
         .padding(.leading, 8)

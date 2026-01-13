@@ -9,11 +9,11 @@ import SwiftUI
 
 struct ProfilePage: View {
     @EnvironmentObject var nav: NavigationManager
-    @StateObject var profileViewModel = ProfileViewModel()
-    @State private var fullName = ""
-    @State private var username = ""
-    @State private var joined = Date()
-    
+    @ObservedObject var profileViewModel: ProfileViewModel
+    var  yearString : String {
+          let year = Calendar.current.component(.year, from: profileViewModel.currentUser?.createdAt ?? Date())
+          return String(year)
+      }
     let columns : [GridItem] = [
         GridItem(.flexible()),
         GridItem(.flexible()),
@@ -24,7 +24,7 @@ struct ProfilePage: View {
             VStack (alignment: .leading, spacing: 12) {
                            
                 HStack {
-                    Text(fullName)
+                    Text("\(profileViewModel.currentUser?.fullName ?? "")")
                         .font(.fontNunitoBlack(size: 18))
                         .foregroundColor(Color.theme.primaryTextColor)
                     
@@ -35,7 +35,7 @@ struct ProfilePage: View {
                 .padding(.horizontal)
 
                 HStack (spacing: 4) {
-                    Text("@\(username)")
+                    Text("@\(profileViewModel.currentUser?.username ?? "")")
                         .textCase(.uppercase)
                         .font(.fontNunitoBlack(size: 12))
                         .foregroundColor(.gray)
@@ -46,7 +46,7 @@ struct ProfilePage: View {
                         .frame(width: 4, height: 4)
                         .foregroundColor(.gray)
                     
-                    Text("Joined \(Calendar.current.component(.year, from: joined))")
+                    Text("Joined \(yearString)")
                         .textCase(.uppercase)
                         .font(.fontNunitoBlack(size: 12))
                         .foregroundColor(.gray)
@@ -54,7 +54,7 @@ struct ProfilePage: View {
                 .padding(.horizontal)
                 
                 PrimaryButton(title: "Edit Profile") {
-                    nav.push(AppDestination.editProfile)
+                    nav.push(AppDestination.editProfile(profileViewModel))
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 12)
@@ -89,18 +89,12 @@ struct ProfilePage: View {
 
             }
         }
-        .onChange(of: profileViewModel.currentUser) { oldValue, newValue in
-            if let user = newValue {
-                fullName = user.fullName
-                username = user.username
-                joined = user.createdAt
-            }
-        }
     }
 }
 
 #Preview {
     let nav = NavigationManager()
-    ProfilePage()
+    let vm = ProfileViewModel()
+    ProfilePage(profileViewModel:vm)
         .environmentObject(nav)
 }

@@ -16,11 +16,13 @@ class ProfileViewModel : ObservableObject {
     @Published var errorMessage: String?
     @Published var successMessage: String?
     
+    
     private var userService: UserService
     private var authService: AuthService
     private let userDefaults = UserDefaults.standard
     private let currencyKey = "local_currency"
     private let streakKey = "local_streaks"
+    private let userDataKey = "local_user"
     
     init(userService: UserService = UserService(), authService: AuthService = AuthService()) {
         self.userService = userService
@@ -59,33 +61,43 @@ class ProfileViewModel : ObservableObject {
     private func calculateCurrentStreak() -> Int {
         let streaks = loadLocalStreaks()
         guard !streaks.isEmpty else { return 0 }
-        
-        let sortedStreaks = streaks.sorted { $0.date > $1.date }
-        let calendar = Calendar.current
-        let today = calendar.startOfDay(for: Date())
-        
-        var currentStreak = 0
-        var checkDate = today
-        
-        for streak in sortedStreaks {
-            let streakDate = calendar.startOfDay(for: streak.date)
-            
-            if calendar.isDate(streakDate, inSameDayAs: checkDate) {
-                currentStreak += 1
-                checkDate = calendar.date(byAdding: .day, value: -1, to: checkDate)!
-            } else if streakDate < checkDate {
-                // Gap found, stop counting
-                break
-            }
-        }
-        
-        return currentStreak
+        return streaks.count
+//        let sortedStreaks = streaks.sorted { $0.date > $1.date }
+//        let calendar = Calendar.current
+//        let today = calendar.startOfDay(for: Date())
+//        
+//        var currentStreak = 0
+//        var checkDate = today
+//        
+//        for streak in sortedStreaks {
+//            let streakDate = calendar.startOfDay(for: streak.date)
+//            
+//            if calendar.isDate(streakDate, inSameDayAs: checkDate) {
+//                currentStreak += 1
+//                checkDate = calendar.date(byAdding: .day, value: -1, to: checkDate)!
+//            } else if streakDate < checkDate {
+//                // Gap found, stop counting
+//                break
+//            }
+//        }
+//        
+//        return currentStreak
     }
     
     
     func loadCurrentUser() {
+        
+       
+        if let data = userDefaults.data(forKey: userDataKey),
+           let cached = try? JSONDecoder().decode(ShemaUser.self, from: data){
+            self.currentUser = cached
+        }
+        if currentUser != nil {
+            return
+        }
+        
         guard let userId = authService.currentUser?.uid else {
-            errorMessage = "User not authenticated"
+            self.errorMessage = "User not authenticated"
             return
         }
         
@@ -94,23 +106,30 @@ class ProfileViewModel : ObservableObject {
             
             do {
                 let user = try await userService.getUser(userId: userId)
-
+                
+                // Save to cache
+                if let data = try? JSONEncoder().encode(user) {
+                    userDefaults.set(data, forKey: userDataKey)
+                }
+                
                 await MainActor.run {
                     self.currentUser = user
-                    self.isLoading = false
                     self.errorMessage = nil
+                    self.isLoading = false
                 }
             } catch {
                 await MainActor.run {
-                    self.errorMessage = "Failed to load user: \(error.localizedDescription)"
+                    self.errorMessage = currentUser == nil
+                    ? "Failed to load user" : nil
                     self.isLoading = false
+                    
                 }
             }
         }
     }
     
     func updateProfile(fullName: String, username: String) async -> Bool {
-        guard let userId = authService.currentUser?.uid else {
+        guard (authService.currentUser?.uid) != nil else {
             await MainActor.run {
                 self.errorMessage = "User not authenticated"
             }
@@ -168,8 +187,8 @@ class ProfileViewModel : ObservableObject {
             updatedUser.username = username.lowercased().trimmingCharacters(in: .whitespaces)
             
             // Update in Firestore
-            _ = try await userService.updateUser(shemaUser: updatedUser)
-            
+            let shemaUser = try await userService.updateUser(shemaUser: updatedUser)
+            storeLocalUser(shemaUser)
             await MainActor.run {
                 self.currentUser = updatedUser
                 self.successMessage = "Profile updated successfully"
@@ -185,6 +204,12 @@ class ProfileViewModel : ObservableObject {
                 self.isLoading = false
             }
             return false
+        }
+    }
+    
+    private func storeLocalUser(_ user: ShemaUser) {
+        if let data = try? JSONEncoder().encode(user) {
+            userDefaults.set(data, forKey: userDataKey)
         }
     }
     

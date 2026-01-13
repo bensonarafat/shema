@@ -17,11 +17,13 @@ struct GreatingTheme: View {
         HStack (alignment: .top, spacing: 8){
             Image(systemName: viewModel.greetings.icon)
                 .font(.system(size: 14, weight: .bold))
+                .foregroundColor(Color.theme.primaryTextColor)
             
             Text(scriptureService.scripture?.theme ?? viewModel.greetings.text)
                 .textCase(.uppercase)
                 .font(.fontNunitoBlack(size: 16))
                 .fontWeight(.heavy)
+                .foregroundColor(Color.theme.primaryTextColor)
             
             Spacer()
             if scriptureService.scripture?.theme != nil {

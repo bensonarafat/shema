@@ -20,13 +20,49 @@ class StreakViewModel: ObservableObject {
     
     private let userDefaults = UserDefaults.standard
     private let streakKey = "local_streaks"
+    private var authStateHandle: AuthStateDidChangeListenerHandle?
     
     init(streakService: StreakService = StreakService(),
          authService: AuthService = AuthService() ) {
         self.streakService = streakService
         self.authService = authService
         self.streaks = loadLocalStreaks()
+        
+        // Listen for auth state changes
+        setupAuthStateListener()
     }
+    
+    deinit {
+        if let handle = authStateHandle {
+            Auth.auth().removeStateDidChangeListener(handle)
+        }
+    }
+    
+    private func setupAuthStateListener() {
+        authStateHandle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
+            guard let self = self, let user = user else { return }
+            Task {
+                await self.syncRemoteDataLocally(userId: user.uid)
+            }
+        }
+    }
+    
+    private func syncRemoteDataLocally(userId: String) async {
+        do {
+            let remoteStreaks = try await streakService.getStreaks(userId: userId)
+            if let data = try? JSONEncoder().encode(remoteStreaks) {
+                userDefaults.set(data, forKey: streakKey)
+                
+                await MainActor.run {
+                    self.streaks = remoteStreaks
+                    self.totalStreak = remoteStreaks.count
+                }
+            }
+        } catch {
+            print("Failed to sync streaks: \(error)")
+        }
+    }
+    
     
     func loadLocalStreaks() -> [Streak] {
         guard let data = userDefaults.data(forKey: streakKey),

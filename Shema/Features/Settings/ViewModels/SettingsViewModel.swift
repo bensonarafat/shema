@@ -24,6 +24,7 @@ class SettingsViewModel : ObservableObject {
     private let customTimeKey = "customTime"
     
     private let userDefaults = UserDefaults.standard
+    private var authStateHandle: AuthStateDidChangeListenerHandle?
     
     init(userService: UserService = UserService(), authService: AuthService = AuthService()) {
         self.userService = userService
@@ -34,12 +35,42 @@ class SettingsViewModel : ObservableObject {
         if let savedCustomTime = userDefaults.object(forKey: customTimeKey) as? Date {
             self.customTime = savedCustomTime
         }
+        
+        // Listen for auth state changes
+        setupAuthStateListener()
+    }
+    
+    deinit {
+        if let handle = authStateHandle {
+            Auth.auth().removeStateDidChangeListener(handle)
+        }
+    }
+    
+    private func setupAuthStateListener() {
+        authStateHandle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
+            guard let self = self, let user = user else { return }
+            Task {
+                await self.syncRemoteDataLocally(userId: user.uid)
+            }
+        }
+    }
+    
+    private func syncRemoteDataLocally(userId: String) async {
+        do {
+            let shemaUser = try await userService.getUser(userId: userId)
+            userDefaults.set(shemaUser.pushNotification, forKey: pushNotificationKey)
+            await MainActor.run {
+                self.pushNotification = shemaUser.pushNotification
+            }
+        } catch {
+            print("Failed to sync notifications \(error)")
+        }
     }
     
     
     @MainActor
     func updateNotificationSettings(_ val: Bool) async {
-        checkNetwork()
+        guard checkNetwork() else { return }
         guard let userId = authService.currentUser?.uid else {
             return
         }
@@ -58,7 +89,7 @@ class SettingsViewModel : ObservableObject {
     
     @MainActor
     func setReadTime (time: String) async {
-        checkNetwork()
+        guard checkNetwork() else { return }
         selectedReadTime = time
         guard let userId = authService.currentUser?.uid else {
             return
@@ -80,7 +111,7 @@ class SettingsViewModel : ObservableObject {
     
   @MainActor
     func setBibleBook (book: String) async {
-        checkNetwork()
+        guard checkNetwork() else { return }
         guard let userId = authService.currentUser?.uid else {
             return
         }
@@ -95,9 +126,10 @@ class SettingsViewModel : ObservableObject {
         }
     }
     
-   func checkNetwork() {
+   func checkNetwork() -> Bool {
         guard networkMonitor.isConnected else {
-            return
+            return false
         }
+       return true
     }
 }

@@ -12,55 +12,62 @@ import FirebaseAuth
 class AuthViewModel: ObservableObject {
     @Published var hasCompleteAuthStep: Bool
     @Published var isAuthenticated: Bool = false
-    @Published var authSuccess: Bool = false
+//    @Published var authSuccess: Bool = false
     @Published var currentUser: User?
-    @Published var isCheckingAuth: Bool = true
+    @Published var shemaUser: ShemaUser?
     @Published var isLoading: Bool = false
     @Published var errorMessage: AuthErrorMessage?
     
     private let authService: AuthService
     private let userService: UserService
     private let streakService: StreakService
-    private var authStateHandle: AuthStateDidChangeListenerHandle?
     private let completeAuthStepKey = "hasCompleteAuthStep"
+    private let userDataKey = "local_user"
     
     private let userDefaults = UserDefaults.standard
     private let networkMonitor = NetworkMonitor.shared
     
-    init(authService: AuthService = AuthService(), userService: UserService = UserService(), streakService: StreakService = StreakService()) {
+    init(authService: AuthService = AuthService(),
+         userService: UserService = UserService(),
+         streakService: StreakService = StreakService(),
+    ) {
         self.hasCompleteAuthStep = userDefaults.bool(forKey: completeAuthStepKey)
         self.authService = authService
         self.userService = userService
         self.streakService = streakService
-        setupAuthStateListener()
-    }
-    
-    deinit {
-        if let handle = authStateHandle {
-            Auth.auth().removeStateDidChangeListener(handle)
-        }
+        fetchUserLocalData()
     }
     
     func completeAuthStep() {
-         
         userDefaults.set(true, forKey: completeAuthStepKey)
     }
     
-    private func setupAuthStateListener() {
-        
-        checkNetwork()
-        
-        authStateHandle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
-            Task { @MainActor in
-                self?.currentUser = user
-                self?.isAuthenticated = user != nil
-                self?.isCheckingAuth = false
-            }
+    private func syncRemoteDataLocally(_ user: ShemaUser) async {
+        if let data = try? JSONEncoder().encode(user) {
+            userDefaults.set(data, forKey: userDataKey)
         }
+    
     }
     
+    private func fetchUserLocalData () {
+        guard let data = userDefaults.data(forKey: userDataKey) else {
+            self.isAuthenticated = false
+            return
+        }
+        if let cached = try? JSONDecoder().decode(ShemaUser.self, from: data) {
+            self.shemaUser = cached
+        }
+        self.isAuthenticated = true
+    }
+    
+    
+    
     func signUp(email: String, password: String, fullName: String, confirmPassword: String) async {
-        checkNetwork()
+        guard checkNetwork() else {
+            errorMessage = AuthErrorMessage(message: "Please check your internet connection")
+            isLoading = false
+            return
+        }
         
         isLoading = true
         errorMessage = nil
@@ -78,9 +85,10 @@ class AuthViewModel: ObservableObject {
             let user = try await authService.signUpUser(email: email, password: password)
             // extract username from email address
             let username = email.usernameFromEmail
-            _ = try await userService.createUser(shemaUser: ShemaUser(id: user.uid, fullName: fullName, username: username, email: email))
-            Task { @MainActor in
-                self.authSuccess = true
+            let shemaUser: ShemaUser = try await userService.createUser(shemaUser: ShemaUser(id: user.uid, fullName: fullName, username: username, email: email))
+            await syncRemoteDataLocally(shemaUser)
+            await MainActor.run {
+                self.isAuthenticated = true
             }
 
         } catch let error as AuthError {
@@ -93,7 +101,7 @@ class AuthViewModel: ObservableObject {
     }
     
     func refreshAuthToken() async {
-        checkNetwork()
+        guard checkNetwork() else { return }
         
         guard let user = authService.currentUser else {
             await MainActor.run {
@@ -118,15 +126,21 @@ class AuthViewModel: ObservableObject {
     }
     
     func signIn(email: String, password: String) async {
-        checkNetwork()
+        guard checkNetwork() else {
+            errorMessage = AuthErrorMessage(message: "Please check your internet connection")
+            isLoading = false
+            return
+        }
         
         isLoading = true
         errorMessage = nil
         
         do {
-            let _ = try await authService.sigInUser(email: email, password: password)
-            Task { @MainActor in
-                self.authSuccess = true
+            let user = try await authService.sigInUser(email: email, password: password)
+            let shemaUser = try await userService.getUser(userId: user.uid)
+            await syncRemoteDataLocally(shemaUser)
+            await MainActor.run {
+                self.isAuthenticated = true
             }
 
         } catch let error as AuthError {
@@ -138,7 +152,11 @@ class AuthViewModel: ObservableObject {
     }
     
     func signInWithGoogle() async {
-        checkNetwork()
+        guard checkNetwork() else {
+            errorMessage = AuthErrorMessage(message: "Please check your internet connection")
+            isLoading = false
+            return
+        }
         
         isLoading = true
         errorMessage = nil
@@ -146,9 +164,10 @@ class AuthViewModel: ObservableObject {
         do {
             let user = try await authService.signInWithGoogle()
             let username = user.email!.usernameFromEmail
-            _ = try await userService.createUser(shemaUser: ShemaUser(id: user.uid, fullName: user.displayName ?? "Unknown user", username: username, email: user.email!))
-            Task { @MainActor in
-                self.authSuccess = true
+            let shemaUser = try await userService.createUser(shemaUser: ShemaUser(id: user.uid, fullName: user.displayName ?? "Unknown user", username: username, email: user.email!))
+            await syncRemoteDataLocally(shemaUser)
+            await MainActor.run {
+                self.isAuthenticated = true
             }
         }catch let error as AuthError {
             errorMessage = AuthErrorMessage(message:error.errorDescription ?? "Oops! an error occurred" )
@@ -160,7 +179,11 @@ class AuthViewModel: ObservableObject {
     }
     
     func signInWithApple() async {
-        checkNetwork()
+        guard checkNetwork() else {
+            errorMessage = AuthErrorMessage(message: "Please check your internet connection")
+            isLoading = false
+            return
+        }
         
         isLoading = true
         errorMessage = nil
@@ -168,9 +191,10 @@ class AuthViewModel: ObservableObject {
         do {
             let user = try await authService.signInwithApple()
             let username = user.email!.usernameFromEmail
-            _ = try await userService.createUser(shemaUser: ShemaUser(id: user.uid,  fullName: user.displayName ?? "Unknown user", username: username, email: user.email!))
-            Task { @MainActor in
-                self.authSuccess = true
+            let shemaUser = try await userService.createUser(shemaUser: ShemaUser(id: user.uid,  fullName: user.displayName ?? "Unknown user", username: username, email: user.email!))
+            await syncRemoteDataLocally(shemaUser)
+            await MainActor.run {
+                self.isAuthenticated = true
             }
         } catch let error as AuthError {
             errorMessage = AuthErrorMessage(message:error.errorDescription ?? "Oops! an error occurred" )
@@ -193,8 +217,11 @@ class AuthViewModel: ObservableObject {
     }
     
     func deleteAccount () async -> Bool {
-        checkNetwork()
-        
+        guard checkNetwork() else {
+            errorMessage = AuthErrorMessage(message: "Please check your internet connection")
+            isLoading = false
+            return false
+        }
         isLoading = true
         errorMessage = nil
         do {
@@ -213,8 +240,11 @@ class AuthViewModel: ObservableObject {
     }
     
     func resetPassword (email: String) async -> Bool {
-        checkNetwork()
-        
+        guard checkNetwork() else {
+            errorMessage = AuthErrorMessage(message: "Please check your internet connection")
+            isLoading = false
+            return false
+        }
         isLoading = true
         errorMessage = nil
         do {
@@ -236,11 +266,11 @@ class AuthViewModel: ObservableObject {
         errorMessage = nil
     }
     
-    func checkNetwork() {
+    func checkNetwork() ->  Bool {
         guard networkMonitor.isConnected else {
-            errorMessage = AuthErrorMessage(message: "Please check your internet connection")
-            return
+            return false
         }
+        return true
     }
     
     func clearUserDefaults() {

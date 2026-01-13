@@ -17,6 +17,7 @@ class CurrencyViewModel: ObservableObject {
     
     private var userService: UserService
     private var authService: AuthService
+    private var authStateHandle: AuthStateDidChangeListenerHandle?
     
     init(userService : UserService = UserService(),
          authService: AuthService = AuthService()) {
@@ -24,8 +25,43 @@ class CurrencyViewModel: ObservableObject {
         self.userService = userService
         self.authService = authService
         loadLocalCurrency()
+        // Listen for auth state changes
+        setupAuthStateListener()
+    }
+    
+    deinit {
+        if let handle = authStateHandle {
+            Auth.auth().removeStateDidChangeListener(handle)
+        }
+    }
+    
+    private func setupAuthStateListener() {
+        authStateHandle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
+            guard let self = self, let user = user else { return }
+            Task {
+                await self.syncRemoteDataLocally(userId: user.uid)
+            }
+        }
     }
 
+    
+    private func syncRemoteDataLocally(userId: String) async {
+        do {
+            let shemaUser = try await userService.getUser(userId: userId)
+            if let currency = try? JSONEncoder().encode(shemaUser.currency) {
+                userDefaults.set(currency, forKey: currencyKey)
+                
+                await MainActor.run {
+                    if shemaUser.currency != nil {
+                        self.currency = shemaUser.currency!
+                    }
+                }
+            }
+        } catch {
+            print("Failed to sync currency: \(error)")
+        }
+    }
+    
     
    func loadLocalCurrency() {
        guard let data = userDefaults.data(forKey: currencyKey),

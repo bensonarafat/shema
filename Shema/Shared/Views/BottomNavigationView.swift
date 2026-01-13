@@ -30,14 +30,20 @@ struct BottomNavigationView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .safeAreaInset(edge: .bottom) {
-                CustomTabBar(selectedTab: $selected)
+                VStack {
+                    CustomTabBar(selectedTab: $selected)
+                }
+                .background(Color.theme.backgroundColor)
+      
             }
         }
+        .ignoresSafeArea(edges: .bottom)
         .navigationBarBackButtonHidden(true)
     }
 }
 
 #Preview {
     var nav = NavigationManager()
-    BottomNavigationView().environmentObject(nav);
+    BottomNavigationView()
+        .environmentObject(nav);
 }

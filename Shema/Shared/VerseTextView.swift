@@ -23,7 +23,7 @@ struct VerseTextView: View {
                 
                 Text(verse.cleanText)
                     .font(.fontNunitoBold(size: 18))
-                    .foregroundColor(.primary)
+                    .foregroundColor(Color.theme.primaryTextColor)
                     .lineSpacing(8)
                     .underline(isSelected, pattern: .dashDotDot, color: .primary)
 
