@@ -35,7 +35,7 @@ enum AppDestination {
     // Auth
     case login
     case register
-    case registerNowLater
+    case registerNowLater(Bool)
     case forgotPassword
 }
 

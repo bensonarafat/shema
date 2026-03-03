@@ -11,6 +11,7 @@ import Combine
 struct ScriptureView: View {
     @EnvironmentObject var bookmarkViewModel: BookmarkViewModel
     @EnvironmentObject var streakViewModel: StreakViewModel
+    @EnvironmentObject var familyControlViewModel: FamilyControlViewModel
     var scripture: DailyScripture
     let totalPages: Int
     @State private var totalKeys: Int = 1
@@ -168,6 +169,8 @@ struct ScriptureView: View {
         if isLastPage {
             nav.popToRoot()
             if !streakViewModel.isStreakToday() {
+                // unlock apps
+                familyControlViewModel.appBlockingService.markReadingComplete()
                 var updatedScripture = scripture
                 updatedScripture.keys = totalKeys
                 nav.push(AppDestination.streakReward(updatedScripture))
@@ -176,7 +179,7 @@ struct ScriptureView: View {
             withAnimation {
                 totalKeys += 1
                 currentPage += 1
-                timerRemaining = 5
+                timerRemaining = 3
             }
         }
     }

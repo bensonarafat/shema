@@ -7,6 +7,6 @@
 
 import Foundation
 
-let lockTimes = ["8:00 AM", "9:00 AM", "10:00 AM", "7:00 PM", "8:00 PM"]
+let lockTimes = ["4:00 AM", "5:00 AM", "6:00 AM", "7:00 PM", "8:00 PM"]
 
 let bibleTransalations = [ "KJV", "RSV", "ESV", "NIV", "NLV", "GNT" ]

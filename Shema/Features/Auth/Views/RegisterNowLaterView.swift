@@ -10,6 +10,9 @@ import SwiftUI
 struct RegisterNowLaterView: View {
     @EnvironmentObject private var nav: NavigationManager
     @EnvironmentObject private var authViewModel: AuthViewModel
+    
+    let fromOnboarding: Bool
+    
     var body: some View {
         ZStack {
             Color.theme.backgroundColor
@@ -31,13 +34,14 @@ struct RegisterNowLaterView: View {
             }
             .padding()
         }
+        .navigationBarBackButtonHidden(fromOnboarding)
     }
 }
 
 #Preview {
     let vm = AuthViewModel()
     let nav = NavigationManager()
-    RegisterNowLaterView()
+    RegisterNowLaterView(fromOnboarding: false)
         .environmentObject(vm)
         .environmentObject(nav)
 }

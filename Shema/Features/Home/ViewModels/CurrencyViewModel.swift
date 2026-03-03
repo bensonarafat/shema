@@ -80,6 +80,11 @@ class CurrencyViewModel: ObservableObject {
     
     
     func addCurrency(value: Int, currencyType: CurrencyType) async {
+        
+        await MainActor.run {
+            self.saveLocalCurrency()
+        }
+        
         guard let userId = authService.currentUser?.uid else {
             return
         }
@@ -103,13 +108,11 @@ class CurrencyViewModel: ObservableObject {
         }
         
         do {
-            
             var updatedUser = shemaUser
             updatedUser.currency = newCurrency
             _ = try await userService.updateUser(shemaUser: updatedUser)
             await MainActor.run {
                 self.currency = newCurrency
-                self.saveLocalCurrency()
             }
         } catch {
             // Optionally handle the error (e.g., log or publish an error state)

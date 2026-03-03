@@ -278,22 +278,6 @@ class BibleViewModel: ObservableObject {
     }
     
     
-    func loadTodaysReading () {
-        
-    }
-    
-    func startReading () {
-        
-    }
-    
-    func completeReading () {
-        
-    }
-    
-    func resetDaily() {
-        
-    }
-    
     
 }
 

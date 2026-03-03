@@ -23,6 +23,7 @@ class AppBlockingService: ObservableObject{
     private let center = AuthorizationCenter.shared
     private let selectionKey = "savedFamilyActivitySelection"
     private let blockingStatusKey = "isBlockingActive"
+    private let lastReadingDateKey = "lastBibleReadingDate"
     private var userDefaults = UserDefaults.standard;
     
     init () {
@@ -130,5 +131,20 @@ class AppBlockingService: ObservableObject{
      func isBlocking() -> Bool {
          return isBlockingActive
      }
+    
+    func hasCompletedReadingToday() -> Bool {
+        guard let lastReadingDate = userDefaults.object(forKey: lastReadingDateKey) as? Date else {
+            return false;
+        }
+        let calendar = Calendar.current
+        return calendar.isDateInToday(lastReadingDate)
+    }
+    
+    func markReadingComplete() {
+        userDefaults.set(Date(), forKey: lastReadingDateKey)
+        //Update app blocking status
+        disableBlocking()
+        print("Bible reading marked complete - apps unlocked")
+    }
 }
 

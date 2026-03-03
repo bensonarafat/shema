@@ -42,7 +42,6 @@ class BibleStorageService {
                 let books = try JSONDecoder().decode([Book].self, from: data)
                 promise(.success(books))
             } catch {
-                print("FILE- not found \(error)")
                 promise(.failure(.fileError(error)))
             }
         }.eraseToAnyPublisher()

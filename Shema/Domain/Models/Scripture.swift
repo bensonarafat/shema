@@ -18,7 +18,29 @@ struct DailyScripture : Codable, Identifiable, Hashable  {
     let verses: [ScriptureVerse]
     let xp: Int
     let gems: Int
-    var keys: Int = 0
+    var keys: Int
+    var fromOnboarding: Bool
+    
+    
+    enum CodingKeys: String, CodingKey {
+           case actionStep, date, prayer, reflection, reference, theme, verses, xp, gems, keys, fromOnboarding
+       }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        actionStep = try container.decode(String.self, forKey: .actionStep)
+        date = try container.decode(String.self, forKey: .date)
+        prayer = try container.decode(String.self, forKey: .prayer)
+        reflection = try container.decode(String.self, forKey: .reflection)
+        reference = try container.decode(String.self, forKey: .reference)
+        theme = try container.decode(String.self, forKey: .theme)
+        verses = try container.decode([ScriptureVerse].self, forKey: .verses)
+        xp = try container.decode(Int.self, forKey: .xp)
+        gems = try container.decode(Int.self, forKey: .gems)
+        keys = try container.decodeIfPresent(Int.self, forKey: .keys) ?? 0
+        fromOnboarding = try container.decodeIfPresent(Bool.self, forKey: .fromOnboarding) ?? false
+    }
     
     init(actionStep: String,
          date: String, prayer: String,
@@ -26,7 +48,6 @@ struct DailyScripture : Codable, Identifiable, Hashable  {
          theme: String,
          xp: Int,
          gems: Int,
-         keys: Int,
          verses: [ScriptureVerse]
     ) {
         self.actionStep = actionStep
@@ -38,7 +59,8 @@ struct DailyScripture : Codable, Identifiable, Hashable  {
         self.verses = verses
         self.xp = xp
         self.gems = gems
-        self.keys = keys
+        self.keys = 0
+        self.fromOnboarding = false
     }
     
     static func == (lhs: DailyScripture, rhs: DailyScripture) -> Bool {

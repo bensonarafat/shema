@@ -9,7 +9,7 @@ import Foundation
 
 struct Streak : Codable, Identifiable {
     let id: UUID
-    let userId: String
+    var userId: String
     let date: Date
     
     enum CodingKeys: String, CodingKey {

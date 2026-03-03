@@ -12,6 +12,7 @@ struct StreakRewardView: View {
     @EnvironmentObject var nav: NavigationManager
     @EnvironmentObject var streakViewModel: StreakViewModel
     @EnvironmentObject var currencyViewModel: CurrencyViewModel
+    @State private var rewarded = false
     
     let scripture: DailyScripture
     
@@ -65,6 +66,8 @@ struct StreakRewardView: View {
             .animation(.spring(response: 0.6, dampingFraction: 0.85), value: animateIn)
             .onAppear {
                 animateIn = true
+                guard !rewarded else {return}
+                rewarded = true
                 Task {
                     await currencyViewModel.addCurrency(value: scripture.xp, currencyType: CurrencyType.xp)
                  try? await streakViewModel.markTodayCompleted()

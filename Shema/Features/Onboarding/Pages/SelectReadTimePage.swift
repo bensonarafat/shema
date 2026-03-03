@@ -119,7 +119,7 @@ struct SelectReadTimePage: View {
                     
                     onboardingViewModel.completeOnboarding()
                     nav.popToRoot()
-                    nav.push(AppDestination.registerNowLater)
+                    nav.push(AppDestination.registerNowLater(false))
                 }
                 .disabled(selectedTime == nil)
             }

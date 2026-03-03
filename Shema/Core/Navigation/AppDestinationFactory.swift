@@ -60,8 +60,8 @@ struct AppDestinationFactory {
             LoginView()
         case .register:
             RegisterView()
-        case .registerNowLater:
-            RegisterNowLaterView()
+        case .registerNowLater(let fromOnboarding):
+            RegisterNowLaterView(fromOnboarding: fromOnboarding)
         case .forgotPassword:
             ForgotPasswordView()
         }

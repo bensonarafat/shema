@@ -43,7 +43,39 @@ class StreakViewModel: ObservableObject {
             guard let self = self, let user = user else { return }
             Task {
                 await self.syncRemoteDataLocally(userId: user.uid)
+                // Sync local streaks to Firebase when user logs in
+                await self.syncLocalStreaksToFirebase(userId: user.uid)
             }
+        }
+    }
+    
+    // Add this new method
+    private func syncLocalStreaksToFirebase(userId: String) async {
+        let localStreaks = loadLocalStreaks()
+        
+        // Upload any local streaks that were created offline
+        for streak in localStreaks where streak.userId == "local_user" {
+            // Update streak with actual userId
+            var updatedStreak = streak
+            updatedStreak.userId = userId
+            
+            try? await streakService.syncToFirebase(updatedStreak)
+        }
+        
+        // Update local storage with correct userId
+        let updatedStreaks = localStreaks.map { streak -> Streak in
+            if streak.userId == "local_user" {
+                var updated = streak
+                updated.userId = userId
+                return updated
+            }
+            return streak
+        }
+        
+        saveLocalStreaks(updatedStreaks)
+        
+        await MainActor.run {
+            self.streaks = updatedStreaks
         }
     }
     
@@ -83,10 +115,8 @@ class StreakViewModel: ObservableObject {
     
     
     func markTodayCompleted() async throws {
-        guard let userId = authService.currentUser?.uid else {
-            throw StreakError.notAuthenticated
-        }
-        
+
+
         let today = Calendar.current.startOfDay(for: Date())
         var streaks = loadLocalStreaks()
         
@@ -94,6 +124,8 @@ class StreakViewModel: ObservableObject {
         if streaks.contains(where: { Calendar.current.isDate($0.date, inSameDayAs: today) }) {
             return
         }
+        
+        let userId = authService.currentUser?.uid ?? "local_user"
         
         let newStreak = Streak(id: UUID(), userId: userId, date: today)
         streaks.append(newStreak)
@@ -106,8 +138,10 @@ class StreakViewModel: ObservableObject {
             self.totalStreak = streaks.count
         }
         
-        // Sync to Firebase
-        try await streakService.syncToFirebase(newStreak)
+        // Sync to Firebase only if user is authenticated
+        if authService.currentUser != nil {
+            try? await streakService.syncToFirebase(newStreak)
+        }
         
     }
     

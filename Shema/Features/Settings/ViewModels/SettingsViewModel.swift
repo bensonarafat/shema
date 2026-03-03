@@ -4,7 +4,6 @@
 //
 //  Created by Benson Arafat on 06/01/2026.
 //
-
 import Foundation
 import Combine
 import FirebaseAuth
@@ -25,6 +24,8 @@ class SettingsViewModel : ObservableObject {
     
     private let userDefaults = UserDefaults.standard
     private var authStateHandle: AuthStateDidChangeListenerHandle?
+    
+    static let rescheduleBackgroundTasksNotification = Notification.Name("RescheduleBackgroundTasksNotification")
     
     init(userService: UserService = UserService(), authService: AuthService = AuthService()) {
         self.userService = userService
@@ -103,6 +104,8 @@ class SettingsViewModel : ObservableObject {
             if selectedReadTime == "Custom" {
                 userDefaults.set(customTime, forKey: customTimeKey)
             }
+            // Reschedule background tasks with new time
+            rescheduleBackgroundTasks()
         } catch {
             print("Failed to fetch user: \(error)")
         }
@@ -132,4 +135,10 @@ class SettingsViewModel : ObservableObject {
         }
        return true
     }
+    
+    private func rescheduleBackgroundTasks() {
+        NotificationCenter.default.post(name: SettingsViewModel.rescheduleBackgroundTasksNotification, object: nil)
+        print("Requested background task reschedule via notification")
+    }
 }
+

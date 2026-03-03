@@ -10,9 +10,11 @@ import FamilyControls
 import ManagedSettings
 
 struct SelectAppsPage: View {
-    var onPressed: () -> Void
+//    var onPressed: () -> Void
     @EnvironmentObject var onboardingViewModel: OnboardingViewModel
     @EnvironmentObject var familyControlViewModel: FamilyControlViewModel
+    @EnvironmentObject private var nav: NavigationManager
+    @EnvironmentObject var scriptureService: ScriptureService
     @State var selection = FamilyActivitySelection()
     @State private var blockedApps: Set<ApplicationToken> = []
     @State private var blockedCategories: Set<ActivityCategoryToken> = []
@@ -66,7 +68,21 @@ struct SelectAppsPage: View {
 
                 PrimaryButton(title: !isAppCatSelected ? "Select apps to limit" : "Continue") {
                     if isAppCatSelected {
-                        onPressed()
+                        // onboarding is complete
+                        onboardingViewModel.completeOnboarding()
+                        // First Lock all apps
+                        familyControlViewModel.appBlockingService.enableBlocking()
+                        // Navigate to today's scripture
+                        if (scriptureService.scripture != nil) {
+                            let scripture = scriptureService.scripture!
+                            var updatedScripture = scripture
+                            updatedScripture.fromOnboarding = true
+                            nav.push( AppDestination.scripture(updatedScripture))
+                        }else {
+                            nav.popToRoot()
+                            nav.push(AppDestination.registerNowLater(false))
+                        }
+                       
                     } else {
                         showPicker()
                     }
@@ -100,8 +116,9 @@ struct SelectAppsPage: View {
 #Preview {
     let onboardingVM = OnboardingViewModel()
     let familyControlVM = FamilyControlViewModel()
-    SelectAppsPage {
-    }
+    var nav = NavigationManager()
+    SelectAppsPage()
     .environmentObject(onboardingVM)
     .environmentObject(familyControlVM)
+    .environmentObject(nav)
 }

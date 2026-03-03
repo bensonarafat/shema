@@ -10,9 +10,10 @@ import SwiftUI
 struct OnboardingView: View {
     @State private var currentPage = 0
     @EnvironmentObject private var nav: NavigationManager
+    @EnvironmentObject var scriptureService: ScriptureService
     
     var progress: CGFloat {
-        CGFloat(currentPage + 1) / CGFloat(5)
+        CGFloat(currentPage + 1) / CGFloat(4)
     }
     
     var body: some View {
@@ -82,18 +83,23 @@ struct OnboardingView: View {
                         currentPage += 1
                     }
                 } else if  currentPage == 3 {
-                    SelectAppsPage {
-                        currentPage += 1
-                    }
-                } else  if currentPage == 4 {
-                    SelectReadTimePage()
+                    SelectAppsPage ()
                 }
+                
+//                else  if currentPage == 4 {
+//                    SelectReadTimePage()
+//                }
                 
                 Spacer()
                 
                 
             }
             .padding()
+            .onAppear {
+                Task {
+                    await scriptureService.getScripture()
+                }
+            }
         }
         .navigationBarHidden(true)
     }

@@ -63,7 +63,7 @@ struct CardView: View {
     let bookmark: Bookmark
 
     var body: some View {
-        VStack (spacing: 8) {
+        VStack (alignment: .leading, spacing: 8 ) {
             HStack  (alignment: .top) {
                 HStack () {
                     Image(systemName: "book.pages")
@@ -85,6 +85,7 @@ struct CardView: View {
 
             Text("\(bookmark.verses.first?.text ?? "")")
                 .font(.fontNunitoRegular(size: 16))
+                .multilineTextAlignment(.leading)
                 .foregroundColor(Color.theme.primaryTextColor)
                 .padding(.bottom, 8)
                 .padding(.top, 8)
