@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "8bada8a5339988c42744065d39f614c8 2.png",
+      "filename" : "logo-trans.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "8bada8a5339988c42744065d39f614c8 1.png",
+      "filename" : "logo-trans 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "8bada8a5339988c42744065d39f614c8.png",
+      "filename" : "logo-trans 2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

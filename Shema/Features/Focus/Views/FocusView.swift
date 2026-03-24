@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FocusView: View {
-    var focus: Focus
+    var id: String
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     var body: some View {
         ScrollView(showsIndicators: false) {

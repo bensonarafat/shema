@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct IntroPage: View {
+struct GoalPage: View {
     var onPressed: () -> Void
     
     var body: some View {
@@ -25,7 +25,7 @@ struct IntroPage: View {
 }
 
 #Preview {
-    IntroPage {
+    GoalPage {
         
     }
 }

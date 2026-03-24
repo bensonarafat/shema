@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EditProfileView: View {
-    @ObservedObject var viewModel: ProfileViewModel
+    @ObservedObject var viewModel: ProfileViewModel = ProfileViewModel()
     @State private var fullName: String = ""
     @State private var username: String = ""
     @FocusState private var isFullNameFocused: Bool

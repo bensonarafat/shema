@@ -10,7 +10,6 @@ import SwiftData
 
 struct ContentView: View {
     @EnvironmentObject var onboardingViewModel: OnboardingViewModel
-    @EnvironmentObject var nav: NavigationManager
     @EnvironmentObject var authViewModel: AuthViewModel
     
     var body: some View {
@@ -25,9 +24,6 @@ struct ContentView: View {
             }
             .background(Color.theme.backgroundColor)
             .ignoresSafeArea(edges: .bottom)
-            .navigationDestination(for: AppDestination.self) { destination in
-                AppDestinationFactory.view(for: destination)
-            }
         }
         .task {
             await authViewModel.refreshAuthToken()
@@ -54,11 +50,9 @@ struct ContentView: View {
 
 #Preview {
     let vm = OnboardingViewModel()
-    let nav = NavigationManager()
     let authVM = AuthViewModel()
     ContentView()
         .environmentObject(vm)
-        .environmentObject(nav)
         .environmentObject(authVM)
 }
 

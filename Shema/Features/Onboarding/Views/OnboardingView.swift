@@ -71,7 +71,7 @@ struct OnboardingView: View {
                 Spacer()
                 
                 if currentPage == 0 {
-                    IntroPage {
+                    GoalPage {
                         currentPage += 1
                     }
                 } else if currentPage == 1 {

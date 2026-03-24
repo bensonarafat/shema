@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BookmarkDetailsView: View {
-    let bookmark: Bookmark
+    let id: String
     
     var body: some View {
         ZStack {

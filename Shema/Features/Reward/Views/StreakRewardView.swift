@@ -14,9 +14,9 @@ struct StreakRewardView: View {
     @EnvironmentObject var currencyViewModel: CurrencyViewModel
     @State private var rewarded = false
     
-    let scripture: DailyScripture
+    let id: String
     
-    init (scripture: DailyScripture) {
+    init (id: String) {
         self.scripture = scripture
     }
     

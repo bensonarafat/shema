@@ -12,7 +12,7 @@ struct ScriptureView: View {
     @EnvironmentObject var bookmarkViewModel: BookmarkViewModel
     @EnvironmentObject var streakViewModel: StreakViewModel
     @EnvironmentObject var familyControlViewModel: FamilyControlViewModel
-    var scripture: DailyScripture
+    var id: String
     let totalPages: Int
     @State private var totalKeys: Int = 1
     @State private var timerRemaining: Int = 3
@@ -20,7 +20,7 @@ struct ScriptureView: View {
     let timer = Timer.publish(every: 1, on: .main, in: .common)
                       .autoconnect()
     
-    init(scripture: DailyScripture) {
+    init(id: String) {
         self.scripture = scripture
         self.totalPages = scripture.verses.count + 3
     }

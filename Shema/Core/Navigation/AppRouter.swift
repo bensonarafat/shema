@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import SwiftUI
 
-class NavigationManager : ObservableObject {
+class AppRouter : ObservableObject {
     @Published var path = NavigationPath();
     
     
