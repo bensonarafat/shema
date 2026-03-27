@@ -24,7 +24,7 @@ struct HomeTopHeader : View {
                     Text("you are offline")
                         .textCase(.uppercase)
                         .foregroundColor(Color.theme.primaryTextColor)
-                        .font(.fontNunitoBlack(size: 14))
+//                        .font(.fontNunitoBlack(size: 14))
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)
@@ -41,7 +41,7 @@ struct HomeTopHeader : View {
                             .frame(width: 30, height: 30)
                             
                         Text("\(currencyViewModel.currency.key)")
-                            .font(.fontNunitoBlack(size: 20))
+//                            .font(.fontNunitoBlack(size: 20))
                             .foregroundColor(Color.theme.primaryTextColor)
                     }
                     .frame(width: geo.size.width, height: geo.size.height)
@@ -55,7 +55,7 @@ struct HomeTopHeader : View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 30, height: 30)
                         Text("\(currencyViewModel.currency.gem)")
-                            .font(.fontNunitoBlack(size: 20))
+//                            .font(.fontNunitoBlack(size: 20))
                             .foregroundColor(Color.theme.primaryTextColor)
                     }
                     .frame(width: geo.size.width, height: geo.size.height)
@@ -69,7 +69,7 @@ struct HomeTopHeader : View {
                             .frame(width: 30, height: 30)
                         
                         Text("\(streakViewModel.streaks.count)")
-                            .font(.fontNunitoBlack(size: 20))
+//                            .font(.fontNunitoBlack(size: 20))
                             .foregroundColor(Color.theme.primaryTextColor)
                     }
                     .frame(width: geo.size.width, height: geo.size.height)
@@ -82,7 +82,7 @@ struct HomeTopHeader : View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 40, height: 40)
                         Text("\(currencyViewModel.currency.xp)")
-                            .font(.fontNunitoBlack(size: 20))
+//                            .font(.fontNunitoBlack(size: 20))
                             .foregroundColor(Color.theme.primaryTextColor)
                     }
                     .frame(width: geo.size.width, height: geo.size.height)

@@ -10,34 +10,38 @@ import Combine
 import SwiftUI
 
 class AppRouter : ObservableObject {
-    @Published var path = NavigationPath();
+    @Published var homePath = NavigationPath()
+    @Published var biblePath = NavigationPath()
+    @Published var settingsPath = NavigationPath()
+    @Published var morePath = NavigationPath()
     
+    @Published var activeTab: AppTabs = .home
     
     func push<T: Hashable>(_ value: T) {
-        path.append(value);
+        switch activeTab {
+        case .home: homePath.append(value)
+        case .bible: biblePath.append(value)
+        case .settings: settingsPath.append(value)
+        case .more: morePath.append(value)
+        }
     }
     
     func pop() {
-        path.removeLast()
-    }
-    
-    func popToRoot () {
-        path.removeLast(path.count)
-    }
-    
-    func replace(with destination: AppDestination) {
-        if !path.isEmpty {
-            path.removeLast()
+        switch activeTab {
+        case .home: if !homePath.isEmpty { homePath.removeLast() }
+        case .bible: if !biblePath.isEmpty { biblePath.removeLast() }
+        case .settings: if !settingsPath.isEmpty { settingsPath.removeLast() }
+        case .more: if !morePath.isEmpty { morePath.removeLast() }
         }
-        path.append(destination)
     }
     
-    var canGoBack: Bool {
-        !path.isEmpty
+    func popToRoot (tab: AppTabs) {
+        switch tab {
+        case .home: homePath = NavigationPath()
+        case .bible: biblePath = NavigationPath()
+        case .settings: settingsPath = NavigationPath()
+        case .more: morePath = NavigationPath()
+        }
     }
     
-    // Get current path count
-    var pathCount: Int {
-        path.count
-    }
 }

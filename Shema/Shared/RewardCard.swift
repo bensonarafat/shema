@@ -17,39 +17,39 @@ struct RewardCard: View {
             Color.theme.backgroundColor
                 .ignoresSafeArea()
             VStack {
-                HStack {
-                    Text("Keys")
-                    Spacer()
-                    HStack (spacing: 8) {
-                        Image("key")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 25, height: 25)
-                        Text("\(keys)")
-                            .foregroundColor(Color.theme.primaryTextColor)
-                    }
-                }
-                .font(.fontNunitoBlack(size: 20))
-                .foregroundColor(Color.theme.secondaryTextColor)
-                
+//                HStack {
+//                    Text("Keys")
+//                    Spacer()
+//                    HStack (spacing: 8) {
+//                        Image("key")
+//                            .resizable()
+//                            .aspectRatio(contentMode: .fit)
+//                            .frame(width: 25, height: 25)
+//                        Text("\(keys)")
+//                            .foregroundColor(Color.theme.primaryTextColor)
+//                    }
+//                }
+//                .font(.fontNunitoBlack(size: 20))
+//                .foregroundColor(Color.theme.secondaryTextColor)
+//                
                 Divider()
                     .background(Color.gray)
                 
-                HStack {
-                    Text("Gems")
-                    Spacer()
-                    
-                    HStack (spacing: 8) {
-                        Image("gem")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 25, height: 25)
-                        Text("\(gems)")
-                            .foregroundColor(Color.theme.primaryTextColor)
-                    } .font(.fontNunitoBlack(size: 20))
-                }
-                .font(.fontNunitoBlack(size: 20))
-                .foregroundColor(Color.theme.secondaryTextColor)
+//                HStack {
+//                    Text("Gems")
+//                    Spacer()
+//                    
+//                    HStack (spacing: 8) {
+//                        Image("gem")
+//                            .resizable()
+//                            .aspectRatio(contentMode: .fit)
+//                            .frame(width: 25, height: 25)
+//                        Text("\(gems)")
+//                            .foregroundColor(Color.theme.primaryTextColor)
+//                    } .font(.fontNunitoBlack(size: 20))
+//                }
+//                .font(.fontNunitoBlack(size: 20))
+//                .foregroundColor(Color.theme.secondaryTextColor)
             }
             .padding()
             .background(

@@ -13,7 +13,7 @@ struct TranslationList: View {
     var body: some View {
         HStack {
             Text(translation.shortName)
-                .font(.fontNunitoBlack(size: 20))
+//                .font(.fontNunitoBlack(size: 20))
                 .multilineTextAlignment(.center)
                 .frame(width: 60, height: 60)
                 .padding(2)
@@ -28,9 +28,9 @@ struct TranslationList: View {
             
             VStack (alignment: .leading, spacing: 4) {
                 Text(translation.fullName)
-                    .font(.fontNunitoBold(size: 12))
+//                    .font(.fontNunitoBold(size: 12))
                 Text("Updated: \(translation.updated.readableDate)")
-                    .font(.fontNunitoRegular(size: 10))
+//                    .font(.fontNunitoRegular(size: 10))
                     
             }
             .padding(.trailing, 16)

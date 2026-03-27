@@ -24,7 +24,7 @@ struct BibleTranslationSheet: View {
                 } else {
                     VStack {
                         Text("Select Translation")
-                            .font(.fontNunitoBlack(size: 18))
+//                            .font(.fontNunitoBlack(size: 18))
                             .foregroundColor(Color.theme.primaryTextColor)
                             .padding()
                         

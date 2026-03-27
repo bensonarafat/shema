@@ -8,48 +8,64 @@
 import SwiftUI
 
 struct DailyVerse: View {
-    @EnvironmentObject var nav: NavigationManager
-    @EnvironmentObject var scriptureService: ScriptureService
-    @EnvironmentObject var streakViewModel: StreakViewModel
+//    @EnvironmentObject var nav: NavigationManager
+//    @EnvironmentObject var scriptureService: ScriptureService
+//    @EnvironmentObject var streakViewModel: StreakViewModel
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("Daily Referesh")
-                .font(.fontNunitoRegular(size: 14))
-                .foregroundColor(Color.theme.primaryTextColor)
-                .fontWeight(.bold)
-                .padding(.bottom, 4)
-            
-            VStack (alignment: .leading, spacing: 16)  {
-                HStack {
-                    Image(systemName: "book")
-                        .foregroundColor(Color.theme.primaryTextColor)
-                    Text("Passage")
-                        .foregroundColor(Color.theme.primaryTextColor)
-                        .font(.fontNunitoRegular(size: 14))
-                    
-                    Spacer()
-                    
-                    if streakViewModel.isStreakToday() {
-                        Image(systemName: "checkmark.circle.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 30)
-                            .foregroundColor(Color(hex: "f49000"))
-                    }
-                        
-                }
-                Text("\(scriptureService.scripture?.reference ?? "")")
-                    .textCase(.uppercase)
-                    .foregroundColor(Color.theme.primaryTextColor)
-                    .font(.fontNunitoBlack(size: 16))
-                
-                HStack {
-//                    Button  {
+//        VStack(alignment: .leading) {
+//            Text("Daily Referesh")
+//                .font(.fontNunitoRegular(size: 14))
+//                .foregroundColor(Color.theme.primaryTextColor)
+//                .fontWeight(.bold)
+//                .padding(.bottom, 4)
+//            
+//            VStack (alignment: .leading, spacing: 16)  {
+//                HStack {
+//                    Image(systemName: "book")
+//                        .foregroundColor(Color.theme.primaryTextColor)
+//                    Text("Passage")
+//                        .foregroundColor(Color.theme.primaryTextColor)
+//                        .font(.fontNunitoRegular(size: 14))
+//                    
+//                    Spacer()
+//                    
+//                    if streakViewModel.isStreakToday() {
+//                        Image(systemName: "checkmark.circle.fill")
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: 30)
+//                            .foregroundColor(Color(hex: "f49000"))
+//                    }
 //                        
+//                }
+//                Text("\(scriptureService.scripture?.reference ?? "")")
+//                    .textCase(.uppercase)
+//                    .foregroundColor(Color.theme.primaryTextColor)
+//                    .font(.fontNunitoBlack(size: 16))
+//                
+//                HStack {
+////                    Button  {
+////                        
+////                    }
+////                    label: {
+////                        Text("Listen")
+////                            .font(.fontNunitoBold(size: 14))
+////                            .foregroundColor(Color.theme.primaryTextColor)
+////                            .frame(maxWidth: .infinity)
+////                    }
+////                    .padding()
+////                    .background(Color(hex: "18221c"))
+////                    .cornerRadius(16)
+////                    
+//                    Button  {
+//                        if scriptureService.scripture != nil {
+//                            nav.push( AppDestination.scripture(scriptureService.scripture!))
+//                        }
+//                      
 //                    }
 //                    label: {
-//                        Text("Listen")
+//                        Text("Read")
 //                            .font(.fontNunitoBold(size: 14))
 //                            .foregroundColor(Color.theme.primaryTextColor)
 //                            .frame(maxWidth: .infinity)
@@ -57,46 +73,30 @@ struct DailyVerse: View {
 //                    .padding()
 //                    .background(Color(hex: "18221c"))
 //                    .cornerRadius(16)
-//                    
-                    Button  {
-                        if scriptureService.scripture != nil {
-                            nav.push( AppDestination.scripture(scriptureService.scripture!))
-                        }
-                      
-                    }
-                    label: {
-                        Text("Read")
-                            .font(.fontNunitoBold(size: 14))
-                            .foregroundColor(Color.theme.primaryTextColor)
-                            .frame(maxWidth: .infinity)
-                    }
-                    .padding()
-                    .background(Color(hex: "18221c"))
-                    .cornerRadius(16)
-                       
-                }
-                
-            }
-            .padding()
-            .background(
-                Color(hex: "1c2923")
-            )
-            .cornerRadius(16)
-           
-        }
-        .padding()
-        .background(Color.theme.backgroundColor)
+//                       
+//                }
+//                
+//            }
+//            .padding()
+//            .background(
+//                Color(hex: "1c2923")
+//            )
+//            .cornerRadius(16)
+//           
+//        }
+//        .padding()
+//        .background(Color.theme.backgroundColor)
         
     }
 }
 
 
 #Preview {
-    let nav = NavigationManager()
-    let scriptureService = ScriptureService()
-    let streakViewModel = StreakViewModel()
+//    let nav = NavigationManager()
+//    let scriptureService = ScriptureService()
+//    let streakViewModel = StreakViewModel()
     DailyVerse()
-        .environmentObject(nav)
-        .environmentObject(streakViewModel)
-        .environmentObject(scriptureService)
+//        .environmentObject(nav)
+//        .environmentObject(streakViewModel)
+//        .environmentObject(scriptureService)
 }

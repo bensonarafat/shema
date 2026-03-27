@@ -28,67 +28,67 @@ struct StreakCalendar: View {
     }
     
     var body: some View {
-            TabView (selection: $currentWeekIndex) {
-                ForEach (weeks.indices, id: \.self) { weekIndex in
-                    HStack (spacing: 16) {
-                        ForEach (weeks[weekIndex], id: \.self) { date in
-                            let isSelected = calendar.isDate(date, inSameDayAs: selectedDate)
-                            GeometryReader { geo in
-                                VStack (alignment: .center)  {
-                                    
-                                    Text(dayAbbreviation(for: date))
-                                        .font(.fontNunitoBold(size: 14))
-                                        .foregroundColor(Color.theme.primaryTextColor)
-                                    
-                                    Text("\(calendar.component(.day, from: date))")
-                                        .font(.fontNunitoBold(size: 14))
-                                        .foregroundColor(isSelected ? Color.black : Color.theme.primaryTextColor)
-                                        .frame(width: 35, height: 35)
-                                        .background(
-                                            Circle()
-                                                .stroke(
-                                                    streakViewModel.streaks.contains(where: { streak in
-                                                        streak.date.isInSameDay(as: date)
-                                                    }) ? Color(hex: "f49000") : Color.clear,
-                                                    lineWidth: 1
-                                                )
-                                                .background(
-                                                    Circle()
-                                                        .fill(isSelected ? Color(hex: "f49000") : .clear)
-                                                )
-                                        )
-                                   
-                                    if streakViewModel.streaks.contains(where: { streak in
-                                        streak.date.isInSameDay(as: date)
-                                    }) {
-                                        Circle()
-                                            .fill(Color(hex: "f49000"))
-                                            .frame(width: 8, height: 8)
-                                    } else {
-                                        Rectangle()
-                                            .fill(Color.clear)
-                                            .frame(width: 8, height: 8)
-                                    }
-
-                                }
-                                .frame(width: geo.size.width, height: geo.size.height)
-                                .contentShape(Rectangle())
-                                .onTapGesture {
-//                                    selectedDate = date
-                                }
-                            }
-                            
-                        }
-                    }
-                    .padding(.horizontal)
-                    .tag(weekIndex)
-                }
-            }
-            .tabViewStyle(.page(indexDisplayMode: .never))
-            .frame(height: 100)
-            .animation(.easeInOut, value: currentWeekIndex)
-            .background(Color(hex: "1c2923"))
-            .cornerRadius(16)
+//            TabView (selection: $currentWeekIndex) {
+//                ForEach (weeks.indices, id: \.self) { weekIndex in
+//                    HStack (spacing: 16) {
+//                        ForEach (weeks[weekIndex], id: \.self) { date in
+//                            let isSelected = calendar.isDate(date, inSameDayAs: selectedDate)
+//                            GeometryReader { geo in
+//                                VStack (alignment: .center)  {
+//                                    
+//                                    Text(dayAbbreviation(for: date))
+//                                        .font(.fontNunitoBold(size: 14))
+//                                        .foregroundColor(Color.theme.primaryTextColor)
+//                                    
+//                                    Text("\(calendar.component(.day, from: date))")
+//                                        .font(.fontNunitoBold(size: 14))
+//                                        .foregroundColor(isSelected ? Color.black : Color.theme.primaryTextColor)
+//                                        .frame(width: 35, height: 35)
+//                                        .background(
+//                                            Circle()
+//                                                .stroke(
+//                                                    streakViewModel.streaks.contains(where: { streak in
+//                                                        streak.date.isInSameDay(as: date)
+//                                                    }) ? Color(hex: "f49000") : Color.clear,
+//                                                    lineWidth: 1
+//                                                )
+//                                                .background(
+//                                                    Circle()
+//                                                        .fill(isSelected ? Color(hex: "f49000") : .clear)
+//                                                )
+//                                        )
+//                                   
+//                                    if streakViewModel.streaks.contains(where: { streak in
+//                                        streak.date.isInSameDay(as: date)
+//                                    }) {
+//                                        Circle()
+//                                            .fill(Color(hex: "f49000"))
+//                                            .frame(width: 8, height: 8)
+//                                    } else {
+//                                        Rectangle()
+//                                            .fill(Color.clear)
+//                                            .frame(width: 8, height: 8)
+//                                    }
+//
+//                                }
+//                                .frame(width: geo.size.width, height: geo.size.height)
+//                                .contentShape(Rectangle())
+//                                .onTapGesture {
+////                                    selectedDate = date
+//                                }
+//                            }
+//                            
+//                        }
+//                    }
+//                    .padding(.horizontal)
+//                    .tag(weekIndex)
+//                }
+//            }
+//            .tabViewStyle(.page(indexDisplayMode: .never))
+//            .frame(height: 100)
+//            .animation(.easeInOut, value: currentWeekIndex)
+//            .background(Color(hex: "1c2923"))
+//            .cornerRadius(16)
     }
     
     

@@ -38,7 +38,7 @@ struct ScreenTimePermissionPage: View {
                 Spacer()
                 
                 Text("Yout senstive data is protected by Apple and never leaves your device. [Learn More](https://www.apple.com/privacy)")
-                    .font(.fontNunitoRegular(size: 14))
+//                    .font(.fontNunitoRegular(size: 14))
                     .foregroundColor(.theme.secondaryTextColor)
                     .tint(.theme.secondaryTextColor)
                     .multilineTextAlignment(.center)

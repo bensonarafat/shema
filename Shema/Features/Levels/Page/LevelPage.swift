@@ -12,17 +12,17 @@ struct LevelPage: View {
         VStack(alignment: .leading, spacing: 0) {
             
             VStack (alignment: .leading, spacing: 0) {
-                Text("Emerald League")
-                    .font(.fontNunitoBlack(size: 23))
-                    .foregroundColor(Color.theme.primaryTextColor)
-                HStack (spacing: 4) {
-                    Image(systemName: "clock.fill")
-                    Text("6 hours")
-                        .textCase(.uppercase)
-                        .font(.fontNunitoBlack(size: 18))
-                        
-                }
-                .foregroundColor(Color.gray)
+//                Text("Emerald League")
+//                    .font(.fontNunitoBlack(size: 23))
+//                    .foregroundColor(Color.theme.primaryTextColor)
+//                HStack (spacing: 4) {
+//                    Image(systemName: "clock.fill")
+//                    Text("6 hours")
+//                        .textCase(.uppercase)
+//                        .font(.fontNunitoBlack(size: 18))
+//                        
+//                }
+//                .foregroundColor(Color.gray)
                 
                 
                 ScrollView (.horizontal, showsIndicators: false)  {
@@ -44,36 +44,36 @@ struct LevelPage: View {
                 VStack {
                     ForEach(1..<21) { i in
                         HStack (alignment: .center, spacing: 10) {
-                            Text("\(i)")
-                                .font(.fontNunitoBold(size: 18))
-                                .padding(.horizontal, 8)
-                                .foregroundColor(Color.theme.secondaryColor)
+//                            Text("\(i)")
+//                                .font(.fontNunitoBold(size: 18))
+//                                .padding(.horizontal, 8)
+//                                .foregroundColor(Color.theme.secondaryColor)
                             
                             VStack {
                                 Text("G")
-                                    .font(.fontNunitoBold(size: 20))
+//                                    .font(.fontNunitoBold(size: 20))
                             }
                             .padding()
                             .background(Circle()
                                 .fill(Color.theme.primaryColor))
             
                             
-                            VStack (alignment: .leading){
-                                Text("Rocky Super")
-                                    .font(.fontNunitoBold(size: 20))
-                                HStack  {
-                                    Text("🌱")
-                                    Text("20")
-                                        .font(.fontNunitoBold(size: 16))
-                                        .foregroundColor(Color.gray)
-                                }
-                               
-                            }
-                            .padding(.horizontal, 4)
+//                            VStack (alignment: .leading){
+//                                Text("Rocky Super")
+//                                    .font(.fontNunitoBold(size: 20))
+//                                HStack  {
+//                                    Text("🌱")
+//                                    Text("20")
+//                                        .font(.fontNunitoBold(size: 16))
+//                                        .foregroundColor(Color.gray)
+//                                }
+//                               
+//                            }
+//                            .padding(.horizontal, 4)
                             
                             Spacer()
                             Text("217 XP")
-                                .font(.fontNunitoBold(size: 20))
+//                                .font(.fontNunitoBold(size: 20))
                                 .foregroundColor(Color.gray)
                             
                         }.foregroundColor(Color.theme.primaryTextColor)

@@ -41,7 +41,7 @@ struct TabBarItem: View {
                             .frame(width: 32, height: 32)
                         
                         Text(name)
-                            .font(.fontNunitoRegular(size: 12))
+//                            .font(.fontNunitoRegular(size: 12))
                             .foregroundColor(Color.theme.primaryTextColor)
                     }
                     .padding(4)

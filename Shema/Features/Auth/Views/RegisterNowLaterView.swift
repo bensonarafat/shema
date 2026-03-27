@@ -8,40 +8,40 @@
 import SwiftUI
 
 struct RegisterNowLaterView: View {
-    @EnvironmentObject private var nav: NavigationManager
-    @EnvironmentObject private var authViewModel: AuthViewModel
-    
+//    @EnvironmentObject private var nav: NavigationManager
+//    @EnvironmentObject private var authViewModel: AuthViewModel
+//    
     let fromOnboarding: Bool
     
     var body: some View {
-        ZStack {
-            Color.theme.backgroundColor
-                .ignoresSafeArea()
-            VStack {
-                Spacer()
-                
-                VStack (spacing: 16) {
-                    PrimaryButton(title: "create profile") {
-                        nav.push(AppDestination.register)
-                    }
-                    
-                    SecondaryButton(title: "later", borderColor: Color.clear) {
-                        authViewModel.completeAuthStep()
-                        nav.popToRoot()
-                        nav.push(AppDestination.tabs)
-                    }
-                }
-            }
-            .padding()
-        }
-        .navigationBarBackButtonHidden(fromOnboarding)
+//        ZStack {
+//            Color.theme.backgroundColor
+//                .ignoresSafeArea()
+//            VStack {
+//                Spacer()
+//                
+//                VStack (spacing: 16) {
+//                    PrimaryButton(title: "create profile") {
+//                        nav.push(AppDestination.register)
+//                    }
+//                    
+//                    SecondaryButton(title: "later", borderColor: Color.clear) {
+//                        authViewModel.completeAuthStep()
+//                        nav.popToRoot()
+//                        nav.push(AppDestination.tabs)
+//                    }
+//                }
+//            }
+//            .padding()
+//        }
+//        .navigationBarBackButtonHidden(fromOnboarding)
     }
 }
 
 #Preview {
-    let vm = AuthViewModel()
-    let nav = NavigationManager()
+//    let vm = AuthViewModel()
+//    let nav = NavigationManager()
     RegisterNowLaterView(fromOnboarding: false)
-        .environmentObject(vm)
-        .environmentObject(nav)
+//        .environmentObject(vm)
+//        .environmentObject(nav)
 }

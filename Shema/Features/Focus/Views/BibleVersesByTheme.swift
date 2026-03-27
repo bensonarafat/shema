@@ -9,38 +9,38 @@ import SwiftUI
 
 
 struct BibleVersesByTheme: View {
-    @EnvironmentObject var nav: NavigationManager
-    @StateObject private var viewModel = FocusViewModel()
+//    @EnvironmentObject var nav: NavigationManager
+//    @StateObject private var viewModel = FocusViewModel()
     var body: some View {
-        VStack {
-            HStack {
-                Text("Theme Verses")
-                    .font(.fontNunitoRegular(size: 14))
-                Spacer()
-                Button ( action : {
-                    nav.push(AppDestination.themeVerses)
-                } ) {
-                    Image(systemName: "chevron.forward")
-                        .foregroundColor(.secondary)
-                }
-                
-            }.padding(.horizontal)
-            ScrollView (.horizontal, showsIndicators: false) {
-                HStack (spacing: 16) {
-                    ForEach (viewModel.loadMinFocuses()) { focus in
-                        FocusTimerCard(focus: focus)
-                      
-                    }
-                }.padding(.horizontal)
-            }
-        }
-        .padding(.vertical)
+//        VStack {
+//            HStack {
+//                Text("Theme Verses")
+//                    .font(.fontNunitoRegular(size: 14))
+//                Spacer()
+//                Button ( action : {
+//                    nav.push(AppDestination.themeVerses)
+//                } ) {
+//                    Image(systemName: "chevron.forward")
+//                        .foregroundColor(.secondary)
+//                }
+//                
+//            }.padding(.horizontal)
+//            ScrollView (.horizontal, showsIndicators: false) {
+//                HStack (spacing: 16) {
+//                    ForEach (viewModel.loadMinFocuses()) { focus in
+//                        FocusTimerCard(focus: focus)
+//                      
+//                    }
+//                }.padding(.horizontal)
+//            }
+//        }
+//        .padding(.vertical)
     }
 }
 
 
 #Preview {
-    let nav = NavigationManager()
+//    let nav = NavigationManager()
     BibleVersesByTheme()
-        .environmentObject(nav)
+//        .environmentObject(nav)
 }

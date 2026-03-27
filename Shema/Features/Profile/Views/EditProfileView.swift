@@ -106,11 +106,11 @@ struct EditProfileView: View {
                     // Username validation message
                     if !username.isEmpty && !username.isValidUsername {
                         Text("Username must be 3-20 characters (letters, numbers, underscore only)")
-                            .font(.fontNunitoRegular(size: 14))
+//                            .font(.fontNunitoRegular(size: 14))
                             .foregroundColor(Color.theme.secondaryTextColor)
                     } else if !username.isEmpty && !isUsernameAvailable && username != viewModel.currentUser?.username {
                         Text("Username is already taken")
-                            .font(.fontNunitoRegular(size: 14))
+//                            .font(.fontNunitoRegular(size: 14))
                             .foregroundColor(Color.theme.secondaryTextColor)
                     }
 
@@ -120,7 +120,7 @@ struct EditProfileView: View {
                 // Error Message
                 if let errorMessage = viewModel.errorMessage {
                     Text(errorMessage)
-                        .font(.fontNunitoRegular(size: 14))
+//                        .font(.fontNunitoRegular(size: 14))
                         .foregroundColor(Color.theme.secondaryTextColor)
                         .multilineTextAlignment(.center)
                 }
@@ -128,7 +128,7 @@ struct EditProfileView: View {
                 // Success Message
                 if let successMessage = viewModel.successMessage {
                     Text(successMessage)
-                        .font(.fontNunitoRegular(size: 14))
+//                        .font(.fontNunitoRegular(size: 14))
                         .foregroundColor(.green)
                         .multilineTextAlignment(.center)
                 }

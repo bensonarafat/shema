@@ -22,7 +22,7 @@ struct BibleScrollAndControl: View {
                    
                     Text("\(bibleViewModel.selectedBook?.name ?? "Genesis") \(bibleViewModel.selectedChapter)")
                         .italic()
-                        .font(.fontNunitoBlack(size: 25))
+//                        .font(.fontNunitoBlack(size: 25))
                         .foregroundColor(Color.theme.primaryTextColor)
                         .padding(.bottom, 8)
                     

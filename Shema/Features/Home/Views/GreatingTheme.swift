@@ -21,7 +21,7 @@ struct GreatingTheme: View {
             
             Text(scriptureService.scripture?.theme ?? viewModel.greetings.text)
                 .textCase(.uppercase)
-                .font(.fontNunitoBlack(size: 16))
+//                .font(.fontNunitoBlack(size: 16))
                 .fontWeight(.heavy)
                 .foregroundColor(Color.theme.primaryTextColor)
             

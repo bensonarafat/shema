@@ -34,11 +34,11 @@ struct PrimaryButton: View {
                         .frame(width: 25, height: 25)
                         .foregroundColor(Color.black)
                 }
-                Text(title)
-                    .textCase(.uppercase)
-                    .font(.fontNunitoExtraBold(size: 14))
-                    .fontWeight(.heavy)
-                    .foregroundColor(foregroundColor)
+//                Text(title)
+//                    .textCase(.uppercase)
+//                    .font(.fontNunitoExtraBold(size: 14))
+//                    .fontWeight(.heavy)
+//                    .foregroundColor(foregroundColor)
 
                 
             }
@@ -80,11 +80,11 @@ struct SecondaryButton: View {
                         .frame(width: 20, height: 20)
                         .foregroundColor(Color.theme.primaryTextColor)
                 }
-                Text(title)
-                    .textCase(.uppercase)
-                    .font(.fontNunitoExtraBold(size: 14))
-                    .fontWeight(.heavy)
-                    .foregroundColor(foregroundColor)
+//                Text(title)
+//                    .textCase(.uppercase)
+//                    .font(.fontNunitoExtraBold(size: 14))
+//                    .fontWeight(.heavy)
+//                    .foregroundColor(foregroundColor)
                 
             }
             .frame(maxWidth: .infinity)

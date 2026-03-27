@@ -52,7 +52,7 @@ struct BookList: View {
                                 .frame(width: 50, height: 50)
                                 .overlay(
                                     Text("\(i)")
-                                        .font(.fontNunitoBold(size: 16))
+//                                        .font(.fontNunitoBold(size: 16))
                                         .foregroundColor(Color.black)
                                 )
                         }

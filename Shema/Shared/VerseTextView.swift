@@ -16,13 +16,13 @@ struct VerseTextView: View {
         VStack(alignment: .leading, spacing: 4,) {
             HStack(alignment: .top, spacing: 4) {
                 Text("\(verse.verse).")
-                    .font(.fontNunitoBold(size: 18))
+//                    .font(.fontNunitoBold(size: 18))
                     .foregroundColor(.theme.primaryTextColor)
                     .baselineOffset(4)
                     .underline(isSelected, pattern: .dashDotDot, color: .primary)
                 
                 Text(verse.cleanText)
-                    .font(.fontNunitoBold(size: 18))
+//                    .font(.fontNunitoBold(size: 18))
                     .foregroundColor(Color.theme.primaryTextColor)
                     .lineSpacing(8)
                     .underline(isSelected, pattern: .dashDotDot, color: .primary)

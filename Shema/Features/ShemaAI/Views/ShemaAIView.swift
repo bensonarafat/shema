@@ -124,7 +124,7 @@ struct ShemaAIView: View {
                     Text(message.displayedText)
                 }
             }
-                .font(.fontNunitoBold(size: 18))
+//                .font(.fontNunitoBold(size: 18))
                 .foregroundColor(.white)
                 .padding()
                 .background(message.isUser ? Color.theme.primaryColor.opacity(0.2) : Color.green.opacity(0.2))

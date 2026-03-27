@@ -21,19 +21,19 @@ struct BibleBookSheet: View {
                 } else if let error = bibleViewModel.error {
                     ErrorContent(error: error)
                 } else {
-                    VStack {
-                        Text("Select Book")
-                            .font(.fontNunitoBlack(size: 18))
-                            .foregroundColor(Color.theme.primaryTextColor)
-                            .padding()
-                        ScrollView (showsIndicators: false) {
-                            LazyVStack {
-                                ForEach (bibleViewModel.books) { book in
-                                    BookList(book: book)
-                                }
-                            }
-                        }
-                    }
+//                    VStack {
+//                        Text("Select Book")
+//                            .font(.fontNunitoBlack(size: 18))
+//                            .foregroundColor(Color.theme.primaryTextColor)
+//                            .padding()
+//                        ScrollView (showsIndicators: false) {
+//                            LazyVStack {
+//                                ForEach (bibleViewModel.books) { book in
+//                                    BookList(book: book)
+//                                }
+//                            }
+//                        }
+//                    }
                 }
             }.padding(.all, 16)
                 .onAppear {
