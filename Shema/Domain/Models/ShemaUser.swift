@@ -16,7 +16,11 @@ struct ShemaUser: Codable, Identifiable, Hashable {
     let lastLogin: Date
     var pushNotification: Bool
     var lockTime: String?
-    var defaultBook: String?
+    var completeOnboarding: Bool
+    var goal: String?
+    var focus: String?
+    var translation: String?
+    var devotionTime: Date? 
     
     var currency: Currency?
     
@@ -30,7 +34,12 @@ struct ShemaUser: Codable, Identifiable, Hashable {
          lastLogin: Date = Date(),
          pushNotification: Bool = true,
          lockTime: String? = nil,
-         defaultBook: String? = nil,) {
+         completeOnboarding: Bool = false,
+         goal: String? = nil,
+         focus: String? = nil,
+         translation: String? = nil,
+         devotionTime: Date? = nil,
+    ) {
         self.id = id
         self.fullName = fullName
         self.username = username
@@ -39,7 +48,11 @@ struct ShemaUser: Codable, Identifiable, Hashable {
         self.lastLogin = lastLogin
         self.pushNotification = pushNotification
         self.lockTime = lockTime
-        self.defaultBook = defaultBook
+        self.completeOnboarding = completeOnboarding
+        self.goal = goal
+        self.focus = focus
+        self.translation = translation
+        self.devotionTime = devotionTime
     }
     
     static func == (lhs: ShemaUser, rhs: ShemaUser) -> Bool {
@@ -48,5 +61,33 @@ struct ShemaUser: Codable, Identifiable, Hashable {
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
+    }
+    
+    func copyWith(
+        fullName: String? = nil,
+        username: String? = nil,
+        pushNotification: Bool? = nil,
+        lockTime: String?? = nil,
+        completeOnboarding: Bool? = nil,
+        goal: String?? = nil,
+        focus: String?? = nil,
+        translation: String?? = nil,
+        devotionTime: Date?? = nil,
+        currency: Currency?? = nil,
+        userBadges: [UserBadge]?? = nil
+    ) -> ShemaUser {
+        var copy = self
+        if let fullName             { copy.fullName = fullName }
+        if let username             { copy.username = username }
+        if let pushNotification     { copy.pushNotification = pushNotification }
+        if let lockTime             { copy.lockTime = lockTime }
+        if let completeOnboarding   { copy.completeOnboarding = completeOnboarding }
+        if let goal                 { copy.goal = goal }
+        if let focus                { copy.focus = focus }
+        if let translation          { copy.translation = translation }
+        if let devotionTime         { copy.devotionTime = devotionTime }
+        if let currency             { copy.currency = currency }
+        if let userBadges           { copy.userBadges = userBadges }
+        return copy
     }
 }

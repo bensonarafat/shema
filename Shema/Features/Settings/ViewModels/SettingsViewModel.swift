@@ -121,7 +121,7 @@ class SettingsViewModel : ObservableObject {
         do {
             let user = try await userService.getUser(userId: userId)
             var updatedUser = user
-            updatedUser.defaultBook = book
+            updatedUser.translation = book
             _ = try await userService.updateUser(shemaUser: updatedUser)
             userDefaults.set(book, forKey: defaultBookKey)
         } catch {

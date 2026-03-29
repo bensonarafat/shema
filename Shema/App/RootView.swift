@@ -17,10 +17,21 @@ struct RootView: View {
             case .welcome:
                 WelcomeView()
             case .onboarding:
-                OnboardingView()
-                
+                NavigationStack (path: $router.onboardingPath) {
+                    AppRoute.introduction.destination
+                        .navigationDestination(for: AppRoute.self) { route  in
+                            route.destination
+                        }
+                }
+            case .pricing:
+                NavigationStack (path: $router.pricingPath) {
+                    AppRoute.pricing.destination
+                        .navigationDestination(for: AppRoute.self) { route in
+                            route.destination
+                        }
+                }
             case .auth:
-                NavigationStack  {
+                NavigationStack(path: $router.authPath)  {
                     AppRoute.login.destination
                         .navigationDestination(for: AppRoute.self) { route in
                             route.destination

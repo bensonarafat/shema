@@ -9,8 +9,10 @@ import SwiftUI
 import AVKit
 
 struct WelcomeView: View {
-    @EnvironmentObject var router : AppRouter
     @State private var showSheet: Bool = false
+    @EnvironmentObject var authViewModel: AuthViewModel
+    @EnvironmentObject var router: AppRouter
+    @EnvironmentObject var authManager: AuthManager
     
     private let player = AVPlayer(url: Bundle.main.url(forResource: "welcome", withExtension: "mp4")!)
     
@@ -33,33 +35,37 @@ struct WelcomeView: View {
             VStack {
                 Spacer()
                 
-                Button {
-                    showSheet = true
-                } label:  {
-                    Text("Get started")
-                        .font(.appButtonPrimary)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 24)
-                        .padding(.horizontal, 16)
-                        .background(
-                            RoundedRectangle(cornerRadius: 50)
-                                .fill(.primaryColorFeatherGreen)
-                        )
+                if  authViewModel.isLoading {
+                    ProgressView().foregroundColor(.primary)
+                } else {
+                    Button {
+                        showSheet = true
+                    } label:  {
+                        Text("Get started")
+                            .font(.appButtonPrimary)
+                            .foregroundColor(.black)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 24)
+                            .padding(.horizontal, 16)
+                            .background(
+                                RoundedRectangle(cornerRadius: 50)
+                                    .fill(.primaryColorFeatherGreen)
+                            )
+                    }
                 }
+                
              
             }
             .padding()
         }
         .sheet(isPresented: $showSheet) {
-            SignInSheet()
+            SignInSheet(authViewModel: authViewModel)
                 .presentationDetents([.medium])
                 .presentationDragIndicator(.visible)
                 .presentationCornerRadius(40)
                 .presentationContentInteraction(.scrolls)
                 .ignoresSafeArea()
         }
-    
     }
         
 
@@ -68,6 +74,7 @@ struct WelcomeView: View {
 #Preview {
     WelcomeView()
         .environmentObject(AppRouter())
+        .environmentObject(AuthViewModel())
 }
 
 

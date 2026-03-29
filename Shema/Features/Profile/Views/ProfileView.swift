@@ -12,25 +12,25 @@ struct ProfileView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @StateObject private var viewModel = ProfileViewModel()
     var body: some View {
-        ZStack {
-            Color.theme.backgroundColor
-                .ignoresSafeArea()
-            
-            if networkMonitor.isConnected {
-                if authViewModel.isAuthenticated {
-                    ProfilePage(profileViewModel: viewModel)
-                } else {
-                    AuthCardView(title: "You need a profile to access account")
-                }
-            } else {
-                ZStack {
-                    NetworkCardView(title: "Profile")
-                }
-            }
-            
-        }
-        .navigationTitle("Profile")
-        .navigationBarTitleDisplayMode(.inline)
+//        ZStack {
+//            Color.theme.backgroundColor
+//                .ignoresSafeArea()
+//            
+//            if networkMonitor.isConnected {
+//                if authViewModel.isAuthenticated {
+//                    ProfilePage(profileViewModel: viewModel)
+//                } else {
+//                    AuthCardView(title: "You need a profile to access account")
+//                }
+//            } else {
+//                ZStack {
+//                    NetworkCardView(title: "Profile")
+//                }
+//            }
+//            
+//        }
+//        .navigationTitle("Profile")
+//        .navigationBarTitleDisplayMode(.inline)
    
     }
 }

@@ -11,6 +11,8 @@ import SwiftUI
 struct SignInSheet: View {
     @EnvironmentObject var router : AppRouter
     @EnvironmentObject var authManager: AuthManager
+    @ObservedObject var authViewModel: AuthViewModel
+    
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -25,7 +27,7 @@ struct SignInSheet: View {
                     .padding(.bottom, 12)
                 
                 Divider()
-                    .background(.black)
+                    .background(.primary)
                 
             }
            
@@ -36,7 +38,14 @@ struct SignInSheet: View {
                     bgColor: .black,
                     textColor: .white
                 ) {
-                    
+                    dismiss()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.35){
+                        Task {
+                           await authViewModel.signInWithApple()
+                        }
+                    }
+                   
+                  
                 }
                 
                 SocialButton(
@@ -45,7 +54,13 @@ struct SignInSheet: View {
                     bgColor: .white,
                     textColor: .black
                 ) {
-                    
+                    dismiss()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                        Task {
+                           await authViewModel.signInWithGoogle()
+                        }
+                    }
+            
                 }
                 
                 SocialButton(
@@ -57,7 +72,6 @@ struct SignInSheet: View {
                    dismiss()
                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
                        authManager.appState = .auth
-                       router.push(AppRoute.login)
                    }
                 
                 }
@@ -72,7 +86,7 @@ struct SignInSheet: View {
   
 }
 #Preview {
-    SignInSheet()
+    SignInSheet(authViewModel: AuthViewModel())
         .environmentObject(AppRouter())
         .environmentObject(AuthManager())
 }

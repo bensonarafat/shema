@@ -13,22 +13,22 @@ struct LevelView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     
     var body: some View {
-        ZStack {
-            Color.theme.backgroundColor
-                .ignoresSafeArea()
-            
-            if networkMonitor.isConnected {
-                if authViewModel.isAuthenticated {
-                    LevelPage()
-                } else {
-                    AuthCardView(title: "You need a profile to use Leaderboards")
-                }
-            } else {
-                ZStack {
-                    NetworkCardView(title: "Leaderboards")
-                }
-            }
-        }
+//        ZStack {
+//            Color.theme.backgroundColor
+//                .ignoresSafeArea()
+//            
+//            if networkMonitor.isConnected {
+//                if authViewModel.isAuthenticated {
+//                    LevelPage()
+//                } else {
+//                    AuthCardView(title: "You need a profile to use Leaderboards")
+//                }
+//            } else {
+//                ZStack {
+//                    NetworkCardView(title: "Leaderboards")
+//                }
+//            }
+//        }
     }
 }
 

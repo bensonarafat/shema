@@ -9,9 +9,15 @@ import Foundation
 import SwiftUI
 
 enum AppRoute: Hashable {    
-    // Onboarding
+    // welcome
     case welcome
+    
+    
+    //onboarding
+    case introduction
     case onboarding
+    
+    case pricing
     
     // auth
     case login
@@ -29,8 +35,12 @@ enum AppRoute: Hashable {
     var destination: some View {
         switch self {
         case .welcome: WelcomeView()
+            
         case .onboarding: OnboardingView()
+        case .introduction: IntroductionView()
         
+        case .pricing: PricingView()
+            
         case .login:    LoginView()
         case .register: RegisterView()
         case .forgotPassword: ForgotPasswordView()

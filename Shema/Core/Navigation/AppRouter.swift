@@ -15,6 +15,10 @@ class AppRouter : ObservableObject {
     @Published var settingsPath = NavigationPath()
     @Published var morePath = NavigationPath()
     
+    @Published var onboardingPath = NavigationPath()
+    @Published var authPath = NavigationPath()
+    @Published var pricingPath = NavigationPath()
+    
     @Published var activeTab: AppTabs = .home
     
     func push<T: Hashable>(_ value: T) {
@@ -24,6 +28,18 @@ class AppRouter : ObservableObject {
         case .settings: settingsPath.append(value)
         case .more: morePath.append(value)
         }
+    }
+    
+    func pushOnboarding<T: Hashable>(_ value: T) {
+        onboardingPath.append(value)
+    }
+    
+    func pushAuth<T: Hashable> (_ value: T) {
+        authPath.append(value)
+    }
+    
+    func pushPricing<T: Hashable> (_ value: T) {
+        pricingPath.append(value)
     }
     
     func pop() {
